@@ -1,16 +1,13 @@
 # importamos las librerias necesarias
 import tkinter as tk
 from tkinter import *
-from pantallas.Resultados import *
-from pantallas.InformacionBasica.Que_es import *
-from pantallas.InformacionBasica.Informacion_Pruebas import *
 
 # estableciendo colores
 bg_primary_buttons = "#f6ddeb"
 bg_secondary_buttons = "#e8eab9"
 
 # pantalla de información básica
-class informacion_basica(tk.Frame):
+class que_es(tk.Frame):
     def __init__(self, parent, controller):
         screenwidth = controller.size['width']
         screenheight = controller.size['height']
@@ -32,7 +29,7 @@ class informacion_basica(tk.Frame):
 
         #colocamos el titulo de la pantalla y el icono
         canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Información básica",
+                            text = "¿Qué es?",
                             font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
                             anchor = NW)
         canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.signo_iterrogacion_grande, anchor = CENTER)
@@ -63,40 +60,10 @@ class informacion_basica(tk.Frame):
                                 **controller.estilo_verde)
         menu_button.place(relx = 0.7, rely = 0.15, anchor = CENTER)
         controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
-
-        # Botones con lista de pruebas
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.4), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'que_es')
-        register_button = tk.Button(self, 
-                                    text = "¿Qué es?", 
-                                    command = lambda : controller.show_frame(self, que_es),
-                                    font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                    **controller.estilo_rosa)
-        register_button.place(relx = 0.7, rely = 0.4, anchor = CENTER)
-        controller.animacion_boton(register_button, canvas, 'que_es', tamaño = 'grande')
-
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'pruebas')
-        test_button = tk.Button(self,
-                                text = "Pruebas", 
-                                command = lambda: controller.show_frame(self,info_pruebas),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                **controller.estilo_rosa)
-        test_button.place(relx = 0.7, rely = 0.525, anchor = CENTER)
-        controller.animacion_boton(test_button, canvas, 'pruebas', tamaño = 'grande')
-
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'seguidor_ocular')
-        seguidor_boton = tk.Button(self, 
-                                text = "Seguidor ocular", 
-                                # command = lambda: controller.show_frame(self,test_page)
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                **controller.estilo_rosa)
-        seguidor_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)
-        controller.animacion_boton(seguidor_boton, canvas, 'seguidor_ocular', tamaño = 'grande')
-
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.775), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'resultados')
-        resultados_boton = tk.Button(self, 
-                                text = "Resultados", 
-                                command = lambda: controller.show_frame(self, resultados),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                **controller.estilo_rosa)
-        resultados_boton.place(relx = 0.7, rely = 0.775, anchor = CENTER)
-        controller.animacion_boton(resultados_boton, canvas, 'resultados', tamaño = 'grande')
+        
+        # Texto de información
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.480), 
+                           text = '\n    en el centro de la pantalla', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'vista',
+                           anchor = CENTER)

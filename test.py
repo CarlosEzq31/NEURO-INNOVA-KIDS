@@ -1,24 +1,18 @@
-# example: PsychoPy code on PyGaze objects
-# import stuff
-from pygaze import libscreen
-from psychopy.visual import GratingStim
+import tkinter as tk
+from tkinter import ttk
 
-# create Display object
-disp = libscreen.Display(disptype='psychopy')
+class Example(tk.Frame):
+    def __init__(self, master, *args, **kwargs):
+        tk.Frame.__init__(self, master, *args, **kwargs)
+        self.pack()
+        btn = ttk.Button(self, text = "Press", command = self.openTopLevel)
+        btn.pack()
 
-# create Screen object
-coolscreen = libscreen.Screen(disptype='psychopy')
+    def openTopLevel(self):
+        topLevelWindow = tk.Toplevel(self)
+        # Make topLevelWindow remain on top until destroyed, or attribute changes.
+        topLevelWindow.attributes('-topmost', 'true')
 
-# create Gabor stimulus, using PsychoPy's GratingStim
-# note that you need to provide a PsychoPy Window object
-# as the first argument for the GratingStim; the
-# expdisplay property of a Display item is precisely
-# what you need!
-gabor = GratingStim(disp.expdisplay, tex='sin', mask='gauss',pos=(0,0), sf=0.01, size=200, ori=90)
-
-# add your gabor to the Screen
-coolscreen.screen.append(gabor)
-
-# now show as you would normally do
-disp.fill(screen=coolscreen)
-disp.show()
+root = tk.Tk()
+main = Example(root)
+root.mainloop()

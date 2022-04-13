@@ -1,2 +1,4 @@
 __pycache__
-src
+test.py
+test_sql.py
+desktop.ini

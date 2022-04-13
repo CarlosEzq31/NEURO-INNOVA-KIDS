@@ -1,10 +1,7 @@
 import tkinter as tk
 from PIL import Image as PImage, ImageTk as ImageTk
 from tkinter import *
-try:
-    from PIL import ImageGrab
-except:
-    import pyscreenshot as ImageGrab
+from PIL import ImageGrab
 
 class Splash(tk.Toplevel):
     def __init__(self, parent, text_ : str = 'Cargando'):

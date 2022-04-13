@@ -3,11 +3,13 @@ from PIL import Image as PImage, ImageTk as ImageTk
 from tkinter import *
 from PIL import ImageGrab
 from pantallas.Menu_principal import *
+from pantallas.Informacion_basica import *
+from pantallas.InformacionBasica.Que_es import *
+from pantallas.InformacionBasica.Informacion_Pruebas import *
 from pantallas.Inicio import *
 from pantallas.Ingreso import *
 from pantallas.Pruebas import *
 from pantallas.Lista_Pruebas import *
-from pantallas.Informacion_basica import *
 from pantallas.Registro_1 import *
 from pantallas.Splash import *
 from pantallas.Instrucciones import *
@@ -45,7 +47,6 @@ class tkinterApp(tk.Tk):
         self.path = os.path.dirname(os.path.realpath(__file__))
         self.withdraw()
         splash = Splash(self)
-
         # creando un contenedor
         self.container = tk.Frame(self) 
         self.container.pack(side = "top", fill = "both", expand = True)
@@ -61,13 +62,15 @@ class tkinterApp(tk.Tk):
         self.id = 0
         splash.actualizar_texto(text_ = f'Cargando pantallas')
         
-        # iterando a través de una tupla que consta de los diferentes diseños de página
-        for F in (menu_principal, inicio, ingreso, lista_pruebas, 
-                  informacion_basica, registro1, registro2, 
+        # iterando a través de una lista que consta de los diferentes diseños de página
+        frames = [menu_principal, inicio, ingreso, lista_pruebas, 
+                  informacion_basica, que_es, info_pruebas
+                  ,registro1, registro2, 
                   instrucciones, iniciar_sesion, usuario_info, 
                   figuras_superpuestas, senderos, pruebas, historial, resultados,
                   historiaclinica,exploracionfisica, antecedentes_natales,
-                  historialfamiliar, historialfamiliar2):
+                  historialfamiliar, historialfamiliar2]
+        for F in frames:
             frame = F(self.container,self)
             self.frames[F] = frame
             frame.grid(row = 0, column = 0, sticky ="nsew")
@@ -117,50 +120,28 @@ class tkinterApp(tk.Tk):
     # para ir a las instrucciones
     def ir_instrucciones(self, current_frame):
         self.show_frame(current_frame, instrucciones)
+        
 
     # función que llama a todas las imagenes para el programa
     def crear_media(self):
-        # cambiamos el tamaño de los botones dependiendo del s.o.
-        if os.name == 'nt':
-            # definimmos el tamaño de los botones
-            self.boton_tamanio = int(screenheight * 0.018)
-            
-            # definimos el estilo de los botones
-            self.estilo_rosa = {"borderwidth" : 0, 
-                                "bg" : "#f6ddeb", 
-                                "activebackground" : '#f692ca',
-                                "fg" : 'black',
-                                "highlightbackground" : "#f6ddeb",
-                                "padx":0, 
-                                "pady":0}
-            self.estilo_verde = {"borderwidth" : 0, 
-                                "bg" : "#e8eab9", 
-                                "activebackground" : '#e2ea26',
-                                "fg" : 'black',
-                                "highlightbackground" : "#e8eab9",
-                                "padx":0, 
-                                "pady":0}
-        else:
-            # definimmos el tamaño de los botones
-            self.boton_tamanio = int(screenheight * 0.022)
-            
-            # definimos el estilo de los botones
-            self.estilo_rosa = {"borderwidth" : 0, 
+        # definimmos el tamaño de los botones
+        self.boton_tamanio = int(screenheight * 0.018)
+        
+        # definimos el estilo de los botones
+        self.estilo_rosa = {"borderwidth" : 0, 
                             "bg" : "#f6ddeb", 
                             "activebackground" : '#f692ca',
                             "fg" : 'black',
-                            "activeforeground" : 'white',
                             "highlightbackground" : "#f6ddeb",
                             "padx":0, 
                             "pady":0}
-            self.estilo_verde = {"borderwidth" : 0, 
-                                "bg" : "#e8eab9", 
-                                "activebackground" : '#e2ea26',
-                                "fg" : 'black',
-                                "activeforeground" : 'white',
-                                "highlightbackground" : "#e8eab9",
-                                "padx":0, 
-                                "pady":0}  
+        self.estilo_verde = {"borderwidth" : 0, 
+                            "bg" : "#e8eab9", 
+                            "activebackground" : '#e2ea26',
+                            "fg" : 'black',
+                            "highlightbackground" : "#e8eab9",
+                            "padx":0, 
+                            "pady":0}
         
         
         self.size = {'width':screenwidth, 'height':screenheight}
@@ -190,6 +171,8 @@ class tkinterApp(tk.Tk):
         self.barra_escribir = self.get_image_resized(f"{path}/src/images/barra_escribir1.png", ratio = 0.000525)
         self.barra_seleccion = self.get_image_resized(f"{path}/src/images/barra_seleccion.png", ratio = 0.000125)
         self.barra_seleccion_rellena = self.get_image_resized(f"{path}/src/images/barra_seleccion_rellena.png", ratio = 0.000125)
+        self.fondo_splash = self.get_image_resized(f"{path}/src/images/background.jpg", ratio = 0.000065)
+        
 
     # función para redimensionar las imagenes
     def get_image_resized(self, path: str, ratio: float = 1, es_fondo: bool = None) -> Image:
