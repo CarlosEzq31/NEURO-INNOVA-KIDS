@@ -23,7 +23,7 @@ class Splash(tk.Toplevel):
         innova_button.place(relx = 0.5, rely = 0.5, anchor = CENTER) 
         self.texto_carga = Label(self, text = text_ , font=('Mukta Malar ExtraLight', 15))
         self.texto_carga.place(relx = 0.5, rely = 0.9, anchor = CENTER) 
-        self.wm_overrideredirect(True)
+        self.wm_overrideredirect(1)
         # actualizamos la pantalla de carga 
         self.update()
     

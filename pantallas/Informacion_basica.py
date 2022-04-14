@@ -4,6 +4,7 @@ from tkinter import *
 from pantallas.Resultados import *
 from pantallas.InformacionBasica.Que_es import *
 from pantallas.InformacionBasica.Informacion_Pruebas import *
+from pantallas.InformacionBasica.Seguidor_ocular import *
 
 # estableciendo colores
 bg_primary_buttons = "#f6ddeb"
@@ -41,6 +42,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
         instructions_button = tk.Button(self, 
                                         text = "Instrucciones", 
+                                        command = lambda : controller.ir_instrucciones(self),
                                         font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                         **controller.estilo_verde)
         instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
@@ -86,7 +88,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'seguidor_ocular')
         seguidor_boton = tk.Button(self, 
                                 text = "Seguidor ocular", 
-                                # command = lambda: controller.show_frame(self,test_page)
+                                command = lambda: controller.show_frame(self, seguidor_ocular),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         seguidor_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)

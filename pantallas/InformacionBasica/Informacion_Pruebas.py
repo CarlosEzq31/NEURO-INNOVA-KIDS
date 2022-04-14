@@ -41,6 +41,7 @@ class info_pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
         instructions_button = tk.Button(self, 
                                         text = "Instrucciones", 
+                                        command = lambda : controller.ir_instrucciones(self),
                                         font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                         **controller.estilo_verde)
         instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
@@ -144,8 +145,8 @@ class Splash(tk.Toplevel):
         self.title(f"{titulo}")
         
         # Cargamos imágenes para el boton de salir
-        self.boton_rosa_hover = controller.get_image_resized(f"{controller.path}/src/images/image.png", ratio = 0.00035)
-        self.boton_rosa = controller.get_image_resized(f"{controller.path}/src/images/Boton rosa 12.png", ratio = 0.00035)
+        self.boton_rosa_hover = controller.imagen_redimensionar(f"{controller.path}/src/images/image.png", ratio = 0.00035)
+        self.boton_rosa = controller.imagen_redimensionar(f"{controller.path}/src/images/Boton rosa 12.png", ratio = 0.00035)
         
         # Colcamos la primer imagen
         canvas.create_image(int(width*0.8),int(height*0.1), image = self.boton_rosa, anchor = CENTER, tags = 'salir')

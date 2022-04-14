@@ -56,6 +56,11 @@ class instrucciones(tk.Frame):
                            font = ('Mukta Malar ExtraLight', int(button_font_size)),
                            tags = 'vista',
                            anchor = CENTER)
+        
+        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.475), 
+                            image = controller.gifs[0], 
+                            anchor = CENTER, 
+                            tags = 'gif1')
 
 
         # Instrucción 2
@@ -71,6 +76,11 @@ class instrucciones(tk.Frame):
                            tags = 'parpadeo',
                            anchor = CENTER)
 
+        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.6),
+                            image = controller.gifs[0],
+                            anchor = CENTER,
+                            tags = 'gif2')
+
 
         # Instrucción 3
         canvas.create_text(int(screenwidth*0.35),int(screenheight*0.745), 
@@ -84,9 +94,26 @@ class instrucciones(tk.Frame):
                            font = ('Mukta Malar ExtraLight', int(button_font_size)),
                            tags = 'movimiento',
                            anchor = CENTER)
-
-
-
-
-
-
+        
+        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.725),
+                            image = controller.gifs[0],
+                            anchor = CENTER,
+                            tags = 'gif3')
+        
+        
+        # Funciones para animar gifs
+        def animacion_gif(e):  
+            self.after(0, actualizar, 0)
+            
+        def actualizar(ind):
+            frame = controller.gifs[ind]
+            # frame = frame.zoom(2,2)
+            ind += 1
+            if ind == len(controller.gifs):
+                ind = 0
+            canvas.itemconfig('gif1',image = frame)
+            canvas.itemconfig('gif2',image = frame)
+            canvas.itemconfig('gif3',image = frame)
+            self.after(100, actualizar, ind)
+            
+        self.bind("<Enter>", animacion_gif)

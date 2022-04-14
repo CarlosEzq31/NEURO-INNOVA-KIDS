@@ -2,10 +2,12 @@ import tkinter as tk, pyglet, time, os
 from PIL import Image as PImage, ImageTk as ImageTk
 from tkinter import *
 from PIL import ImageGrab
+from pantallas.InformacionBasica.Seguidor_ocular import seguidor_ocular
 from pantallas.Menu_principal import *
 from pantallas.Informacion_basica import *
 from pantallas.InformacionBasica.Que_es import *
 from pantallas.InformacionBasica.Informacion_Pruebas import *
+from pantallas.InformacionBasica.Seguidor_ocular import *
 from pantallas.Inicio import *
 from pantallas.Ingreso import *
 from pantallas.Pruebas import *
@@ -33,12 +35,11 @@ path = os.path.dirname(os.path.realpath(__file__))
 # importamos la fuente a utilizar
 pyglet.font.add_file(f'{path}/src/fonts/Mukta_Malar/MuktaMalar-ExtraLight.ttf')
 
-# obtenemos el s.o actual
-so = os.name
 
 class tkinterApp(tk.Tk):
     # función__init__ para la clase tkinterApp
     def __init__(self, *args, **kwargs):
+        
         # función __init__ para la clase Tk
         tk.Tk.__init__(self, *args, **kwargs)
         print("CARGANDO")
@@ -47,6 +48,7 @@ class tkinterApp(tk.Tk):
         self.path = os.path.dirname(os.path.realpath(__file__))
         self.withdraw()
         splash = Splash(self)
+        
         # creando un contenedor
         self.container = tk.Frame(self) 
         self.container.pack(side = "top", fill = "both", expand = True)
@@ -64,9 +66,8 @@ class tkinterApp(tk.Tk):
         
         # iterando a través de una lista que consta de los diferentes diseños de página
         frames = [menu_principal, inicio, ingreso, lista_pruebas, 
-                  informacion_basica, que_es, info_pruebas
-                  ,registro1, registro2, 
-                  instrucciones, iniciar_sesion, usuario_info, 
+                  informacion_basica, que_es, info_pruebas, seguidor_ocular,
+                  registro1, registro2, instrucciones, iniciar_sesion, usuario_info, 
                   figuras_superpuestas, senderos, pruebas, historial, resultados,
                   historiaclinica,exploracionfisica, antecedentes_natales,
                   historialfamiliar, historialfamiliar2]
@@ -90,6 +91,7 @@ class tkinterApp(tk.Tk):
         
         # mostrar programa en modo de pantalla completa
         self.wm_attributes('-fullscreen', 'True') 
+        
         # cerrar la pantalla splash y eliminamos el objeto
         splash.destroy()
         del splash
@@ -142,40 +144,45 @@ class tkinterApp(tk.Tk):
                             "highlightbackground" : "#e8eab9",
                             "padx":0, 
                             "pady":0}
-        
-        
         self.size = {'width':screenwidth, 'height':screenheight}
         self.geometry(f'{screenwidth}x{screenheight}')
-                        
+        
         # creacion de imagenes para el programa
-        self.background = self.get_image_resized(f"{path}/src/images/background.jpg", es_fondo = True)
-        self.loguito = self.get_image_resized(f"{path}/src/images/logo.png", ratio = 0.00002)
-        self.logo = self.get_image_resized(f"{path}/src/images/logo.png", ratio = 0.00007)
-        self.boton_rosa_hover = self.get_image_resized(f"{path}/src/images/image.png", ratio = 0.00035)
-        self.boton_rosa = self.get_image_resized(f"{path}/src/images/Boton rosa 12.png", ratio = 0.00035)
-        self.boton_rosa_grande = self.get_image_resized(f"{path}/src/images/Boton rosa 12.png", ratio = 0.0005)
-        self.boton_rosa__hover_grande = self.get_image_resized(f"{path}/src/images/image.png", ratio = 0.0005)
-        self.back_ninios = self.get_image_resized(f"{path}/src/images/fondo_ninios1.png", es_fondo = True)
-        self.signo_iterrogacion_grande = self.get_image_resized(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.0003)
-        self.signo_iterrogacion = self.get_image_resized(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.000075)
-        self.signo_iterrogacion_chico = self.get_image_resized(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.00006)
-        self.logo_bn = self.get_image_resized(f"{path}/src/images/Logo B Y N.png", ratio = 0.000075)
-        self.registro_icono = self.get_image_resized(f"{path}/src/images/Usuarios.png", ratio = 0.00007)
-        self.registro_icono_grande = self.get_image_resized(f"{path}/src/images/Usuarios.png", ratio = 0.00018)
-        self.play_icono = self.get_image_resized(f"{path}/src/images/Play.png", ratio = 0.00007)
-        self.play_icono_grande = self.get_image_resized(f"{path}/src/images/Play.png", ratio = 0.0003)
-        self.boton_verde = self.get_image_resized(f"{path}/src/images/boton_verde.png", ratio = 0.00035)
-        self.boton_verde_hover = self.get_image_resized(f"{path}/src/images/verde_hover.png", ratio = 0.00035)
-        self.historial_icono = self.get_image_resized(f"{path}/src/images/Historial.png", ratio = 0.00007)
-        self.historial_icono_grande = self.get_image_resized(f"{path}/src/images/Historial.png", ratio = 0.0003)
-        self.barra_escribir = self.get_image_resized(f"{path}/src/images/barra_escribir1.png", ratio = 0.000525)
-        self.barra_seleccion = self.get_image_resized(f"{path}/src/images/barra_seleccion.png", ratio = 0.000125)
-        self.barra_seleccion_rellena = self.get_image_resized(f"{path}/src/images/barra_seleccion_rellena.png", ratio = 0.000125)
-        self.fondo_splash = self.get_image_resized(f"{path}/src/images/background.jpg", ratio = 0.000065)
+        self.background = self.imagen_redimensionar(f"{path}/src/images/background.jpg", es_fondo = True)
+        self.loguito = self.imagen_redimensionar(f"{path}/src/images/logo.png", ratio = 0.00002)
+        self.logo = self.imagen_redimensionar(f"{path}/src/images/logo.png", ratio = 0.00007)
+        self.boton_rosa_hover = self.imagen_redimensionar(f"{path}/src/images/image.png", ratio = 0.00035)
+        self.boton_rosa = self.imagen_redimensionar(f"{path}/src/images/Boton rosa 12.png", ratio = 0.00035)
+        self.boton_rosa_grande = self.imagen_redimensionar(f"{path}/src/images/Boton rosa 12.png", ratio = 0.0005)
+        self.boton_rosa__hover_grande = self.imagen_redimensionar(f"{path}/src/images/image.png", ratio = 0.0005)
+        self.back_ninios = self.imagen_redimensionar(f"{path}/src/images/fondo_ninios1.png", es_fondo = True)
+        self.signo_iterrogacion_grande = self.imagen_redimensionar(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.0003)
+        self.signo_iterrogacion = self.imagen_redimensionar(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.000075)
+        self.signo_iterrogacion_chico = self.imagen_redimensionar(f"{path}/src/images/Signo_de_interrogación.png", ratio = 0.00006)
+        self.logo_bn = self.imagen_redimensionar(f"{path}/src/images/Logo B Y N.png", ratio = 0.000075)
+        self.registro_icono = self.imagen_redimensionar(f"{path}/src/images/Usuarios.png", ratio = 0.00007)
+        self.registro_icono_grande = self.imagen_redimensionar(f"{path}/src/images/Usuarios.png", ratio = 0.00018)
+        self.play_icono = self.imagen_redimensionar(f"{path}/src/images/Play.png", ratio = 0.00007)
+        self.play_icono_grande = self.imagen_redimensionar(f"{path}/src/images/Play.png", ratio = 0.0003)
+        self.boton_verde = self.imagen_redimensionar(f"{path}/src/images/boton_verde.png", ratio = 0.00035)
+        self.boton_verde_hover = self.imagen_redimensionar(f"{path}/src/images/verde_hover.png", ratio = 0.00035)
+        self.historial_icono = self.imagen_redimensionar(f"{path}/src/images/Historial.png", ratio = 0.00007)
+        self.historial_icono_grande = self.imagen_redimensionar(f"{path}/src/images/Historial.png", ratio = 0.0003)
+        self.barra_escribir = self.imagen_redimensionar(f"{path}/src/images/barra_escribir1.png", ratio = 0.000525)
+        self.barra_seleccion = self.imagen_redimensionar(f"{path}/src/images/barra_seleccion.png", ratio = 0.000125)
+        self.barra_seleccion_rellena = self.imagen_redimensionar(f"{path}/src/images/barra_seleccion_rellena.png", ratio = 0.000125)
+        self.fondo_splash = self.imagen_redimensionar(f"{path}/src/images/background.jpg", ratio = 0.000065)
+        self.gifs = self.gif_imagenes("mygif.gif")
+
+    
+    def gif_imagenes(self, path) -> list:
+        imageObject = PImage.open(f"{path}")
+        frameCnt = imageObject.n_frames
+        return [PhotoImage(file = f'{path}',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
         
 
     # función para redimensionar las imagenes
-    def get_image_resized(self, path: str, ratio: float = 1, es_fondo: bool = None) -> Image:
+    def imagen_redimensionar(self, path: str, ratio: float = 1, es_fondo: bool = None) -> Image:
         imagen = PImage.open(path)
         imagen = imagen.convert('RGBA')
         if es_fondo:
@@ -203,30 +210,18 @@ class tkinterApp(tk.Tk):
             image_normal = self.boton_verde
             
         def on_enter(e):
-            if so == 'nt':
-                button.config(highlightbackground = hightbg_hover, background = hightbg_hover, fg = 'white')
-            else:
-                button.config(highlightbackground = hightbg_hover)
+            button.config(highlightbackground = hightbg_hover, background = hightbg_hover, fg = 'white')
             canvas.itemconfig(tag, image = image_hover)
 
         def on_leave(e):
-            if so == 'nt':
-                button.config(highlightbackground = hightbg_normal,  background = hightbg_normal, fg = 'black')
-            else:
-                button.config(highlightbackground = hightbg_normal)
+            button.config(highlightbackground = hightbg_normal,  background = hightbg_normal, fg = 'black')
             canvas.itemconfig(tag, image = image_normal)
 
         def on_click(e):
-            if so == 'nt':
-                button.config( fg = 'white')
-            else:
-                button.config(activeforeground = 'black')         
+            button.config( fg = 'white')
             
         def on_unclick(e):
-            if so == 'nt':
-                button.config( fg = 'black')
-            else:
-                button.config(activeforeground = 'white')
+            button.config( fg = 'black')
         
         def on_enter_canvas(e):
             button.config(highlightbackground = hightbg_hover, background = hightbg_hover)
@@ -242,6 +237,20 @@ class tkinterApp(tk.Tk):
         button.bind("<ButtonRelease-1>", on_unclick)
         canvas.tag_bind(tag, '<Enter>', on_enter_canvas)
         canvas.tag_bind(tag, "<Leave>", on_leave_canvas)
+    
+    
+    def animacion_gif(self, path, canvas, tag, ind = 0):
+        imageObject = PImage.open(f"{path}")
+        print(imageObject.n_frames)
+        frameCnt = imageObject.n_frames
+        frames = [PhotoImage(file = f'{path}',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+        
+        frame = frames[ind]
+        ind += 1
+        if ind == frameCnt:
+            ind = 0
+        canvas.itemconfig(tag, image = frame)
+        canvas.after(100, self.animacion_gif(path, canvas, tag, ind))
 
 if __name__ == "__main__":
     app = tkinterApp()

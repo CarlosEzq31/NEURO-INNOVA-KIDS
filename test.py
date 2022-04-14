@@ -1,18 +1,24 @@
-import tkinter as tk
-from tkinter import ttk
+from tkinter import *
+import time
+import os
+root = Tk()
+from PIL import Image
+ 
 
-class Example(tk.Frame):
-    def __init__(self, master, *args, **kwargs):
-        tk.Frame.__init__(self, master, *args, **kwargs)
-        self.pack()
-        btn = ttk.Button(self, text = "Press", command = self.openTopLevel)
-        btn.pack()
+imageObject = Image.open("./mygif.gif")
+print(imageObject.n_frames)
+frameCnt = imageObject.n_frames
+frames = [PhotoImage(file='mygif.gif',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
 
-    def openTopLevel(self):
-        topLevelWindow = tk.Toplevel(self)
-        # Make topLevelWindow remain on top until destroyed, or attribute changes.
-        topLevelWindow.attributes('-topmost', 'true')
-
-root = tk.Tk()
-main = Example(root)
+def update(ind):
+    frame = frames[ind]
+    ind += 1
+    if ind == frameCnt:
+        ind = 0
+    label.configure(image=frame)
+    root.after(100, update, ind)
+    
+label = Label(root)
+label.pack()
+root.after(0, update, 0)
 root.mainloop()

@@ -7,7 +7,7 @@ bg_primary_buttons = "#f6ddeb"
 bg_secondary_buttons = "#e8eab9"
 
 # pantalla de información básica
-class que_es(tk.Frame):
+class seguidor_ocular(tk.Frame):
     def __init__(self, parent, controller):
         screenwidth = controller.size['width']
         screenheight = controller.size['height']
@@ -29,7 +29,7 @@ class que_es(tk.Frame):
 
         #colocamos el titulo de la pantalla y el icono
         canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "¿Qué es?",
+                            text = "Seguidor ocular",
                             font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
                             anchor = NW)
         canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.signo_iterrogacion_grande, anchor = CENTER)
@@ -64,7 +64,7 @@ class que_es(tk.Frame):
         
         # Texto de información
         canvas.create_text(int(screenwidth*0.45),int(screenheight*0.480), 
-                           text = '\n    en el centro de la pantalla', 
+                           text = 'Para este programa se hará uso de un seguidor ocular, el cual\n', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size)),
                            tags = 'vista',
                            anchor = CENTER)

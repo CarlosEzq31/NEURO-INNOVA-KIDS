@@ -38,6 +38,7 @@ class registro1(tk.Frame):
         canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
         instructions_button = tk.Button(self, 
                                         text = "Instrucciones", 
+                                        command = lambda : controller.ir_instrucciones(self),
                                         font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                         **controller.estilo_verde)
         instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
@@ -257,6 +258,7 @@ class registro2(tk.Frame):
         canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
         instructions_button = tk.Button(self, 
                                         text = "Instrucciones", 
+                                        command = lambda : controller.ir_instrucciones(self),
                                         font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                         **controller.estilo_verde)
         instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
