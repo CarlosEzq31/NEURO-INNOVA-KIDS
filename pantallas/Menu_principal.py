@@ -26,7 +26,7 @@ class menu_principal(tk.Frame):
         canvas.create_image(int(ancho_pantalla*0.875),int(alto_pantalla*0.7), image = controller.boton_rosa, tags = 'informacion',anchor = CENTER)
         canvas.create_image(int(ancho_pantalla*0.75),int(alto_pantalla*0.7), image = controller.signo_iterrogacion, anchor = CENTER)
         about_button = tk.Button(self, text = "Información básica",
-                                command = lambda : controller.show_frame(self,informacion_basica), 
+                                command = lambda : controller.mostrar_pantalla(self,informacion_basica), 
                                 font = ('Mukta Malar ExtraLight', button_font_size), 
                                 **controller.estilo_rosa)
         about_button.place(relx = 0.875, rely = 0.7, anchor = CENTER)
@@ -37,7 +37,7 @@ class menu_principal(tk.Frame):
         canvas.create_image(int(ancho_pantalla*0.75),int(alto_pantalla*0.8), image = controller.logo_bn, anchor = CENTER)
         neuro_boton = tk.Button(self, text = "NEURO INNOVA KIDS®",
                                 font = ('Mukta Malar ExtraLight', button_font_size), 
-                                command = lambda : controller.show_frame(self, ingreso),
+                                command = lambda : controller.mostrar_pantalla(self, ingreso),
                                 **controller.estilo_rosa)
         neuro_boton.place(relx = 0.875, rely = 0.8, anchor = CENTER)
         controller.animacion_boton(neuro_boton, canvas, 'neuro')

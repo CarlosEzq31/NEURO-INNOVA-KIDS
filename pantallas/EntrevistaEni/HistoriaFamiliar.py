@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from test_sql import *
-from pantallas.EntrevistaEni.ExploracionFisica import *
+from pantallas.EntrevistaEni.AntecedentesPrenatales import *
 
 class historialfamiliar(tk.Frame):
     def __init__(self, parent, controller):
@@ -86,7 +86,7 @@ class historialfamiliar(tk.Frame):
             for form in label:
                 self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             print(self.data)
-            controller.show_frame(self, historialfamiliar2)
+            controller.mostrar_pantalla(self, historialfamiliar2)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)
@@ -178,12 +178,13 @@ class historialfamiliar2(tk.Frame):
                                     bg = 'white')
             forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
+            
         self.data = {}
         def printData():
             for form in label:
                 self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             print(self.data)
-            # controller.show_frame(self, exploracionfisica)
+            controller.mostrar_pantalla(self, antecedentes_prenatales)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)

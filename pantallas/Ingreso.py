@@ -59,7 +59,7 @@ class ingreso(tk.Frame):
         canvas.create_image(int(screenwidth*0.6),int(screenheight*0.7), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'registro')
         register_button = tk.Button(self, 
                                     text = "Iniciar sesión", 
-                                    command = lambda : controller.show_frame(self, iniciar_sesion),
+                                    command = lambda : controller.mostrar_pantalla(self, iniciar_sesion),
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                     **controller.estilo_rosa)
         register_button.place(relx = 0.6, rely = 0.7, anchor = CENTER)
@@ -68,7 +68,7 @@ class ingreso(tk.Frame):
         canvas.create_image(int(screenwidth*0.6),int(screenheight*0.825), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'test')
         test_button = tk.Button(self, 
                                 text = "Regístrate", 
-                                command = lambda: controller.show_frame(self, registro1),
+                                command = lambda: controller.mostrar_pantalla(self, registro1),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         test_button.place(relx = 0.6, rely = 0.825, anchor = CENTER)

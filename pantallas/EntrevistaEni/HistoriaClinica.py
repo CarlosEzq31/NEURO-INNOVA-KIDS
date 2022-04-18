@@ -64,8 +64,25 @@ class historiaclinica(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
+        self.data = {}
         label = ['Nombre', 'Fecha de Nacimiento', 'Sexo', 'Grado Escolar', 'Evaluador']
+        self.botones = {}
         h = 0.4
+        
+        def seleccion(boton, valor):
+            if valor == True:
+                self.data[boton] = True
+                self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_no').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
+            else:
+                self.data[boton] = False
+                self.botones.get(f'{boton}_si').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion_rellena)
+                
         for form in label:
             canvas.create_image(int(screenwidth*0.55),int(screenheight*h), image = controller.boton_rosa, anchor = CENTER)
             form_texto = tk.Label(self, 
@@ -73,20 +90,45 @@ class historiaclinica(tk.Frame):
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                 **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
-            forms[f"{form}_formulario"] = tk.Entry(self,
-                                    font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                    borderwidth = 0, 
-                                    highlightthickness = 0,
-                                    bg = 'white')
-            forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
+            if form == 'Sexo':
+                tag = form
+                self.data[tag] = ''
+                # Boton opción hombre
+                canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_si")
+                self.botones[f'{tag}_si'] = Button(self,text = 'Masculino', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, True))
+                self.botones.get(f'{tag}_si').place(relx = 0.725, rely = h, anchor = CENTER)
+                # Boton opción mujer
+                canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_no")
+                self.botones[f'{tag}_no'] = Button(self,text = 'Femenino', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, False))
+                self.botones.get(f'{tag}_no').place(relx = 0.8, rely = h, anchor = CENTER)
+            else:
+                canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
+                forms[f"{form}_formulario"] = tk.Entry(self,
+                                        font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
+                                        borderwidth = 0, 
+                                        highlightthickness = 0,
+                                        bg = 'white')
+                forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
-        self.data = {}
+            
+            
+        
         def printData():
             for form in label:
-                self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
+                if form != 'Sexo':
+                    self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             print(self.data)
-            controller.show_frame(self, exploracionfisica)
+            controller.mostrar_pantalla(self, exploracionfisica)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)

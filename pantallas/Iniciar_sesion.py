@@ -115,12 +115,12 @@ class iniciar_sesion(tk.Frame):
                 if id:
                     controller.id = id
                     print(controller.id)
-                    controller.show_frame(self, pruebas)
+                    controller.mostrar_pantalla(self, pruebas)
                 else:
                     texto_aviso('Usuario o contraseña incorrectos')
             else:
                 texto_aviso('Por favor, introduzca sus datos')
-            # controller.show_frame(self, pruebas)
+            # controller.mostrar_pantalla(self, pruebas)
                     
         def texto_aviso(texto):
             texto_error = canvas.create_text(int(screenwidth*0.5),int(screenheight*0.25), 

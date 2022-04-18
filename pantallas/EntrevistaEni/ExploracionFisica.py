@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from test_sql import *
-from pantallas.EntrevistaEni.AntecedentesNatales import *
+from pantallas.EntrevistaEni.HistoriaFamiliar import *
 
 # set colors
 bg_secondary_buttons = "#e8eab9"
@@ -90,7 +90,7 @@ class exploracionfisica(tk.Frame):
             for form in label:
                 self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             print(self.data)
-            controller.show_frame(self, antecedentes_natales)
+            controller.mostrar_pantalla(self, historialfamiliar)
                 
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)

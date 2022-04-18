@@ -60,7 +60,7 @@ class inicio(tk.Frame):
         canvas.create_image(int(screenwidth*0.57),int(screenheight*0.7), image = controller.registro_icono, anchor = CENTER)
         register_button = tk.Button(self, 
                                     text = "Registro", 
-                                    command = lambda : controller.show_frame(self, ingreso),
+                                    command = lambda : controller.mostrar_pantalla(self, ingreso),
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                     **controller.estilo_rosa)
         register_button.place(relx = 0.626, rely = 0.7, anchor = CENTER)
@@ -70,7 +70,7 @@ class inicio(tk.Frame):
         canvas.create_image(int(screenwidth*0.57),int(screenheight*0.825), image = controller.play_icono, anchor = CENTER)
         test_button = tk.Button(self, 
                                 text = "Pruebas", 
-                                command = lambda: controller.show_frame(self,pruebas),
+                                command = lambda: controller.mostrar_pantalla(self,pruebas),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         test_button.place(relx = 0.625, rely = 0.825, anchor = CENTER)

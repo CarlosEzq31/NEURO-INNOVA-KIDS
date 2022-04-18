@@ -220,7 +220,7 @@ class registro1(tk.Frame):
         siguiente_boton = tk.Button(self, 
                                 text = "Siguiente", 
                                 # command = save_data,
-                                command = lambda: controller.show_frame(self, registro2),
+                                command = lambda: controller.mostrar_pantalla(self, registro2),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                 **controller.estilo_verde)
         siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)

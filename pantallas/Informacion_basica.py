@@ -70,7 +70,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.4), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'que_es')
         register_button = tk.Button(self, 
                                     text = "¿Qué es?", 
-                                    command = lambda : controller.show_frame(self, que_es),
+                                    command = lambda : controller.mostrar_pantalla(self, que_es),
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                     **controller.estilo_rosa)
         register_button.place(relx = 0.7, rely = 0.4, anchor = CENTER)
@@ -79,7 +79,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'pruebas')
         test_button = tk.Button(self,
                                 text = "Pruebas", 
-                                command = lambda: controller.show_frame(self,info_pruebas),
+                                command = lambda: controller.mostrar_pantalla(self,info_pruebas),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         test_button.place(relx = 0.7, rely = 0.525, anchor = CENTER)
@@ -88,7 +88,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'seguidor_ocular')
         seguidor_boton = tk.Button(self, 
                                 text = "Seguidor ocular", 
-                                command = lambda: controller.show_frame(self, seguidor_ocular),
+                                command = lambda: controller.mostrar_pantalla(self, seguidor_ocular),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         seguidor_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)
@@ -97,7 +97,7 @@ class informacion_basica(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.775), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'resultados')
         resultados_boton = tk.Button(self, 
                                 text = "Resultados", 
-                                command = lambda: controller.show_frame(self, resultados),
+                                command = lambda: controller.mostrar_pantalla(self, resultados),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         resultados_boton.place(relx = 0.7, rely = 0.775, anchor = CENTER)

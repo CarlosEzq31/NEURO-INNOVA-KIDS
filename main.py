@@ -19,7 +19,7 @@ from pantallas.Iniciar_sesion import *
 from pantallas.Usuario import *
 from pantallas.Historial import *
 from pantallas.Resultados import *
-from pantallas.EntrevistaEni.AntecedentesNatales import *
+from pantallas.EntrevistaEni.AntecedentesPrenatales import *
 from pantallas.EntrevistaEni.ExploracionFisica import *
 from pantallas.EntrevistaEni.HistoriaClinica import *
 from pantallas.EntrevistaEni.HistoriaFamiliar import *
@@ -65,12 +65,12 @@ class tkinterApp(tk.Tk):
         splash.actualizar_texto(text_ = f'Cargando pantallas')
         
         # iterando a través de una lista que consta de los diferentes diseños de página
-        frames = [menu_principal, inicio, ingreso, lista_pruebas, 
-                  informacion_basica, que_es, info_pruebas, seguidor_ocular,
-                  registro1, registro2, instrucciones, iniciar_sesion, usuario_info, 
-                  figuras_superpuestas, senderos, pruebas, historial, resultados,
-                  historiaclinica,exploracionfisica, antecedentes_natales,
-                  historialfamiliar, historialfamiliar2]
+        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica,
+                  que_es, info_pruebas, seguidor_ocular, registro1, registro2,
+                  instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,
+                  senderos, pruebas, historial, resultados, historiaclinica,
+                  exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2,
+                  antecedentes_prenatales3, historialfamiliar, historialfamiliar2]
         for F in frames:
             frame = F(self.container,self)
             self.frames[F] = frame
@@ -100,7 +100,7 @@ class tkinterApp(tk.Tk):
     back_frame = [menu_principal]
     
     # para mostrar el frame actual pasado como parámetro
-    def show_frame(self, current_frame, next_frame):
+    def mostrar_pantalla(self, current_frame, next_frame):
         self.back_frame.append(current_frame)
         self.frame = self.frames[next_frame]
         self.frame.tkraise()
@@ -121,7 +121,7 @@ class tkinterApp(tk.Tk):
     
     # para ir a las instrucciones
     def ir_instrucciones(self, current_frame):
-        self.show_frame(current_frame, instrucciones)
+        self.mostrar_pantalla(current_frame, instrucciones)
         
 
     # función que llama a todas las imagenes para el programa

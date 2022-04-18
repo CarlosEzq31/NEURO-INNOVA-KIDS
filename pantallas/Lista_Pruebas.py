@@ -84,7 +84,7 @@ class lista_pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'senderos')
         senderos_boton = tk.Button(self, 
                                 text = "Senderos", 
-                                command = lambda: controller.show_frame(self, senderos),
+                                command = lambda: controller.mostrar_pantalla(self, senderos),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         senderos_boton.place(relx = 0.7, rely = 0.525, anchor = CENTER)
@@ -93,7 +93,7 @@ class lista_pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'domino')
         domino_boton = tk.Button(self, 
                                 text = "Dominó", 
-                                # command = lambda: controller.show_frame(self,test_page)
+                                # command = lambda: controller.mostrar_pantalla(self,test_page)
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         domino_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)
@@ -102,7 +102,7 @@ class lista_pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.775), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'colores')
         colores_boton = tk.Button(self, 
                                 text = "Colores de Stroop", 
-                                # command = lambda: controller.show_frame(self,test_page)
+                                # command = lambda: controller.mostrar_pantalla(self,test_page)
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         colores_boton.place(relx = 0.7, rely = 0.775, anchor = CENTER)
@@ -111,7 +111,7 @@ class lista_pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.9), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'cubos')
         cubos_boton = tk.Button(self, 
                                 text = "Cubos de Kohs", 
-                                # command = lambda: controller.show_frame(self,test_page)
+                                # command = lambda: controller.mostrar_pantalla(self,test_page)
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         cubos_boton.place(relx = 0.7, rely = 0.9, anchor = CENTER)

@@ -60,7 +60,7 @@ class pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.57),int(screenheight*0.65), image = controller.registro_icono, anchor = CENTER)
         register_button = tk.Button(self, 
                                     text = "Usuario", 
-                                    command = lambda : controller.show_frame(self, usuario_info),
+                                    command = lambda : controller.mostrar_pantalla(self, usuario_info),
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                     **controller.estilo_rosa)
         register_button.place(relx = 0.625, rely = 0.65, anchor = CENTER)
@@ -71,7 +71,7 @@ class pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.52),int(screenheight*0.775), image = controller.play_icono, anchor = CENTER)
         test_button = tk.Button(self, 
                                 text = "Iniciar prueba nueva", 
-                                command = lambda: controller.show_frame(self, lista_pruebas),
+                                command = lambda: controller.mostrar_pantalla(self, lista_pruebas),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.2)), 
                                 **controller.estilo_rosa)
         test_button.place(relx = 0.625, rely = 0.775, anchor = CENTER)
@@ -82,7 +82,7 @@ class pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.52),int(screenheight*0.9), image = controller.historial_icono, anchor = CENTER)
         historial_boton = tk.Button(self, 
                                 text = "Historial de pruebas", 
-                                command = lambda: controller.show_frame(self, historial),
+                                command = lambda: controller.mostrar_pantalla(self, historial),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.2)), 
                                 **controller.estilo_rosa)
         historial_boton.place(relx = 0.625, rely = 0.9, anchor = CENTER)
@@ -93,7 +93,7 @@ class pruebas(tk.Frame):
         canvas.create_image(int(screenwidth*0.52),int(screenheight*0.525), image = controller.historial_icono, anchor = CENTER)
         eni_boton = tk.Button(self, 
                                 text = "Entrevista ENI", 
-                                command = lambda: controller.show_frame(self, historiaclinica),
+                                command = lambda: controller.mostrar_pantalla(self, historiaclinica),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.2)), 
                                 **controller.estilo_rosa)
         eni_boton.place(relx = 0.625, rely = 0.525, anchor = CENTER)
