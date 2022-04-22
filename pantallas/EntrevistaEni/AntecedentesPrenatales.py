@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from functools import partial
-from pantallas.EntrevistaEni.HistoriaFamiliar import *
+from pantallas.EntrevistaEni.AntecedentesNatales import *
 
 class antecedentes_prenatales(tk.Frame):
     def __init__(self, parent, controller):
@@ -402,7 +402,7 @@ class antecedentes_prenatales3(tk.Frame):
 
         def printData():
             print(self.data)
-            # controller.mostrar_pantalla(self, historialfamiliar)
+            controller.mostrar_pantalla(self, antecedentes_natales)
             
                 
         # Boton de siguiente

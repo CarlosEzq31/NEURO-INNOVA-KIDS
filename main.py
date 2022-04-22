@@ -1,4 +1,5 @@
 import tkinter as tk, pyglet, time, os
+from functools import partial
 from PIL import Image as PImage, ImageTk as ImageTk
 from tkinter import *
 from PIL import ImageGrab
@@ -20,9 +21,14 @@ from pantallas.Usuario import *
 from pantallas.Historial import *
 from pantallas.Resultados import *
 from pantallas.EntrevistaEni.AntecedentesPrenatales import *
+from pantallas.EntrevistaEni.AntecedentesNatales import *
+from pantallas.EntrevistaEni.AntecedentesPostnatales import *
 from pantallas.EntrevistaEni.ExploracionFisica import *
 from pantallas.EntrevistaEni.HistoriaClinica import *
 from pantallas.EntrevistaEni.HistoriaFamiliar import *
+from pantallas.EntrevistaEni.Comportamiento import *
+from pantallas.EntrevistaEni.MetodoDisciplina import *
+from pantallas.EntrevistaEni.Escolaridad import *
 
 # obtener resolucion de pantalla
 resolution = ImageGrab.grab()
@@ -37,7 +43,7 @@ pyglet.font.add_file(f'{path}/src/fonts/Mukta_Malar/MuktaMalar-ExtraLight.ttf')
 
 
 class tkinterApp(tk.Tk):
-    # función__init__ para la clase tkinterApp
+    # función __init__ para la clase tkinterApp
     def __init__(self, *args, **kwargs):
         
         # función __init__ para la clase Tk
@@ -65,12 +71,8 @@ class tkinterApp(tk.Tk):
         splash.actualizar_texto(text_ = f'Cargando pantallas')
         
         # iterando a través de una lista que consta de los diferentes diseños de página
-        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica,
-                  que_es, info_pruebas, seguidor_ocular, registro1, registro2,
-                  instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,
-                  senderos, pruebas, historial, resultados, historiaclinica,
-                  exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2,
-                  antecedentes_prenatales3, historialfamiliar, historialfamiliar2]
+        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica, que_es, info_pruebas, seguidor_ocular, registro1, registro2, instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,senderos, pruebas, historial, resultados, historiaclinica, exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2, antecedentes_prenatales3, historialfamiliar, historialfamiliar2, antecedentes_natales, antecedentes_natales2, antecedentes_postnatales, antecedentes_postnatales2, antecedentes_postnatales3, antecedentes_postnatales4, antecedentes_postnatales5, antecedentes_postnatales6, antecedentes_postnatales7, antecedentes_postnatales8, comportamiento, comportamiento2, comportamiento3, comportamiento4, comportamiento5, comportamiento6, comportamiento7, comportamiento8, comportamiento9, comportamiento10, comportamiento11, comportamiento12, disciplina, escolaridad, escolaridad2, escolaridad3, escolaridad4, escolaridad5, escolaridad6, escolaridad7, escolaridad8, escolaridad9, escolaridad10]
+
         for F in frames:
             frame = F(self.container,self)
             self.frames[F] = frame
@@ -87,7 +89,7 @@ class tkinterApp(tk.Tk):
         self.title("NEURO INNOVA KIDS ®") 
         
         # colocar ícono
-        self.iconphoto(False, tk.PhotoImage(file=f'{path}/src/images/logo.png'))
+        self.iconphoto(False, PhotoImage(file = f'{path}/src/images/logo.png'))
         
         # mostrar programa en modo de pantalla completa
         self.wm_attributes('-fullscreen', 'True') 
