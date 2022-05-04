@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from test_sql import *
+from functions.sql_metodos import historia_familiar_sql
 from pantallas.EntrevistaEni.AntecedentesPrenatales import *
 
 class historialfamiliar(tk.Frame):
@@ -25,7 +25,7 @@ class historialfamiliar(tk.Frame):
 
         #colocamos el titulo de la pantalla y el icono
         canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Historial Familiar",
+                            text = "Historial Familiar\n Familiares con...",
                             font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
                             anchor = NW)
         canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.registro_icono_grande, anchor = CENTER)
@@ -81,12 +81,13 @@ class historialfamiliar(tk.Frame):
                                     bg = 'white')
             forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
-        self.data = {}
+        global data
+        data = {}
         def printData():
             for form in label:
-                self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            print(self.data)
-            controller.mostrar_pantalla(self, historialfamiliar2)
+                data[f"{form}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(data, canvas):
+                controller.mostrar_pantalla(self, historialfamiliar2)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)
@@ -160,8 +161,7 @@ class historialfamiliar2(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Alcoholismo', 'Enferm. Psiquiátrica', 'Sínd. Down', 'Retardo mental', 'Prob. de aprendizaje',
-                 'Retraso escoalr', 'Otros']
+        label = ['Alcoholismo', 'Enferm. Psiquiátrica', 'Sínd. Down', 'Retardo mental', 'Prob. de aprendizaje', 'Retraso escolar', 'Otros']
         h = 0.4
         for form in label:
             canvas.create_image(int(screenwidth*0.55),int(screenheight*h), image = controller.boton_rosa, anchor = CENTER)
@@ -179,12 +179,13 @@ class historialfamiliar2(tk.Frame):
             forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
             
-        self.data = {}
+        
         def printData():
             for form in label:
-                self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            print(self.data)
-            controller.mostrar_pantalla(self, antecedentes_prenatales)
+                data[f"{form}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(data, canvas):
+                historia_familiar_sql(data, controller.id)
+                controller.mostrar_pantalla(self, antecedentes_prenatales)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)

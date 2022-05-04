@@ -71,7 +71,7 @@ class tkinterApp(tk.Tk):
         splash.actualizar_texto(text_ = f'Cargando pantallas')
         
         # iterando a través de una lista que consta de los diferentes diseños de página
-        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica, que_es, info_pruebas, seguidor_ocular, registro1, registro2, instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,senderos, pruebas, historial, resultados, historiaclinica, exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2, antecedentes_prenatales3, historialfamiliar, historialfamiliar2, antecedentes_natales, antecedentes_natales2, antecedentes_postnatales, antecedentes_postnatales2, antecedentes_postnatales3, antecedentes_postnatales4, antecedentes_postnatales5, antecedentes_postnatales6, antecedentes_postnatales7, antecedentes_postnatales8, comportamiento, comportamiento2, comportamiento3, comportamiento4, comportamiento5, comportamiento6, comportamiento7, comportamiento8, comportamiento9, comportamiento10, comportamiento11, comportamiento12, disciplina, escolaridad, escolaridad2, escolaridad3, escolaridad4, escolaridad5, escolaridad6, escolaridad7, escolaridad8, escolaridad9, escolaridad10, escolaridad11, escolaridad12]
+        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica, que_es, info_pruebas, seguidor_ocular, registro1, registro2, instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,senderos, pruebas, historial, resultados, historiaclinica, exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2, antecedentes_prenatales3, antecedentes_prenatales4, historialfamiliar, historialfamiliar2, antecedentes_natales, antecedentes_natales2, antecedentes_postnatales, antecedentes_postnatales2, antecedentes_postnatales3, antecedentes_postnatales4, antecedentes_postnatales5, antecedentes_postnatales6, antecedentes_postnatales7, antecedentes_postnatales8, antecedentes_postnatales9, antecedentes_postnatales10, comportamiento, comportamiento2, comportamiento3, comportamiento4, comportamiento5, comportamiento6, comportamiento7, comportamiento8, comportamiento9, comportamiento10, comportamiento11, comportamiento12, disciplina, escolaridad, escolaridad2, escolaridad3, escolaridad4, escolaridad5, escolaridad6, escolaridad7, escolaridad8, escolaridad9, escolaridad10, escolaridad11, escolaridad12]
 
         for F in frames:
             frame = F(self.container,self)
@@ -253,6 +253,19 @@ class tkinterApp(tk.Tk):
             ind = 0
         canvas.itemconfig(tag, image = frame)
         canvas.after(100, self.animacion_gif(path, canvas, tag, ind))
+    
+    def comprobar_formularios(self, datos, canvas):
+        print(datos)
+        for item in datos.values():
+            if item == "":
+                texto_error = canvas.create_text(int(screenwidth*0.5),int(screenheight*0.25), 
+                            text = "Por favor, responde cada formulario",
+                            font = ('Mukta Malar ExtraLight', int(self.boton_tamanio)),
+                            anchor = CENTER)
+                self.after(3000,lambda: canvas.delete(texto_error))
+                return False
+            else: 
+                return True
 
 if __name__ == "__main__":
     app = tkinterApp()

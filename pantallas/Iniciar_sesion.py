@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
-from test_sql import *
 from pantallas.Pruebas import *
+from functions.sql_metodos import *
 
 bg_primary_buttons = "#f6ddeb"
 bg_secondary_buttons = "#e8eab9"
@@ -111,7 +111,7 @@ class iniciar_sesion(tk.Frame):
             usuario = usuario_formulario.get()
             passwd = contraseña_formulario.get()
             if usuario and passwd:
-                id = iniciar_sesion_sql(nombre = usuario, passwd = passwd)
+                id = iniciar_sesion_sql(usuario, passwd)
                 if id:
                     controller.id = id
                     print(controller.id)

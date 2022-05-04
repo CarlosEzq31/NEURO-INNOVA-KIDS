@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from functools import partial
+from functions.sql_metodos import comportamiento_sql
 from pantallas.EntrevistaEni.Comportamiento import *
 from pantallas.EntrevistaEni.MetodoDisciplina import disciplina
 
@@ -103,7 +104,7 @@ class comportamiento(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -169,8 +170,11 @@ class comportamiento(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento2)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                global data 
+                data = self.data
+                controller.mostrar_pantalla(self, comportamiento2)
             
                     
         # Boton de siguiente
@@ -182,7 +186,7 @@ class comportamiento(tk.Frame):
                                     **controller.estilo_verde)
         siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)
         controller.animacion_boton(siguiente_boton, canvas, 'siguiente', 'verde')
-        
+
 class comportamiento2(tk.Frame):
     def __init__(self, parent, controller):
 
@@ -282,7 +286,7 @@ class comportamiento2(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -348,8 +352,10 @@ class comportamiento2(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento3)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento3)
             
                     
         # Boton de siguiente
@@ -461,7 +467,7 @@ class comportamiento3(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -473,7 +479,7 @@ class comportamiento3(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Berrinches', 'Arroja cosas al enojarse', 'Arremte verbalemente', 'Irascible']
+        label = ['Berrinches', 'Arroja cosas al enojarse', 'Arremete verbalemente', 'Irascible']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -527,8 +533,10 @@ class comportamiento3(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento4)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento4)
             
                     
         # Boton de siguiente
@@ -640,7 +648,7 @@ class comportamiento4(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -706,8 +714,10 @@ class comportamiento4(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento5)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento5)
             
                     
         # Boton de siguiente
@@ -819,7 +829,7 @@ class comportamiento5(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -885,8 +895,10 @@ class comportamiento5(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento6)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento6)
             
                     
         # Boton de siguiente
@@ -998,7 +1010,7 @@ class comportamiento6(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1064,8 +1076,10 @@ class comportamiento6(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento7)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento7)
             
                     
         # Boton de siguiente
@@ -1177,7 +1191,7 @@ class comportamiento7(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1189,7 +1203,7 @@ class comportamiento7(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Sonambulismo', 'Duerme siesta', 'Pesadillas', 'Dificultad para conciliar sueño', 'Dificil despertar', 'Sueño continuo']
+        label = ['Sonambulismo', 'Promedio de horas de sueño','Duerme siesta', 'Pesadillas', 'Dificultad para conciliar sueño', 'Dificil despertar', 'Sueño continuo']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -1204,47 +1218,58 @@ class comportamiento7(tk.Frame):
             form_texto.place(relx = 0.45, rely = h, anchor = CENTER)
             tag = form.replace(' ','_').lower()
             self.data[tag] = ''
-            # Boton opción Nunca
-            canvas.create_image(int(screenwidth*0.575), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_nunca")
-            self.botones[f'{tag}_nunca'] = Button(self,text = 'Nunca', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 1))
-            self.botones.get(f'{tag}_nunca').place(relx = 0.575, rely = h, anchor = CENTER)
-            # Boton opción algunas veces
-            canvas.create_image(int(screenwidth*0.65), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_algunas")
-            self.botones[f'{tag}_algunas'] = Button(self,text = 'Algunas v.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 2))
-            self.botones.get(f'{tag}_algunas').place(relx = 0.65, rely = h, anchor = CENTER)
-            # Boton opción Muchas veces
-            canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_muchas")
-            self.botones[f'{tag}_muchas'] = Button(self,text = 'Muchas v.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 3))
-            self.botones.get(f'{tag}_muchas').place(relx = 0.725, rely = h, anchor = CENTER)
-            # Boton opción siempre
-            canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_siempre")
-            self.botones[f'{tag}_siempre'] = Button(self,text = 'Siempre', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 4))
-            self.botones.get(f'{tag}_siempre').place(relx = 0.8, rely = h, anchor = CENTER)
+            if form in ['Promedio de horas de sueño']:
+                canvas.create_image(int(screenwidth*0.675), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
+                forms[f"{form}_formulario"] = tk.Entry(self,
+                                        font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
+                                        borderwidth = 0, 
+                                        highlightthickness = 0,
+                                        bg = 'white')
+                forms.get(f"{form}_formulario").place(relx = 0.675, rely = h, anchor = CENTER)
+            else:
+                # Boton opción Nunca
+                canvas.create_image(int(screenwidth*0.575), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_nunca")
+                self.botones[f'{tag}_nunca'] = Button(self,text = 'Nunca', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 1))
+                self.botones.get(f'{tag}_nunca').place(relx = 0.575, rely = h, anchor = CENTER)
+                # Boton opción algunas veces
+                canvas.create_image(int(screenwidth*0.65), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_algunas")
+                self.botones[f'{tag}_algunas'] = Button(self,text = 'Algunas v.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 2))
+                self.botones.get(f'{tag}_algunas').place(relx = 0.65, rely = h, anchor = CENTER)
+                # Boton opción Muchas veces
+                canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_muchas")
+                self.botones[f'{tag}_muchas'] = Button(self,text = 'Muchas v.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 3))
+                self.botones.get(f'{tag}_muchas').place(relx = 0.725, rely = h, anchor = CENTER)
+                # Boton opción siempre
+                canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_siempre")
+                self.botones[f'{tag}_siempre'] = Button(self,text = 'Siempre', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 4))
+                self.botones.get(f'{tag}_siempre').place(relx = 0.8, rely = h, anchor = CENTER)
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento8)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento8)
             
                     
         # Boton de siguiente
@@ -1356,7 +1381,7 @@ class comportamiento8(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1422,8 +1447,10 @@ class comportamiento8(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento9)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento9)
             
                     
         # Boton de siguiente
@@ -1537,7 +1564,7 @@ class comportamiento9(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1603,8 +1630,10 @@ class comportamiento9(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento10)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento10)
             
                     
         # Boton de siguiente
@@ -1718,7 +1747,7 @@ class comportamiento10(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1784,8 +1813,10 @@ class comportamiento10(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento11)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento11)
             
                     
         # Boton de siguiente
@@ -1899,7 +1930,7 @@ class comportamiento11(tk.Frame):
                 self.botones.get(f'{boton}_siempre').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
+                self.data[boton] = 4
                 self.botones.get(f'{boton}_nunca').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_algunas').config(bg = 'white')
@@ -1911,7 +1942,7 @@ class comportamiento11(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Retraído', 'Abierto', 'Aislado', 'Facilidad para hacer amigos', 'Amigos de su edad', 'Amigos mayores', 'Amigos menores']
+        label = ['Retraído', 'Abierto', 'Aislado', 'Facilidad para hacer amigos', 'Amigos de su edad', 'Amigos mayores', 'Amigos menores', 'Otros amigos']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -1965,8 +1996,10 @@ class comportamiento11(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, comportamiento12)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, comportamiento12)
             
                     
         # Boton de siguiente
@@ -2051,34 +2084,28 @@ class comportamiento12(tk.Frame):
         def seleccion(boton, valor):
             if valor == 1:
                 self.data[boton] = 1
-                self.botones.get(f'{boton}_nunca').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_esperada').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_esperada', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
             elif valor == 2:
                 self.data[boton] = 2
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_esperada').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_esperada', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
             elif valor == 3:
                 self.data[boton] = 3
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_esperada').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_esperada', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion_rellena)
                 
         
         # Formularios de la entrevista ENI
@@ -2128,8 +2155,12 @@ class comportamiento12(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, disciplina)
+            # print(self.data)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                # print(data)
+                comportamiento_sql(data, controller.id)
+                controller.mostrar_pantalla(self, disciplina)
             
                     
         # Boton de siguiente

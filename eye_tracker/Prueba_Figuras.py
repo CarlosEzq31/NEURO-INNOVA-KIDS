@@ -69,9 +69,11 @@ def main():
     pantalla.clear()
     colocar_fondo(pantalla)
     botonSalir = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\Prueba_1\prueba_1.jpg",
-                        scale = IMGSCALE*2,
-                        pos = (screenwidth*0.35,screenheight*0.5))
+    boton_1 = colocarBoton(pantalla, FONDODIR + "\Figuras_Superpuestas\Prueba_1\prueba_1.jpg", 2,
+                           screenwidth*0.35,screenheight*0.5)
+    # pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\Prueba_1\prueba_1.jpg",
+    #                     scale = IMGSCALE*2,
+    #                     pos = (screenwidth*0.35,screenheight*0.5))
     pantalla.draw_image(image = FONDODIR + f"\Figuras_Superpuestas\Prueba_1\\1.jpg",
                         scale = IMGSCALE*0.7,
                         pos = (screenwidth*0.65,screenheight*0.5))

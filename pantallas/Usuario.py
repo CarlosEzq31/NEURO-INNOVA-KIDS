@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from test_sql import *
+from functions.sql_metodos import *
 
 class usuario_info(tk.Frame):
     def __init__(self, parent, controller):
@@ -107,11 +107,11 @@ class usuario_info(tk.Frame):
         self.i = True
         def mostrar_datos(e):
             while self.i == True and controller.id != 0:
-                datos = obtener_info_por_id(controller.id,'usuarios')
+                datos = obtener_info_por_id(controller.id)
                 print(datos)
-                canvas.itemconfig('id', text = datos.get('id'))
+                canvas.itemconfig('id', text = datos.get('usuario'))
                 canvas.itemconfig('datos', text = str('Nombre: ' + datos.get('nombre')))
-                canvas.itemconfig('sexo', text = str('Nombre: ' + datos.get('genero')))
+                canvas.itemconfig('sexo', text = str('Genero: ' + datos.get('genero')))
                 self.i = False
         
         

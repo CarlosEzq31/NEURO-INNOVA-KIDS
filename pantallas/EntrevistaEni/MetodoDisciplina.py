@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from functools import partial
+from functions.sql_metodos import *
 from pantallas.EntrevistaEni.Escolaridad import *
 
 class disciplina(Frame):
@@ -115,7 +116,7 @@ class disciplina(Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Retraído', 'Abierto', 'Aislado', 'Facilidad para hacer amigos', 'Amigos de su edad', 'Amigos mayores', 'Amigos menores']
+        label = ['Regaño', 'Castigo físico', 'Tiempo fuera', 'Premio', 'Convencimiento', 'Otros']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -169,10 +170,11 @@ class disciplina(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad)
-            
-                    
+            if controller.comprobar_formularios(self.data, canvas):
+                metodos_disciplina_sql(self.data, controller.id)
+                controller.mostrar_pantalla(self, escolaridad)
+        
+        
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), 
                             image = controller.boton_verde, tags = 'siguiente',

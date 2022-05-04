@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import *
 from functions.sql_metodos import *
-from pantallas.EntrevistaEni.HistoriaFamiliar import *
+from pantallas.Lista_Pruebas import *
 
 
-class historiaclinica(tk.Frame):
+class entrevista(tk.Frame):
     def __init__(self, parent, controller):
 
         screenwidth = controller.size['width']
@@ -26,7 +26,7 @@ class historiaclinica(tk.Frame):
 
         #colocamos el titulo de la pantalla y el icono
         canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Historial Clínica",
+                            text = "Entrevista",
                             font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
                             anchor = NW)
         canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.registro_icono_grande, anchor = CENTER)
@@ -65,23 +65,9 @@ class historiaclinica(tk.Frame):
         # Formularios de la entrevista ENI
         forms = {}
         self.data = {}
-        label = ['Nombre', 'Fecha de Nacimiento', 'Sexo', 'Grado Escolar']
+        label = ['Nombre del aplicador', 'Tipo de visita']
         self.botones = {}
         h = 0.4
-        
-        def seleccion(boton, valor):
-            if valor == True:
-                self.data[boton] = 1
-                self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_no').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
-            else:
-                self.data[boton] = 0
-                self.botones.get(f'{boton}_si').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion_rellena)
                 
         for form in label:
             canvas.create_image(int(screenwidth*0.55),int(screenheight*h), image = controller.boton_rosa, anchor = CENTER)
@@ -90,35 +76,15 @@ class historiaclinica(tk.Frame):
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                 **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            if form == 'Sexo':
-                tag = form
-                self.data[tag] = ''
-                # Boton opción hombre
-                canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
-                                    image = controller.barra_seleccion,
-                                    anchor = CENTER, tags = f"{tag}_si")
-                self.botones[f'{tag}_si'] = Button(self,text = 'Masc', borderwidth = 0, bg = 'white',
-                                                highlightthickness = 0, padx = 0, pady = 0,
-                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                                command = partial(seleccion, tag, True))
-                self.botones.get(f'{tag}_si').place(relx = 0.725, rely = h, anchor = CENTER)
-                # Boton opción mujer
-                canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
-                                    image = controller.barra_seleccion,
-                                    anchor = CENTER, tags = f"{tag}_no")
-                self.botones[f'{tag}_no'] = Button(self,text = 'Fem', borderwidth = 0, bg = 'white',
-                                                highlightthickness = 0, padx = 0, pady = 0,
-                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                                command = partial(seleccion, tag, False))
-                self.botones.get(f'{tag}_no').place(relx = 0.8, rely = h, anchor = CENTER)
-            else:
-                canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
-                forms[f"{form}_formulario"] = tk.Entry(self,
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                        borderwidth = 0, 
-                                        highlightthickness = 0,
-                                        bg = 'white')
-                forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
+            tag = form
+            self.data[tag] = ''
+            canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
+            forms[f"{form}_formulario"] = tk.Entry(self,
+                                    font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
+                                    borderwidth = 0, 
+                                    highlightthickness = 0,
+                                    bg = 'white')
+            forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
             
             
@@ -129,8 +95,8 @@ class historiaclinica(tk.Frame):
                     self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             # print(self.data)
             if controller.comprobar_formularios(self.data, canvas):
-                historia_clinica_sql(self.data, controller.id)
-                controller.mostrar_pantalla(self, historialfamiliar)
+                entrevista_sql(self.data, controller.id)
+                controller.mostrar_pantalla(self, lista_pruebas)
             
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)

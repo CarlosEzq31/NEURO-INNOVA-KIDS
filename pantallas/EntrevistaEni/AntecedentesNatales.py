@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from functools import partial
+from functions.sql_metodos import antecedentes_natales_sql
 from pantallas.EntrevistaEni.AntecedentesPostnatales import *
 
 class antecedentes_natales(tk.Frame):
@@ -63,7 +64,7 @@ class antecedentes_natales(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Tipo de parto', 'Semana de Gestación', 'Horas de parto', 'Tipo de parto (inducido,...)', 'Al nacer el niño necesitó...']
+        label = ['Tipo de parto', 'Semanas de Gestación', 'Horas de parto', 'Al nacer el niño necesitó...']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -88,8 +89,11 @@ class antecedentes_natales(tk.Frame):
             for form in label:
                 if form not in ['Embarazo deseado', 'Drogas en el embarazo']:
                     self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            print(self.data)
-            controller.mostrar_pantalla(self, antecedentes_natales2)
+            if controller.comporbar_formularios(self.data, canvas):
+                global data
+                data = self.data
+                controller.mostrar_pantalla(self, antecedentes_natales2)  
+        
             
                     
         # Boton de siguiente
@@ -163,13 +167,13 @@ class antecedentes_natales2(tk.Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -177,7 +181,7 @@ class antecedentes_natales2(tk.Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Cianosis (Duración)', 'Ictericia (Duración)','Sufrimiento nasal', 'Apgar', 'Peso', 'Talla']
+        label = ['Cianosis (día de inicio)','Cianosis (Duración)', 'Ictericia (día de inicio)', 'Ictericia (Duración)', 'Sufrimiento nasal', 'Apgar', 'Peso', 'Talla']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -189,7 +193,7 @@ class antecedentes_natales2(tk.Frame):
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                 **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            if form == 'Apgar':
+            if form in ['Apgar', 'Sufrimiento nasal']:
                 tag = form.replace(' ','_').lower()
                 self.data[tag] = ''
                 # Boton opción si
@@ -222,10 +226,13 @@ class antecedentes_natales2(tk.Frame):
                 
         def printData():
             for form in label:
-                if form not in ['Apgar']:
+                if form not in ['Apgar', 'Sufrimiento nasal']:
                     self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            print(self.data)
-            controller.mostrar_pantalla(self, antecedentes_postnatales)
+            if controller.comprobar_formularios(self. data, canvas):
+                data.update(self.data)
+                antecedentes_natales_sql(data, controller.id)
+                controller.mostrar_pantalla(self, antecedentes_postnatales)
+            
             
                     
         # Boton de siguiente

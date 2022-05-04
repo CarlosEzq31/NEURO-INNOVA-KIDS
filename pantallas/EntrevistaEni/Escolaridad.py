@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from functools import partial
+from pantallas.Pruebas import *
+from functions.sql_metodos import escolaridad_sql
 
 class escolaridad(Frame):
     def __init__(self, parent, controller):
@@ -72,13 +74,13 @@ class escolaridad(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -131,8 +133,15 @@ class escolaridad(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad2)
+            # print(self.data)
+            for form in label:
+                tag = form.replace(' ','_').lower()
+                if form in ['¿Por qué no asiste?', 'Segunda Lengua', 'Edad de Inicio']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                global data 
+                data = self.data
+                controller.mostrar_pantalla(self, escolaridad2)
             
                     
         # Boton de siguiente
@@ -147,7 +156,6 @@ class escolaridad(Frame):
         siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)
         controller.animacion_boton(siguiente_boton, canvas, 'siguiente', 'verde')
         
-
 class escolaridad2(Frame):
     def __init__(self, parent, controller):
         
@@ -218,13 +226,13 @@ class escolaridad2(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -245,7 +253,7 @@ class escolaridad2(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_problemas'
             self.data[tag] = ''
             if form in ['Otros']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
@@ -277,8 +285,13 @@ class escolaridad2(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad3)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_problemas'
+                if form in ['Otros']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad3)
             
                     
         # Boton de siguiente
@@ -363,13 +376,13 @@ class escolaridad3(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -390,7 +403,7 @@ class escolaridad3(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_guarderia'
             self.data[tag] = ''
             if form in ['Edad de ingreso', '¿Cuántos años?']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
@@ -422,8 +435,13 @@ class escolaridad3(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad4)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_guarderia'
+                if form in ['Edad de ingreso', '¿Cuántos años?']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad4)
             
                     
         # Boton de siguiente
@@ -508,13 +526,13 @@ class escolaridad4(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -535,7 +553,7 @@ class escolaridad4(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_jardin'
             self.data[tag] = ''
             if form in ['Edad de ingreso', '¿Cuántos años?']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
@@ -567,8 +585,13 @@ class escolaridad4(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad5)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_jardin'
+                if form in ['Edad de ingreso', '¿Cuántos años?']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad5)
             
                     
         # Boton de siguiente
@@ -654,13 +677,13 @@ class escolaridad5(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -668,7 +691,7 @@ class escolaridad5(Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Edad de ingreso', '¿Cuántos años?', 'Rendimiento', 'Grados repetidos', 'Clases Particulares', 'Edad o grado escolar', 'Materias', 'Terapias de apoyo']
+        label = ['Edad de ingreso', '¿Cuántos años?', 'Rendimiento(bueno, malo, reg)', 'Grados repetidos', 'Clases Particulares', 'Edad o grado escolar', 'Materias', 'Terapias de apoyo']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -681,9 +704,9 @@ class escolaridad5(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_primaria'
             self.data[tag] = ''
-            if form in ['Edad de ingreso', 'Rendimiento', '¿Cuántos años?', 'Grados repetidos', 'Edad o grado escolar', 'Materias']:
+            if form in ['Edad de ingreso', 'Rendimiento(bueno, malo, reg)', '¿Cuántos años?', 'Grados repetidos', 'Edad o grado escolar', 'Materias']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
                     forms[f"{form}_formulario"] = tk.Entry(self,
                                                         font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
@@ -713,8 +736,13 @@ class escolaridad5(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad6)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_primaria'
+                if form in ['Edad de ingreso', 'Rendimiento(bueno, malo, reg)', '¿Cuántos años?', 'Grados repetidos', 'Edad o grado escolar', 'Materias']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad6)
             
                     
         # Boton de siguiente
@@ -799,13 +827,13 @@ class escolaridad6(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -813,7 +841,7 @@ class escolaridad6(Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Edad o grado escolar', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
+        label = ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -826,9 +854,9 @@ class escolaridad6(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_primaria'
             self.data[tag] = ''
-            if form in ['Edad o grado escolar', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+            if form in ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
                     forms[f"{form}_formulario"] = tk.Entry(self,
                                                         font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
@@ -858,8 +886,13 @@ class escolaridad6(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad7)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_primaria'
+                if form in ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad7)
             
                     
         # Boton de siguiente
@@ -945,13 +978,13 @@ class escolaridad7(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -972,7 +1005,7 @@ class escolaridad7(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_secundaria'
             self.data[tag] = ''
             if form in ['Edad de ingreso', 'Rendimiento', '¿Cuántos años?', 'Grados repetidos', 'Edad o grado escolar', 'Materias']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
@@ -1004,8 +1037,13 @@ class escolaridad7(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad8)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_secundaria'
+                if form in ['Edad de ingreso', 'Rendimiento', '¿Cuántos años?', 'Grados repetidos', 'Edad o grado escolar', 'Materias']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad8)
             
                     
         # Boton de siguiente
@@ -1090,13 +1128,13 @@ class escolaridad8(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -1104,7 +1142,7 @@ class escolaridad8(Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Edad o grado escolar', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
+        label = ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -1117,9 +1155,9 @@ class escolaridad8(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_secundaria'
             self.data[tag] = ''
-            if form in ['Edad o grado escolar', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+            if form in ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
                     forms[f"{form}_formulario"] = tk.Entry(self,
                                                         font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
@@ -1149,8 +1187,13 @@ class escolaridad8(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad9)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_secundaria'
+                if form in ['Edad o grado escolar.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad9)
             
                     
         # Boton de siguiente
@@ -1236,13 +1279,13 @@ class escolaridad9(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -1263,7 +1306,7 @@ class escolaridad9(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_prepa'
             self.data[tag] = ''
             if form in ['Edad de ingreso', 'Rendimiento', '¿Cuántos años?', 'Grados repetidos', 'Edad y semestre', 'Materias']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
@@ -1295,8 +1338,13 @@ class escolaridad9(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad10)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_prepa'
+                if form in ['Edad de ingreso', 'Rendimiento', '¿Cuántos años?', 'Grados repetidos', 'Edad y semestre', 'Materias']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad10)
             
                     
         # Boton de siguiente
@@ -1381,13 +1429,13 @@ class escolaridad10(Frame):
         
         def seleccion(boton, valor):
             if valor == True:
-                self.data[boton] = True
+                self.data[boton] = 1
                 self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
                 self.botones.get(f'{boton}_no').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
             else:
-                self.data[boton] = False
+                self.data[boton] = 0
                 self.botones.get(f'{boton}_si').config(bg = 'white')
                 canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
                 self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
@@ -1395,7 +1443,7 @@ class escolaridad10(Frame):
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Edad y semestre', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
+        label = ['Edad y semestre.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -1408,9 +1456,9 @@ class escolaridad10(Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_prepa'
             self.data[tag] = ''
-            if form in ['Edad y semestre', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+            if form in ['Edad y semestre.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
                     canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
                     forms[f"{form}_formulario"] = tk.Entry(self,
                                                         font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
@@ -1440,8 +1488,13 @@ class escolaridad10(Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad11)
+            for form in label:
+                tag = form.replace(' ','_').lower() + '_prepa'
+                if form in ['Edad y semestre.', '¿Qué tipo?', '¿Por cuánto tiempo?', 'Problemas específicos']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad11)
             
                     
         # Boton de siguiente
@@ -1527,44 +1580,44 @@ class escolaridad11(tk.Frame):
         def seleccion(boton, valor):
             if valor == 1:
                 self.data[boton] = 1
-                self.botones.get(f'{boton}_nunca').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 2:
                 self.data[boton] = 2
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 3:
                 self.data[boton] = 3
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion_rellena)
+                self.data[boton] = 4
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion_rellena)
         
         # Formularios de la entrevista ENI
         forms = {}
@@ -1581,7 +1634,7 @@ class escolaridad11(tk.Frame):
                                   font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                   **controller.estilo_rosa)
             form_texto.place(relx = 0.45, rely = h, anchor = CENTER)
-            tag = form.replace(' ','_').lower()
+            tag = form.replace(' ','_').lower() + '_intereses'
             self.data[tag] = ''
             # Boton opción Mayor desempeño
             canvas.create_image(int(screenwidth*0.575), int(screenheight*h),
@@ -1622,8 +1675,9 @@ class escolaridad11(tk.Frame):
             h += 0.075
                 
         def printData():
-            print(self.data)
-            controller.mostrar_pantalla(self, escolaridad12)
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                controller.mostrar_pantalla(self, escolaridad12)
             
                     
         # Boton de siguiente
@@ -1708,48 +1762,48 @@ class escolaridad12(tk.Frame):
         def seleccion(boton, valor):
             if valor == 1:
                 self.data[boton] = 1
-                self.botones.get(f'{boton}_nunca').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 2:
                 self.data[boton] = 2
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 3:
                 self.data[boton] = 3
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_siempre').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion_rellena)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion)
             elif valor == 4:
-                self.data[boton] = 3
-                self.botones.get(f'{boton}_nunca').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_nunca', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_algunas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_algunas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_muchas').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_muchas', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_siempre').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_siempre', image = controller.barra_seleccion_rellena)
+                self.data[boton] = 4
+                self.botones.get(f'{boton}_mayor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_mayor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_menor').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_menor', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_preferencia').config(bg = 'white')
+                canvas.itemconfig(f'{boton}_preferencia', image = controller.barra_seleccion)
+                self.botones.get(f'{boton}_no_preferencia').config(bg = '#f6ddeb')
+                canvas.itemconfig(f'{boton}_no_preferencia', image = controller.barra_seleccion_rellena)
         
         # Formularios de la entrevista ENI
         forms = {}
-        label = ['Música', 'Otras']
+        label = ['Música', 'Otras', 'Comentarios']
         h = 0.4
         self.botones = {}
         self.data = {}        
@@ -1764,47 +1818,64 @@ class escolaridad12(tk.Frame):
             form_texto.place(relx = 0.45, rely = h, anchor = CENTER)
             tag = form.replace(' ','_').lower()
             self.data[tag] = ''
-            # Boton opción Mayor desempeño
-            canvas.create_image(int(screenwidth*0.575), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_mayor")
-            self.botones[f'{tag}_mayor'] = Button(self,text = 'Mayor d.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 1))
-            self.botones.get(f'{tag}_mayor').place(relx = 0.575, rely = h, anchor = CENTER)
-            # Boton opción algunas veces
-            canvas.create_image(int(screenwidth*0.65), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_menor")
-            self.botones[f'{tag}_menor'] = Button(self,text = 'Menor d.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 2))
-            self.botones.get(f'{tag}_menor').place(relx = 0.65, rely = h, anchor = CENTER)
-            # Boton opción Muchas veces
-            canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_preferencia")
-            self.botones[f'{tag}_preferencia'] = Button(self,text = 'Prefer.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 3))
-            self.botones.get(f'{tag}_preferencia').place(relx = 0.725, rely = h, anchor = CENTER)
-            # Boton opción siempre
-            canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
-                                image = controller.barra_seleccion,
-                                anchor = CENTER, tags = f"{tag}_no_preferencia")
-            self.botones[f'{tag}_no_preferencia'] = Button(self,text = 'No pref.', borderwidth = 0, bg = 'white',
-                                            highlightthickness = 0, padx = 0, pady = 0,
-                                            font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                            command = partial(seleccion, tag, 4))
-            self.botones.get(f'{tag}_no_preferencia').place(relx = 0.8, rely = h, anchor = CENTER)
+            if form in ['Otras', 'Comentarios']:
+                canvas.create_image(int(screenwidth*0.675), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
+                forms[f"{form}_formulario"] = tk.Entry(self,
+                                                    font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
+                                                    borderwidth = 0, 
+                                                    highlightthickness = 0,
+                                                    bg = 'white')
+                forms.get(f"{form}_formulario").place(relx = 0.675, rely = h, anchor = CENTER)
+            else:
+                # Boton opción Mayor desempeño
+                canvas.create_image(int(screenwidth*0.575), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_mayor")
+                self.botones[f'{tag}_mayor'] = Button(self,text = 'Mayor d.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 1))
+                self.botones.get(f'{tag}_mayor').place(relx = 0.575, rely = h, anchor = CENTER)
+                # Boton opción algunas veces
+                canvas.create_image(int(screenwidth*0.65), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_menor")
+                self.botones[f'{tag}_menor'] = Button(self,text = 'Menor d.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 2))
+                self.botones.get(f'{tag}_menor').place(relx = 0.65, rely = h, anchor = CENTER)
+                # Boton opción Muchas veces
+                canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_preferencia")
+                self.botones[f'{tag}_preferencia'] = Button(self,text = 'Prefer.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 3))
+                self.botones.get(f'{tag}_preferencia').place(relx = 0.725, rely = h, anchor = CENTER)
+                # Boton opción siempre
+                canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
+                                    image = controller.barra_seleccion,
+                                    anchor = CENTER, tags = f"{tag}_no_preferencia")
+                self.botones[f'{tag}_no_preferencia'] = Button(self,text = 'No pref.', borderwidth = 0, bg = 'white',
+                                                highlightthickness = 0, padx = 0, pady = 0,
+                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
+                                                command = partial(seleccion, tag, 4))
+                self.botones.get(f'{tag}_no_preferencia').place(relx = 0.8, rely = h, anchor = CENTER)
             h += 0.075
                 
         def printData():
-            print(self.data)
-            # controller.mostrar_pantalla(self, comportamiento12)
+            for form in label:
+                tag = form.replace(' ','_').lower()
+                if form in ['Otras', 'Comentarios']:
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
+            if controller.comprobar_formularios(self.data, canvas):
+                data.update(self.data)
+                print(data)
+                escolaridad_sql(data, controller.id)
+                from pantallas.Pruebas import pruebas
+                controller.mostrar_pantalla(self, pruebas)
             
                     
         # Boton de siguiente

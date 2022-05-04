@@ -1,24 +1,15 @@
-from tkinter import *
-import time
+import ctypes.wintypes
+from msilib import Directory
 import os
-root = Tk()
-from PIL import Image
- 
 
-imageObject = Image.open("./mygif.gif")
-print(imageObject.n_frames)
-frameCnt = imageObject.n_frames
-frames = [PhotoImage(file='mygif.gif',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+CSIDL_PERSONAL = 5       # My Documents
+SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 
-def update(ind):
-    frame = frames[ind]
-    ind += 1
-    if ind == frameCnt:
-        ind = 0
-    label.configure(image=frame)
-    root.after(100, update, ind)
-    
-label = Label(root)
-label.pack()
-root.after(0, update, 0)
-root.mainloop()
+dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
+
+docs = str(dir.value)
+directory = docs + "\\NEURO INNOVA KIDS"
+
+if not os.path.exists(directory):
+    os.makedirs(directory)

@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from test_sql import *
-
-# set colors
-
-bg_secondary_buttons = "#e8eab9"
+from functions.sql_metodos import *
+from pantallas.Iniciar_sesion import *
 
 class registro1(tk.Frame):
     def __init__(self, parent, controller):
@@ -72,12 +70,13 @@ class registro1(tk.Frame):
                                 **controller.estilo_rosa)
         usuario_texto.place(relx = 0.55, rely = 0.4, anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.4), image = controller.barra_escribir, anchor = CENTER)
-        usuario_formulario = tk.Entry(self,
+        # Formulario de usuario
+        usuario = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        usuario_formulario.place(relx = 0.775, rely = 0.4, anchor = CENTER)
+        usuario.place(relx = 0.775, rely = 0.4, anchor = CENTER)
 
 
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.475), image = controller.boton_rosa, anchor = CENTER)
@@ -87,13 +86,14 @@ class registro1(tk.Frame):
                                 **controller.estilo_rosa)
         contraseña_texto.place(relx = 0.55, rely = 0.475, anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.475), image = controller.barra_escribir, anchor = CENTER)
-        contraseña_formulario = tk.Entry(self,
+        # Formulario de contraseña
+        contraseña = tk.Entry(self,
                                         font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                         show = "*",
                                         borderwidth = 0, 
                                         highlightthickness = 0,
                                         bg = 'white')
-        contraseña_formulario.place(relx = 0.775, rely = 0.475, anchor = CENTER)
+        contraseña.place(relx = 0.775, rely = 0.475, anchor = CENTER)
 
 
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.55), image = controller.boton_rosa, anchor = CENTER)
@@ -103,13 +103,14 @@ class registro1(tk.Frame):
                                 **controller.estilo_rosa)
         contraseña_texto2.place(relx = 0.55, rely = 0.55, anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.55), image = controller.barra_escribir, anchor = CENTER)
-        contraseña2_formulario = tk.Entry(self,
+        # Formulario de contraseña2
+        contraseña2 = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     show = "*",
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        contraseña2_formulario.place(relx = 0.775, rely = 0.55, anchor = CENTER)
+        contraseña2.place(relx = 0.775, rely = 0.55, anchor = CENTER)
 
 
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.625), image = controller.boton_rosa, anchor = CENTER)
@@ -120,12 +121,13 @@ class registro1(tk.Frame):
         
         nombre_texto.place(relx = 0.55, rely = 0.625, anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.625), image = controller.barra_escribir, anchor = CENTER)
-        nombre_formulario = tk.Entry(self,
+        # Formulario del nombre
+        nombre = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        nombre_formulario.place(relx = 0.775, rely = 0.625, anchor = CENTER)
+        nombre.place(relx = 0.775, rely = 0.625, anchor = CENTER)
 
 
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.7), image = controller.boton_rosa, anchor = CENTER)
@@ -140,72 +142,76 @@ class registro1(tk.Frame):
                             text = "Nombre", 
                             font = ('Mukta Malar ExtraLight', int(button_font_size*0.8)), 
                             anchor = CENTER)
-        contacto__nombre_formulario = tk.Entry(self,
+        # Formulario del nombre del contacto
+        contacto_nombre = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        contacto__nombre_formulario.place(relx = 0.775, rely = 0.7, anchor = CENTER)
+        contacto_nombre.place(relx = 0.775, rely = 0.7, anchor = CENTER)
 
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.775), image = controller.barra_escribir, anchor = CENTER)
         canvas.create_text(int(screenwidth*0.67), int(screenheight*0.765), 
                             text = "Número", 
                             font = ('Mukta Malar ExtraLight', int(button_font_size*0.8)), 
                             anchor = CENTER)
-        contacto_tel_formulario = tk.Entry(self,
+        # Formulario del telefono del contacto
+        contacto_tel = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        contacto_tel_formulario.place(relx = 0.775, rely = 0.775, anchor = CENTER)
+        contacto_tel.place(relx = 0.775, rely = 0.775, anchor = CENTER)
 
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.85), image = controller.barra_escribir, anchor = CENTER)
         canvas.create_text(int(screenwidth*0.67), int(screenheight*0.84), 
                             text = "Parentesco", 
                             font = ('Mukta Malar ExtraLight', int(button_font_size*0.6)), 
                             anchor = CENTER)
-        contacto_parent_formulario = tk.Entry(self,
+        # Formulario del parentesco del contacto
+        contacto_parent = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        contacto_parent_formulario.place(relx = 0.775, rely = 0.85, anchor = CENTER)
+        contacto_parent.place(relx = 0.775, rely = 0.85, anchor = CENTER)
         
+        global paciente
+        paciente = {'id_paciente': '',
+                    'tratamiento': 1,
+                    'fecha_nac': '20/04/2004',
+                    'genero': 0,
+                    'contacto': 'Yeni, 618107751, Madre',
+                    'lentes': 0,
+                    'lateralidad': 0,
+                    'sueno': 0,
+                    'ayuno': 0,
+                    'diagnosticoP': ''}
         
-        paciente = {'tratamiento': 'Ninguno',
-                'fecha_nacimiento': datetime.fromisoformat('2000-10-17'),
-                'genero': 1,
-                'lentes': 0,
-                'lateralidad': 1,
-                'suenio': 'Nada',
-                'ayuno': 'No',
-                'diagnostico_previo': 'Ninguno'}
+        forms = [nombre, usuario, contraseña, contraseña2, contacto_nombre, contacto_parent, contacto_tel]
+        label = ['nombre', 'usuario', 'contraseña', 'contraseña2', 'contacto_nombre', 'contacto_parent', 'contacto_tel']
         
         # Funcion que registra al nuevo usuario
         def save_data():
             data = {}
-            for i in [usuario_formulario, contraseña_formulario, contraseña2_formulario, nombre_formulario, contacto__nombre_formulario, contacto_tel_formulario, contacto_parent_formulario]:
-                texto = {usuario_formulario: 'usuario', contraseña_formulario: 'contraseña', contraseña2_formulario: 'repetir contraseña' , nombre_formulario: 'nombre', contacto__nombre_formulario: 'Contacto: Nombre', contacto_tel_formulario: 'Número de contacto', contacto_parent_formulario: 'Parentesco'}
-                if i.get():
-                    if contraseña_formulario.get() and contraseña2_formulario.get() and contraseña_formulario.get() != contraseña2_formulario.get():
-                        texto_aviso(f"Los campos de contraseña deben contener lo mismo")
-                        return None
-                    if usuario_formulario.get():
-                        if existe_usuario(usuario_formulario.get()):
-                            texto_aviso(f"El usuario {usuario_formulario.get()} ya existe")
-                            return None
-                    data[f'{texto.get(i)}'] = i.get()
-                else:
-                    texto_aviso(f"El campo de {texto.get(i)} no debe estar vacío")
-                    return None
-                usuario = {'nombre': usuario_formulario.get(), 'contrasena': hashlib.new("sha256", f"{contraseña_formulario.get()}".encode()).hexdigest(), 'correo':f'{usuario_formulario.get()}@gmail.com' }
-                contacto = {'nombre': contacto__nombre_formulario.get(), 'telefono': contacto_tel_formulario.get(), 'parentesco': contacto_parent_formulario.get()}
-            data.pop('repetir contraseña')
-            confirmation = insertar_nuevo_usuario(usuario, paciente, contacto)
-            if confirmation:
-                texto_aviso("Usuario registrado exitosamente")
-            else:
-                texto_aviso("Ocurrió un error, vuelve a intentarlo")
+            for i in range(len(label)):
+                data[f'{label[i]}'] = forms[i].get()
+            if data.get('contraseña') != data.get('contraseña2'):
+                texto_aviso('La contraseña debe ser la misma')
+                return
+            data['contacto'] = data.get('contacto_nombre') + ', ' + data.get('contacto_tel') + ', ' + data.get('contacto_parent')
+            data.pop('contraseña2')
+            data.pop('contacto_nombre')
+            data.pop('contacto_parent')
+            data.pop('contacto_tel')
+            global usuario
+            usuario = {'usuario': data.get('usuario'),
+                       'nombre': data.get('nombre'),
+                       'contraseña': data.get('contraseña')}
+            paciente['contacto'] = data.get('contacto')
+            # print(data)
+            controller.mostrar_pantalla(self, registro2)
+            
                 
         # Funcion que pone un texto en pantalla
         def texto_aviso(texto):
@@ -219,8 +225,8 @@ class registro1(tk.Frame):
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)
         siguiente_boton = tk.Button(self, 
                                 text = "Siguiente", 
-                                # command = save_data,
-                                command = lambda: controller.mostrar_pantalla(self, registro2),
+                                command = save_data,
+                                # command = lambda: controller.mostrar_pantalla(self, registro2),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                 **controller.estilo_verde)
         siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)
@@ -287,8 +293,8 @@ class registro2(tk.Frame):
         # Campos del formulario
 
         # funcion para resaltar seleccion
-        self.lentes = False
-        self.mano = False
+        self.lentes = 0
+        self.mano = 0
         def seleccion(canvas, boton1, boton2, imagen1, imagen2, atributo, valor):
             if valor == True:
                 boton1.config(bg = '#f6ddeb')
@@ -301,9 +307,9 @@ class registro2(tk.Frame):
                 boton1.config(bg = 'white')
                 canvas.itemconfig(imagen2, image = controller.barra_seleccion_rellena)
             if  atributo == 'lentes':
-                self.lentes = valor
+                self.lentes = 0 if valor == False else 1
             elif atributo == 'mano':
-                self.mano = valor
+                self.mano = 0 if valor == False else 1
 
         # lentes
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.4), image = controller.boton_rosa, anchor = CENTER)
@@ -388,13 +394,13 @@ class registro2(tk.Frame):
                             font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
                             anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.55), image = controller.barra_escribir, anchor = CENTER)
-        diagnostico_texto = tk.Entry(self,
+        diagnostico = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     show = "*",
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        diagnostico_texto.place(relx = 0.775, rely = 0.55, anchor = CENTER)
+        diagnostico.place(relx = 0.775, rely = 0.55, anchor = CENTER)
 
         # medicamento
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.625), image = controller.boton_rosa, anchor = CENTER)
@@ -403,43 +409,54 @@ class registro2(tk.Frame):
                             font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
                             anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.625), image = controller.barra_escribir, anchor = CENTER)
-        medicamento_formulario = tk.Entry(self,
+        tratamiento = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        medicamento_formulario.place(relx = 0.775, rely = 0.625, anchor = CENTER)
-
-        # test de magallanes
+        tratamiento.place(relx = 0.775, rely = 0.625, anchor = CENTER)
+        
+        # correo electronico
         canvas.create_image(int(screenwidth*0.55),int(screenheight*0.7), image = controller.boton_rosa, anchor = CENTER)
         canvas.create_text(int(screenwidth*0.55), int(screenheight*0.7),
-                            text = 'Test de Magallanes',
+                            text = 'Correo electrónico',
                             font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
                             anchor = CENTER)
         canvas.create_image(int(screenwidth*0.775), int(screenheight*0.7), image = controller.barra_escribir, anchor = CENTER)
-        test_magallanes_formulario = tk.Entry(self,
+        correo = tk.Entry(self,
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
                                     borderwidth = 0, 
                                     highlightthickness = 0,
                                     bg = 'white')
-        test_magallanes_formulario.place(relx = 0.775, rely = 0.7, anchor = CENTER)
+        correo.place(relx = 0.775, rely = 0.7, anchor = CENTER)
 
-        def texto_aviso(texto):
-            texto_error = canvas.create_text(int(screenwidth*0.5),int(screenheight*0.25), 
-                            text = texto,
-                            font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                            anchor = CENTER)
-            controller.after(3000,lambda: canvas.delete(texto_error))
 
         def aux():
             print('Valor de lentes', self.lentes)
             print('Valor de mano', self.mano)
+            
+        forms = [diagnostico, tratamiento, correo]
+        labels = ['diagnostico', 'tratamiento', 'correo']  
+        
+        def print_data():
+            data = {}
+            for i in range(len(labels)):
+                data[f'{labels[i]}'] = forms[i].get()
+            # print(data)
+            paciente['tratamiento'] = 0 if data.get('tratamiento') == '' else 1
+            paciente['lentes'] = self.lentes
+            paciente['lateralidad'] = self.mano
+            print(usuario)
+            print(paciente)
+            crear_nuevo_usuario(usuario.get('usuario'), usuario.get('nombre'), data.get('correo'), usuario.get('contraseña'), paciente)
+            print('usuario y paciente creado')
+            controller.mostrar_pantalla(self, iniciar_sesion)
 
         # Boton de siguiente
         canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, anchor = CENTER, tags = 'siguiente')
         siguiente_boton = tk.Button(self, 
                                 text = "Siguiente", 
-                                command =  aux,
+                                command =  print_data,
                                 font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                                 **controller.estilo_verde)
         siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)

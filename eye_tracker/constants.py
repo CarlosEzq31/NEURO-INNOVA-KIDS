@@ -107,9 +107,9 @@ def tamanno_imagen(path: str, scale: float):
     x, y = imagen.size
     return x*IMGSCALE*scale,y*IMGSCALE*scale
 
-def boton_presionado(x: float, y: float, pos_boton, tamanio_boton) -> bool:
-    boton_x, boton_y = pos_boton
-    boton_ancho, boton_alto = tamanio_boton
+def boton_presionado(x: float, y: float, boton: dict) -> bool:
+    boton_x, boton_y = boton.get("x"), boton.get("y")
+    boton_ancho, boton_alto = boton.get("ancho"), boton.get("alto")
     return (x > boton_x - (boton_ancho/2) and  x < boton_x + (boton_ancho/2)) and (y > boton_y - (boton_alto/2) and  y < boton_y + (boton_alto/2))
 
 def colocar_fondo(pantalla: Screen) -> None:
