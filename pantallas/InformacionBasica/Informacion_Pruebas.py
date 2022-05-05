@@ -79,15 +79,15 @@ class info_pruebas(tk.Frame):
         figuras_boton.place(relx = 0.7, rely = 0.4, anchor = CENTER)
         controller.animacion_boton(figuras_boton, canvas, 'figuras', tamaño = 'grande')
 
-        texto_senderos = "En esta prueba se mostrará una secuencia de números\nque el usuario tendrá que seleccionar en orden"
+        texto_cubos = "En esta prueba se mostrará una secuencia de números\nque el usuario tendrá que seleccionar en orden"
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'senderos')
-        senderos_boton = tk.Button(self, 
-                                text = "Senderos", 
-                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_senderos),
+        cubos_boton = tk.Button(self, 
+                                text = "Cubos de Kohs", 
+                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_cubos),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
-        senderos_boton.place(relx = 0.7, rely = 0.525, anchor = CENTER)
-        controller.animacion_boton(senderos_boton, canvas, 'senderos', tamaño = 'grande')
+        cubos_boton.place(relx = 0.7, rely = 0.525, anchor = CENTER)
+        controller.animacion_boton(cubos_boton, canvas, 'senderos', tamaño = 'grande')
 
 
         texto_domino = "En esta prueba se mostrará una secuencia de piezas de dominó\ny el usuario tendrá que hacer click en la que siga en la secuencia"
@@ -99,27 +99,6 @@ class info_pruebas(tk.Frame):
                                 **controller.estilo_rosa)
         domino_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)
         controller.animacion_boton(domino_boton, canvas, 'domino', tamaño = 'grande')
-
-        texto_colores = "En esta prueba se tendrá..."
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.775), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'colores')
-        colores_boton = tk.Button(self, 
-                                text = "Colores de Stroop", 
-                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_colores),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                **controller.estilo_rosa)
-        colores_boton.place(relx = 0.7, rely = 0.775, anchor = CENTER)
-        controller.animacion_boton(colores_boton, canvas, 'colores', tamaño = 'grande')
-
-
-        texto_cubos = "En esta prueba..."
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.9), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'cubos')
-        cubos_boton = tk.Button(self, 
-                                text = "Cubos de Kohs", 
-                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_cubos),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
-                                **controller.estilo_rosa)
-        cubos_boton.place(relx = 0.7, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(cubos_boton, canvas, 'cubos', tamaño = 'grande')
     
     def mensaje_informacion(self, controller,width: int, height: int, titulo: str, texto_: str):
         mensaje_ventana = Splash(self, controller,width, height, titulo, texto_)

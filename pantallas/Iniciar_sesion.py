@@ -115,6 +115,7 @@ class iniciar_sesion(tk.Frame):
                 if id:
                     controller.id = id
                     print(controller.id)
+                    controller.comprobar_directorio_salida(controller.id)
                     controller.mostrar_pantalla(self, pruebas)
                 else:
                     texto_aviso('Usuario o contraseña incorrectos')

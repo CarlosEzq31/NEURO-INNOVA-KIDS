@@ -95,7 +95,8 @@ class entrevista(tk.Frame):
                     self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             # print(self.data)
             if controller.comprobar_formularios(self.data, canvas):
-                entrevista_sql(self.data, controller.id)
+                print(self.data)
+                # entrevista_sql(self.data, controller.id)
                 controller.mostrar_pantalla(self, lista_pruebas)
             
         # Boton de siguiente

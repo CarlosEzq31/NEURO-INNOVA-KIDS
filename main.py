@@ -19,6 +19,7 @@ from pantallas.Instrucciones import *
 from pantallas.Iniciar_sesion import *
 from pantallas.Usuario import *
 from pantallas.Historial import *
+from pantallas.Entrevista import *
 from pantallas.Resultados import *
 from pantallas.EntrevistaEni.AntecedentesPrenatales import *
 from pantallas.EntrevistaEni.AntecedentesNatales import *
@@ -69,9 +70,10 @@ class tkinterApp(tk.Tk):
         self.crear_media()
         self.id = 0
         splash.actualizar_texto(text_ = f'Cargando pantallas')
+        self.comprobar_directorio_salida()
         
         # iterando a través de una lista que consta de los diferentes diseños de página
-        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica, que_es, info_pruebas, seguidor_ocular, registro1, registro2, instrucciones, iniciar_sesion, usuario_info, figuras_superpuestas,senderos, pruebas, historial, resultados, historiaclinica, exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2, antecedentes_prenatales3, antecedentes_prenatales4, historialfamiliar, historialfamiliar2, antecedentes_natales, antecedentes_natales2, antecedentes_postnatales, antecedentes_postnatales2, antecedentes_postnatales3, antecedentes_postnatales4, antecedentes_postnatales5, antecedentes_postnatales6, antecedentes_postnatales7, antecedentes_postnatales8, antecedentes_postnatales9, antecedentes_postnatales10, comportamiento, comportamiento2, comportamiento3, comportamiento4, comportamiento5, comportamiento6, comportamiento7, comportamiento8, comportamiento9, comportamiento10, comportamiento11, comportamiento12, disciplina, escolaridad, escolaridad2, escolaridad3, escolaridad4, escolaridad5, escolaridad6, escolaridad7, escolaridad8, escolaridad9, escolaridad10, escolaridad11, escolaridad12]
+        frames = [menu_principal, inicio, ingreso, lista_pruebas, informacion_basica, que_es, info_pruebas, seguidor_ocular, registro1, registro2, instrucciones, iniciar_sesion, usuario_info, entrevista, pruebas, historial, resultados, historiaclinica, exploracionfisica, antecedentes_prenatales, antecedentes_prenatales2, antecedentes_prenatales3, antecedentes_prenatales4, historialfamiliar, historialfamiliar2, antecedentes_natales, antecedentes_natales2, antecedentes_postnatales, antecedentes_postnatales2, antecedentes_postnatales3, antecedentes_postnatales4, antecedentes_postnatales5, antecedentes_postnatales6, antecedentes_postnatales7, antecedentes_postnatales8, antecedentes_postnatales9, antecedentes_postnatales10, comportamiento, comportamiento2, comportamiento3, comportamiento4, comportamiento5, comportamiento6, comportamiento7, comportamiento8, comportamiento9, comportamiento10, comportamiento11, comportamiento12, disciplina, escolaridad, escolaridad2, escolaridad3, escolaridad4, escolaridad5, escolaridad6, escolaridad7, escolaridad8, escolaridad9, escolaridad10, escolaridad11, escolaridad12]
 
         for F in frames:
             frame = F(self.container,self)
@@ -266,6 +268,28 @@ class tkinterApp(tk.Tk):
                 return False
             else: 
                 return True
+    
+    def comprobar_directorio_salida(self, id_paciente = None):
+        import os, ctypes.wintypes
+        CSIDL_PERSONAL = 5       
+        SHGFP_TYPE_CURRENT = 0   
+
+        dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
+
+        docs = str(dir.value)
+        self.docs = str(dir.value)
+        directory = docs + "\\NEURO INNOVA KIDS"
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
+        if not os.path.exists(directory + "\\PACIENTES"):
+            os.makedirs(directory + "\\PACIENTES")
+            
+        if id_paciente:
+            if not os.path.exists(directory + "\\PACIENTES" + f"\\{id_paciente}"):
+                os.makedirs(directory + "\\PACIENTES" + f"\\{id_paciente}")
 
 if __name__ == "__main__":
     app = tkinterApp()

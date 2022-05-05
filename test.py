@@ -1,15 +1,16 @@
-import ctypes.wintypes
-from msilib import Directory
-import os
+import pyglet
 
-CSIDL_PERSONAL = 5       # My Documents
-SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+source = pyglet.media.load(".\\Video 3.1.mp4")
+fmt = source.video_format
 
-dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
-ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
+player = pyglet.media.Player()
+player.queue(source)
+player.play()
 
-docs = str(dir.value)
-directory = docs + "\\NEURO INNOVA KIDS"
+window = pyglet.window.Window(width=fmt.width, height=fmt.height)
 
-if not os.path.exists(directory):
-    os.makedirs(directory)
+@window.event
+def on_draw():
+    player.get_texture().blit(0, 0)
+
+pyglet.app.run()

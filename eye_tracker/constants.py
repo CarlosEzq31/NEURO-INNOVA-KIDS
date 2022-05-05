@@ -1,11 +1,23 @@
-import os
+import os, ctypes.wintypes, sys, json
 from pathlib import Path
 from PIL import ImageGrab
+from datetime import datetime
+from msilib import Directory
+
+CSIDL_PERSONAL = 5       # My Documents
+SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+
+dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
+
+docs = str(dir.value)
 
 # Obtener resolucion de pantalla
 resolution = ImageGrab.grab()
 screenwidth, screenheight = resolution.size
 del resolution
+screenheight = int(screenheight*0.8)
+screenwidth = int(screenwidth*0.8)
 
 # Directorio del fichero actual
 DIR = os.path.dirname(__file__)
@@ -30,7 +42,7 @@ FONTDIR = os.path.join(DIR, 'MuktaMalar-ExtraLight.ttf')
 # Preguntar el nombre del participante para usarlo en los archivos de salida
 # ask for the participant name, to use as the name for the logfile...
 #LOGFILENAME = input("Participant name: ")
-LOGFILENAME = "Sj"
+LOGFILENAME = "Ejemplo"
 
 # Directorio de los archivos de datos
 LOGFILE = os.path.join(DATADIR, LOGFILENAME)
@@ -43,23 +55,23 @@ SCREENNR = 1 # 1 Para monitores externos
 # 'pygame' si tiene problemas para usar PsychoPy
 DISPTYPE = 'pygame'
 
-# DISPSIZE es la resolcion de la pantalla
+# DISPSIZE es la resolución de la pantalla
 DISPSIZE = (screenwidth, screenheight) # DELL laptop
-#DISPSIZE = (1536, 864)  # DELL external monitor
-# DISPSIZE = (1920, 1080)  # DELL external monitor
+# DISPSIZE = (1536, 864)  # DELL external monitor
+# DISPSIZE = (100, 100)  # DELL external monitor
 
 
 # SCREENSIZE es el tamaño fisico de la pantalla
 #SCREENSIZE = (34.5, 19.5)  # DELL laptop
 #SCREENSIZE = (31.2, 18)
 #SCREENSIZE = (47.6, 26.77)  # DELL external monitor
-SCREENSIZE = (48, 28)  # Lenovo external monitor
+SCREENSIZE = (48,28)  # Lenovo external monitor
 
 # SCREENDIST es la distancia entre el usuario y la pantalla
 SCREENDIST = 80.0
 
 # FULLSCREEN, True para modo en pantalla completa, o False para modo ventana
-FULLSCREEN = False
+FULLSCREEN = True
 
 # BGC is for BackGroundColour, FGC for ForeGroundColour; both are RGB guns,
 # which contain three values between 0 and 255, representing the intensity of
@@ -80,8 +92,8 @@ ITI = 500 # ms
 # EYE TRACKING
 # the TRACKERTYPE indicates the brand of eye tracker, and should be one of the
 # following: 'eyelink', 'smi', 'tobii' 'dumbdummy', 'dummy'
-TRACKERTYPE = 'eyetribe'
-# TRACKERTYPE = 'opengaze'
+# TRACKERTYPE = 'eyetribe'
+TRACKERTYPE = 'opengaze'
 
 # EyeTribe only
 EYETRIBECALIBDUR = 1500
@@ -92,7 +104,7 @@ EYETRIBEPRECALIBDUR = 500  #ARMANDOLARA I CHANGED FROM 500 to 750
 #EYELINKCALBEEP = True
 
 # set DUMMYMODE to True if no tracker is attached
-DUMMYMODE = True
+DUMMYMODE = False
 
 from pygaze.libscreen import Display, Screen
 from pygaze.libinput import Keyboard, Mouse
@@ -100,6 +112,14 @@ from pygaze.eyetracker import EyeTracker
 from pygaze.liblog import Logfile
 import pygaze.libtime as timer
 from PIL import Image as PImage
+
+import inspect
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
+from functions.sql_metodos import *
 
 
 def tamanno_imagen(path: str, scale: float):
@@ -113,7 +133,7 @@ def boton_presionado(x: float, y: float, boton: dict) -> bool:
     return (x > boton_x - (boton_ancho/2) and  x < boton_x + (boton_ancho/2)) and (y > boton_y - (boton_alto/2) and  y < boton_y + (boton_alto/2))
 
 def colocar_fondo(pantalla: Screen) -> None:
-    pantalla.draw_image(image = FONDODIR + "background.jpg",scale = IMGSCALE)
+    pantalla.draw_image(image = FONDODIR + "background.jpg", scale = IMGSCALE)
     
 def click_imagen(x,y, imagen):
     boton_x, boton_y = imagen.get("x"), imagen.get("y")

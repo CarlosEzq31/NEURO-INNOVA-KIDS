@@ -1,12 +1,11 @@
 import hashlib
 import mysql.connector
 from datetime import datetime
-db = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'dabely2006',
-    auth_plugin='mysql_native_password',
-    database = 'neuro_innova')
+db = mysql.connector.connect(host = 'localhost',
+                             user = 'root', 
+                             passwd = 'contraseña', 
+                             auth_plugin = 'mysql_native_password',
+                             database = 'neuro_innova')
 
 # Función para crear un nuevo usuario y nuevo paciente que nos devuelve True si todo salió bien y False de lo contrario
 def crear_nuevo_usuario(usuario: str, nombre: str, correo: str, contrasena: str, paciente: dict) -> bool:
@@ -36,25 +35,35 @@ def crear_nuevo_usuario(usuario: str, nombre: str, correo: str, contrasena: str,
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('paciente', columns, values)
     mycursor.execute(query)
     db.commit()
+    entrevista_sql(id_paciente)
     return True
 
 # Función para agregar nueva entrevista o visita
-def entrevista_sql(datos, id_paciente):
-    usuario = obtener_info_por_id(id_paciente)[0]
+def entrevista_sql(id_paciente):
     mycursor = db.cursor()
-    data = {'id_escil': id_paciente,
-            'asiste': datos.get('¿asiste_el_niño_a_la_escuela?'),
-            'id_bilingue': id_paciente,
-            'prob_espec': problema,
-            'id_guarderia': id_paciente,
-            'id_jardin': id_paciente,
-            'id_primaria': id_paciente,
-            'id_secundaria': id_paciente,
-            'id_prepa': id_paciente,
-            'id_apt_inter': id_paciente}
+    data = {'id_ent': id_paciente + f"_{str(datetime.now().strftime('%d_%m_%y'))}",
+            'id_paciente': id_paciente,
+            'id_eni': id_paciente,
+            'id_magallanes': id_paciente + f"_{str(datetime.now().strftime('%d_%m_%y'))}",
+            'id_prueba': id_paciente}
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
-    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('escolaridad', columns, values)
+    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('entrevista', columns, values)
+    mycursor.execute(query)
+    db.commit()
+
+# Función para guardar información de las pruebas
+def pruebas_sql(id_paciente, prueba, archivo):
+    usuario = obtener_info_por_id(id_paciente).get('usuario')
+    mycursor = db.cursor()
+    data = {'id_prueba': id_paciente + f"{prueba}_{str(datetime.now().strftime('%d_%m_%y'))}",
+            'id_usuario': usuario,
+            'id_paciente': id_paciente,
+            'pruebas': f"{prueba}",
+            'archivos_prueba': f"{archivo}"}
+    columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
+    values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
+    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('pruebas', columns, values)
     mycursor.execute(query)
     db.commit()
 
