@@ -120,8 +120,6 @@ class historiaclinica(tk.Frame):
                                         bg = 'white')
                 forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
             h += 0.075
-            
-            
         
         def printData():
             for form in label:

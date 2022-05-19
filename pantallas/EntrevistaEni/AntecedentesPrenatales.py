@@ -505,12 +505,11 @@ class antecedentes_prenatales4(tk.Frame):
 
         def printData():
             for form in label:
-                info = forms.get(f"{form}_formulario").get()
-                data[f"{form}"] = 0 if info == '' else info
+                self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
             # print(self.data)
             if controller.comprobar_formularios(self.data, canvas):
                 data.update(self.data)
-                # print(data)
+                print(data)
                 antecedentes_prenatales_sql(data, controller.id)
                 controller.mostrar_pantalla(self, antecedentes_natales)
             

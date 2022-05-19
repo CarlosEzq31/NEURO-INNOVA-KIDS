@@ -1,5 +1,7 @@
 import tkinter as tk
 from functions.sql_metodos import *
+import os
+import subprocess
 from tkinter import *
 
 class lista_pruebas(tk.Frame):
@@ -62,12 +64,32 @@ class lista_pruebas(tk.Frame):
         controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
         
         def iniciar_figuras():
-            import os
-            import subprocess
-            import sys
             path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             python_path = path + "\python-3.76-venv\Scripts\python.exe"
             file = path + "\App-Tkinter\eye_tracker\Prueba_Figuras.py"
+            try:
+                subprocess.Popen(['powershell.exe', f"'{path}\python-3.76-venv\Scripts\Activate.ps1'"])
+                subprocess.Popen(['powershell.exe', f"& '{python_path}' '{file}' {controller.id}"])
+            except:
+                pass
+            texto_aviso("Cargando pruebas", 20 * 1000)
+            
+            
+        def iniciar_cubos():
+            path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            python_path = path + "\python-3.76-venv\Scripts\python.exe"
+            file = path + "\App-Tkinter\eye_tracker\Cubos.py"
+            try:
+                subprocess.Popen(['powershell.exe', f"'{path}\python-3.76-venv\Scripts\Activate.ps1'"])
+                subprocess.Popen(['powershell.exe', f"& '{python_path}' '{file}' {controller.id}"])
+            except:
+                pass
+            texto_aviso("Cargando pruebas", 20 * 1000)
+            
+        def iniciar_domino():
+            path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            python_path = path + "\python-3.76-venv\Scripts\python.exe"
+            file = path + "\App-Tkinter\eye_tracker\Prueba_Domino.py"
             try:
                 subprocess.Popen(['powershell.exe', f"'{path}\python-3.76-venv\Scripts\Activate.ps1'"])
                 subprocess.Popen(['powershell.exe', f"& '{python_path}' '{file}' {controller.id}"])
@@ -85,19 +107,19 @@ class lista_pruebas(tk.Frame):
         figuras_boton.place(relx = 0.7, rely = 0.4, anchor = CENTER)
         controller.animacion_boton(figuras_boton, canvas, 'figuras', tamaño = 'grande')
 
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'senderos')
+        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'cubos')
         cubos_boton = tk.Button(self, 
                                 text = "Cubos de Kohs", 
-                                # command = lambda: controller.mostrar_pantalla(self, senderos),
+                                command = iniciar_cubos,
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         cubos_boton.place(relx = 0.7, rely = 0.525, anchor = CENTER)
-        controller.animacion_boton(cubos_boton, canvas, 'senderos', tamaño = 'grande')
+        controller.animacion_boton(cubos_boton, canvas, 'cubos', tamaño = 'grande')
 
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'domino')
         domino_boton = tk.Button(self, 
                                 text = "Dominó", 
-                                # command = lambda: controller.mostrar_pantalla(self,test_page)
+                                command = iniciar_domino,
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         domino_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)

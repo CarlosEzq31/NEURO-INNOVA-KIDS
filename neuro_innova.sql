@@ -393,7 +393,7 @@ CREATE TABLE `escolaridad` (
   `id_escil` varchar(10) NOT NULL,
   `asiste` int(1) NOT NULL,
   `id_bilingue` varchar(10) NOT NULL,
-  `prob_espec` varchar(30) NOT NULL,
+  `prob_espec` varchar(60) NOT NULL,
   `id_guarderia` varchar(10) NOT NULL,
   `id_jardin` varchar(10) NOT NULL,
   `id_primaria` varchar(10) NOT NULL,
@@ -685,11 +685,11 @@ CREATE TABLE `primaria` (
 --
 
 CREATE TABLE `pruebas` (
-  `id_prueba` varchar(30) NOT NULL,
+  `id_prueba` varchar(50) NOT NULL,
   `id_usuario` varchar(25) NOT NULL,
   `id_paciente` varchar(10) NOT NULL,
   `pruebas` varchar(10) NOT NULL,
-  `archivos_prueba` varchar(100) NOT NULL
+  `archivos_prueba` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

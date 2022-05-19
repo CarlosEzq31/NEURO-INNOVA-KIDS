@@ -1,16 +1,16 @@
-import pyglet
+from datetime import date
+from datetime import datetime
 
-source = pyglet.media.load(".\\Video 3.1.mp4")
-fmt = source.video_format
-
-player = pyglet.media.Player()
-player.queue(source)
-player.play()
-
-window = pyglet.window.Window(width=fmt.width, height=fmt.height)
-
-@window.event
-def on_draw():
-    player.get_texture().blit(0, 0)
-
-pyglet.app.run()
+def calculate_age(born):
+    born = datetime.strptime(born, '%d/%m/%Y')
+    today = date.today()
+    try: 
+        birthday = born.replace(year = today.year)
+    except ValueError: # raised when birth date is February 29 and the current year is not a leap year
+        birthday = born.replace(year = today.year, month=born.month+1, day=1)
+    if not birthday.year > today.year:
+        return today.year - born.year - 1
+    else:
+        return today.year - born.year
+    
+print(datetime.now().strftime("%d_%m_%Y %H:%M:%S"))

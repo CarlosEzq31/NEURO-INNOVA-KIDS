@@ -89,7 +89,7 @@ class antecedentes_natales(tk.Frame):
             for form in label:
                 if form not in ['Embarazo deseado', 'Drogas en el embarazo']:
                     self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            if controller.comporbar_formularios(self.data, canvas):
+            if controller.comprobar_formularios(self.data, canvas):
                 global data
                 data = self.data
                 controller.mostrar_pantalla(self, antecedentes_natales2)  

@@ -3,12 +3,11 @@ from pickle import TRUE
 from constants import *
 
 def cubos_khos():
-    
     if sys.argv[1]:
-            global id_paciente, ruta_archivo
-            id_paciente = sys.argv[1]
-            ruta_archivo = docs + "\\NEURO INNOVA KIDS\\PACIENTES\\"+id_paciente+f"\\{id_paciente}_{str(datetime.now().strftime('%d-%m-%y'))}.json"
-            LOGFILENAME = f"{id_paciente}_cubos_{str(datetime.now().strftime('%d-%m-%y'))}"
+        global id_paciente, ruta_archivo
+        id_paciente = sys.argv[1]
+        ruta_archivo = docs + "\\NEURO INNOVA KIDS\\"+"DATA"+f"\{id_paciente}_cubos_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}.json"
+        LOGFILENAME = f"{id_paciente}_cubos_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}"
     
     # Creamos los objetos para el eyetracker y la pantalla
     display = Display()
@@ -24,6 +23,7 @@ def cubos_khos():
     LOGFILE = os.path.join(DATADIR, LOGFILENAME)
     log = Logfile(filename = LOGFILE)
     log.write(["trialnr", "image", "imgtime"])
+    print(log)
 
     # Configuramos la entrada del mouse
     mouse.set_visible(visible = True)
@@ -35,6 +35,8 @@ def cubos_khos():
     pantalla.set_background_colour((250, 235, 255))
     display.fill(pantalla)
     display.show()
+    
+
 
     # Colocamos la imagen de fondo y las instrucciones en Pantalla 
     pantalla.clear()
@@ -84,8 +86,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c56.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p1.png'
+    prueba = 1
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -122,7 +133,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
         
     # Mostrar la prueba 2
     pantalla.clear()
@@ -137,8 +156,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c48.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p2.png'
+    prueba = 2
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -174,7 +202,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 3
     pantalla.clear()
@@ -189,8 +225,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c50.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p3.png'
+    prueba = 3
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -226,7 +271,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()  
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 4
     pantalla.clear()
@@ -241,8 +294,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c53.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p4.png'
+    prueba = 4
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -278,7 +340,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 5
     pantalla.clear()
@@ -293,8 +363,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c29.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p5.png'
+    prueba = 5
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -330,7 +409,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 6
     pantalla.clear()
@@ -345,8 +432,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c15.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p6.png'
+    prueba = 6
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -382,7 +478,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])     
 
     # Mostrar la prueba 7
     pantalla.clear()
@@ -397,8 +501,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c44.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p7.png'
+    prueba = 7
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -434,7 +547,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])      
 
     # Mostrar la prueba 8
     pantalla.clear()
@@ -449,8 +570,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c30.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p8.png'
+    prueba = 8
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -486,7 +616,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0]) 
 
     # Mostrar la prueba 9
     pantalla.clear()
@@ -501,8 +639,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c63.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p9.png'
+    prueba = 9
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -538,7 +685,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])  
 
     # Mostrar la prueba 10
     pantalla.clear()
@@ -553,8 +708,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c9.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p10.png'
+    prueba = 10
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -590,7 +754,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])         
 
     # Mostrar la prueba 11
     pantalla.clear()
@@ -605,8 +777,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c24.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p11.png'
+    prueba = 11
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -642,7 +823,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])  
 
     # Mostrar la prueba 12
     pantalla.clear()
@@ -657,8 +846,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c66.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p12.png'
+    prueba = 12
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -694,7 +892,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])        
 
     # Mostrar la prueba 13
     pantalla.clear()
@@ -709,8 +915,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c15.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p13.png'
+    prueba = 13
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -745,8 +960,15 @@ def cubos_khos():
                          color = (255,255,255))
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
-        display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])   
 
     # Mostrar la prueba 14
     pantalla.clear()
@@ -761,8 +983,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c6.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p14.png'
+    prueba = 14
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -798,7 +1029,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 15
     pantalla.clear()
@@ -813,8 +1052,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c23.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p15.png'
+    prueba = 15
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -850,7 +1098,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 16
     pantalla.clear()
@@ -865,8 +1121,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c34.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p16.png'
+    prueba = 16
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -902,7 +1167,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 17
     pantalla.clear()
@@ -917,8 +1190,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c33.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p17.png'
+    prueba = 17
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -954,7 +1236,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 18
     pantalla.clear()
@@ -969,8 +1259,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c15.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("PRUEBA")
+    # Comenzar a capturar datos
+    imagen = 'p18.png'
+    prueba = 18
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -1006,7 +1305,15 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()              
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la prueba 19
     pantalla.clear()
@@ -1021,7 +1328,17 @@ def cubos_khos():
     boton4 = colocarBoton(pantalla, FONDODIR+"\Cubos\\cubos\\c68.png",1.5,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
+    # Comenzar a capturar datos
+    imagen = 'p19.png'
+    prueba = 19
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -1057,14 +1374,67 @@ def cubos_khos():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Salir", 1)
         display.fill(pantalla)
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
+    
+    # Mostrar pantalla de guardando datos
+    pantalla.clear()
+    colocar_fondo(pantalla)
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_8.jpg",
+                        scale = IMGSCALE*2,
+                        pos = (screenwidth*0.25,screenheight*0.5))
+    pantalla.draw_text(text="Listo, se están guardando los datos", 
+                    fontsize=TEXTSIZE, 
+                    font='Mukta Malar ExtraLight',
+                    pos = (screenwidth*0.35,screenheight*0.5),
+                    colour =(0,0,0))
+
+    display.fill(pantalla)
+    display.show()
+
+    if sys.argv[1]:
+        with open(ruta_archivo, "w") as archivo:
+            print(ruta_archivo)
+            json.dump(respuestas, archivo, indent = 4)
+        pruebas_sql(id_paciente, "cubos", ruta_archivo)
+        
+    # Cerramos la conexion con el eyetracker
+    # Esto cerará el archivo de datos
+    eyetracker.close()
+
+    # Cerramos el archivo de log
+    log.close()
+
+    # Colocamos la imagen de fondo y las instrucciones en Pantalla 
+    pantalla.clear()
+    colocar_fondo(pantalla)
+    pantalla.draw_text(text="Listo, haz completado la prueba haz click para salir", 
+                fontsize=TEXTSIZE, 
+                font='Mukta Malar ExtraLight',
+                pos = (screenwidth*0.35,screenheight*0.5),
+                colour =(0,0,0))
+    display.fill(pantalla)
+    display.show()
+
+    # Esperar click en el boton para continuar
+    x , y = 0,0
+    while True:
+        mousebutton, clickpos, clicktime = mouse.get_clicked(mousebuttonlist='default', timeout= 10)
+        mouseX, mouseY = mouse.get_pos()
+        if clickpos:
+            break
+        display.fill(pantalla)
         display.show()
         
-        if sys.argv[1]:
-            with open(ruta_archivo, "w") as archivo:
-                json.dump(respuestas, archivo, indent = 4)
-            pruebas_sql(id_paciente, "cubos", ruta_archivo)
-            sys.exit()
-        
+    # Cerramos la pantalla
+    display.close()
+            
 if __name__ == "__main__":
-    cubos_khos()
-    
+    cubos_khos()    

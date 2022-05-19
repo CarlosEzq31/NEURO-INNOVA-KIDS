@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import *
-from test_sql import *
 from functions.sql_metodos import *
 from pantallas.Iniciar_sesion import *
 

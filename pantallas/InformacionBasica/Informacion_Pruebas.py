@@ -1,6 +1,7 @@
 # importamos las librerias necesarias
 import tkinter as tk
 import math
+import textwrap
 from tkinter import *
 
 # estableciendo colores
@@ -69,56 +70,64 @@ class info_pruebas(tk.Frame):
 
 
         # Botones con lista de pruebas
-        texto_figuras = "En esta prueba se mostrarán una imagen dónde se observan\nalgunas imágenes superpuestas y usuario tendrá que seleccionar aquella que"
+        texto_figuras = "Se le mostrará una serie de dibujos sobrepuestos y otro grupo de dibujos que se hallan separados, el niño tendrá que seleccionar cuáles figuras se repiten en ambos grupos"
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.4), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'figuras')
         figuras_boton = tk.Button(self, 
                                     text = "Figuras", 
-                                    command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Figuras Información', texto_figuras),
+                                    command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 
+                                                                               'Figuras Información', textwrap.fill(texto_figuras, width = 50),
+                                                                               controller.figuras_img),
                                     font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                     **controller.estilo_rosa)
         figuras_boton.place(relx = 0.7, rely = 0.4, anchor = CENTER)
         controller.animacion_boton(figuras_boton, canvas, 'figuras', tamaño = 'grande')
 
-        texto_cubos = "En esta prueba se mostrará una secuencia de números\nque el usuario tendrá que seleccionar en orden"
+        texto_cubos = "Se le mostrará una imagen de un cubo desplegados con figuras en cada uno de los lados, después una serie de imágenes de cubos en donde está el cubo de la imagen anterior. El paciente tendrá que escoger el cubo de la imagen anterior en la serie anterior"
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.525), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'senderos')
         cubos_boton = tk.Button(self, 
                                 text = "Cubos de Kohs", 
-                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_cubos),
+                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 
+                                                                           'Senderos Información', textwrap.fill(texto_cubos, width = 50),
+                                                                           controller.cubos_img),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         cubos_boton.place(relx = 0.7, rely = 0.525, anchor = CENTER)
         controller.animacion_boton(cubos_boton, canvas, 'senderos', tamaño = 'grande')
 
 
-        texto_domino = "En esta prueba se mostrará una secuencia de piezas de dominó\ny el usuario tendrá que hacer click en la que siga en la secuencia"
+        texto_domino = "Se dará una secuencia numérica con ayuda de fichas de dominó y se le dará una serie de posibles respuestas  para seguir con la secuencia. El niño tendrá que escoger la respuesta correcta"
         canvas.create_image(int(screenwidth*0.7),int(screenheight*0.65), image = controller.boton_rosa_grande, anchor = CENTER, tags = 'domino')
         domino_boton = tk.Button(self, 
                                 text = "Dominó", 
-                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 'Senderos Información', texto_domino),
+                                command = lambda: self.mensaje_informacion(controller, screenwidth, screenheight, 
+                                                                           'Senderos Información', textwrap.fill(texto_domino, width = 50),
+                                                                           controller.domino_img),
                                 font = ('Mukta Malar ExtraLight', int(button_font_size*1.45)), 
                                 **controller.estilo_rosa)
         domino_boton.place(relx = 0.7, rely = 0.65, anchor = CENTER)
         controller.animacion_boton(domino_boton, canvas, 'domino', tamaño = 'grande')
     
-    def mensaje_informacion(self, controller,width: int, height: int, titulo: str, texto_: str):
-        mensaje_ventana = Splash(self, controller,width, height, titulo, texto_)
+    def mensaje_informacion(self, controller,width: int, height: int, titulo: str, texto_: str, imagen):
+        mensaje_ventana = Splash(self, controller,width, height, titulo, texto_, imagen)
         
         
 class Splash(tk.Toplevel):
-    def __init__(self, parent, controller,screenwidth, screenheight, titulo, texto_):
+    def __init__(self, parent, controller,screenwidth, screenheight, titulo, texto_, imagen):
         # Creamos la pantalla que muestra información de la prueba
         tk.Toplevel.__init__(self, parent)
         button_font_size = controller.boton_tamanio
-        width, height = screenwidth*0.5, screenheight*0.5
-        self.width, self.height = screenwidth*0.5, screenheight*0.5
+        self.ratio = 0.75
+        self.screenwidth = screenwidth
+        self.screenheight = screenheight
+        self.width, self.height = screenwidth*self.ratio, screenheight*self.ratio
         
         # Definimos el tamaño
-        self.geometry(f"{int(width)}x{int(height)}+{int((screenwidth/2) - (width/2))}+{int((screenheight/2) - (height/2))}")
-        canvas = tk.Canvas(self, width = width , height = height, bg = 'white')
+        self.geometry(f"{int(self.width)}x{int(self.height)}+{int((self.screenwidth/2) - (self.width/2))}+{int((self.screenheight/2) - (self.height/2))}")
+        canvas = tk.Canvas(self, width = self.width , height = self.height, bg = 'white')
         canvas.pack(side = "top", fill = "both", expand = True)
         
         # Colocamos el fondo de la pantalla
-        canvas.create_image(0, 0, image = controller.fondo_splash, anchor = NW)
+        # canvas.create_image(self.width/2, self.height/2, image = controller.fondo_splash, anchor = CENTER)
         
         # Colocamos el título de la ventana
         self.title(f"{titulo}")
@@ -128,18 +137,26 @@ class Splash(tk.Toplevel):
         self.boton_rosa = controller.imagen_redimensionar(f"{controller.path}/src/images/Boton rosa 12.png", ratio = 0.00035)
         
         # Colcamos la primer imagen
-        canvas.create_image(int(width*0.8),int(height*0.1), image = self.boton_rosa, anchor = CENTER, tags = 'salir')
+        canvas.create_image(int(self.width*0.8),int(self.height*0.1), image = self.boton_rosa, anchor = CENTER, tags = 'salir')
         cerrar_boton = Button(self, text = "Cerrar",
                               command = lambda: self.close(),
                               font = ('Mukta Malar ExtraLight', int(button_font_size*1.)),
                               **controller.estilo_rosa)
         cerrar_boton.place(relx = 0.8, rely = 0.1, anchor = CENTER)
         self.animacion_boton(cerrar_boton, canvas)
-    
-        canvas.create_text(int(width*0.5),int(height*0.5), 
+        
+        # Colocamos el texto de la información de la prueba
+        canvas.create_text(int(self.width*0.45),int(self.height*0.2), 
                             text = texto_,
                             font = ('Mukta Malar ExtraLight', int(button_font_size)),
                             anchor = CENTER)
+        
+        # Colocamos el screenshot de la prueba
+        canvas.create_image(int(screenwidth*0.45),int(screenheight*0.45),
+                            image = imagen,
+                            anchor = CENTER)
+        
+        # Atributos
         self.attributes('-topmost', 'true')
         self.grab_set()
         self.wm_overrideredirect(True)
@@ -150,19 +167,20 @@ class Splash(tk.Toplevel):
         self.animacion_salida()
         
     def animacion_entrada(self, t = 0):
-        y = self.height*2*math.exp(-0.028*t)
-        s = f"{int(self.width)}x{int(self.height)}+{int((self.width) - (self.width/2))}+" + str(int(y))
+        y = self.height*2*math.exp(-0.018*t)
+        s = f"{int(self.width)}x{int(self.height)}+{int((self.screenwidth/2) - (self.width/2))}+" + str(int(y))
         self.geometry(s)
         self.deiconify()
 
-        if y > self.height/2:
+        if y > int((self.screenheight/2) - (self.height/2)):
             self.after(1, lambda y = y: self.animacion_entrada(t + 1))
         else:
-            self.geometry(f"{int(self.width)}x{int(self.height)}+{int((self.width) - (self.width/2))}+{int((self.height) - (self.height/2))}")
+            # self.geometry(f"{int(width)}x{int(height)}+{int((screenwidth/2) - (width/2))}+{int((screenheight/2) - (height/2))}")
+            self.geometry(f"{int(self.width)}x{int(self.height)}+{int((self.screenwidth/2) - (self.width/2))}+{int((self.screenheight/2) - (self.height/2))}")
             
     def animacion_salida(self, t = 0):
         y = (self.height*2 - self.height*2*math.exp(-0.028*t)) + self.height/2
-        s = f"{int(self.width)}x{int(self.height)}+{int((self.width) - (self.width/2))}+" + str(int(y))
+        s = f"{int(self.width)}x{int(self.height)}+{int((self.screenwidth/2) - (self.width/2))}+" + str(int(y))
         self.geometry(s)
         self.deiconify()
 

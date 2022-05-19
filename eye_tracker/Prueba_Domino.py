@@ -4,10 +4,11 @@ from constants import *
 
 def prueba_domino():
     if sys.argv[1]:
-            global id_paciente, ruta_archivo
-            id_paciente = sys.argv[1]
-            ruta_archivo = docs + "\\NEURO INNOVA KIDS\\PACIENTES\\"+id_paciente+f"\\{id_paciente}_{str(datetime.now().strftime('%d-%m-%y'))}.json"
-            LOGFILENAME = f"{id_paciente}_domingo_{str(datetime.now().strftime('%d-%m-%y'))}"
+        global id_paciente, ruta_archivo
+        id_paciente = sys.argv[1]
+        ruta_archivo = docs + "\\NEURO INNOVA KIDS\\"+"DATA"+f"\{id_paciente}_domino_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}.json"
+        LOGFILENAME = f"{id_paciente}_domino_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}"
+
     # Creamos los objetos para el eyetracker y la pantalla
     display = Display()
     pantalla = Screen()
@@ -15,6 +16,7 @@ def prueba_domino():
     # Creamos los objetos para el mouse, el seguidor ocular y el teclado
     teclado = Keyboard()
     mouse = Mouse()
+    print(LOGFILENAME)
     eyetracker = EyeTracker(display, eyedatafile = LOGFILENAME, logfile = LOGFILENAME)
     eyetracker.calibrate()
 
@@ -23,9 +25,7 @@ def prueba_domino():
     log = Logfile(filename = LOGFILE)
     log.write(["trialnr", "image", "imgtime"])
     print(log)
-    # 
 
-    
 
     # Configuramos la entrada del mouse
     mouse.set_visible(visible = True)
@@ -89,7 +89,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D19.png",0.3,screenwidth*0.87,screenheight*0.5)
 
     display.fill(pantalla)
-    display.show()
+    # Comenzar a capturar datos
+    imagen = 'Prueba1_Domino.png'
+    prueba = 1
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
         
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -122,10 +132,16 @@ def prueba_domino():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
+        t1 = display.show()
+        
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
     
-    #with open(FONDODIR+f"{sys.argv[1]}_{str(datetime.now().strftime('%d-%m-%y'))}.json","w") as archivo:
-     #   json.dump(respuestas, archivo, indent = 4)
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
         
     
     # Mostrar la segunda prueba 
@@ -143,8 +159,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D12.png",0.3,screenwidth*0.87,screenheight*0.5)
 
     display.fill(pantalla)
-    display.show()
-    # print("Prueba")
+    # Comenzar a capturar datos
+    imagen = 'Prueba2_Domino.png'
+    prueba = 2
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -176,8 +201,15 @@ def prueba_domino():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
-        # print("Prueba")
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la tercer prueba 
     pantalla.clear()
@@ -192,8 +224,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D19.png",0.3,screenwidth*0.87,screenheight*0.5)
         
     display.fill(pantalla)
-    display.show()
-    # print("Prueba")
+    # Comenzar a capturar datos
+    imagen = 'Prueba3_Domino.png'
+    prueba = 3
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -226,8 +267,15 @@ def prueba_domino():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
-        # print("Prueba")
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la cuarta prueba 
     pantalla.clear()
@@ -242,8 +290,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D27.png",0.3,screenwidth*0.87,screenheight*0.5)
                              
     display.fill(pantalla)
-    display.show()
-    # print("Prueba")
+    # Comenzar a capturar datos
+    imagen = 'Prueba4_Domino.png'
+    prueba = 4
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -276,8 +333,15 @@ def prueba_domino():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
-        # print("Prueba")
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
 
     # Mostrar la quinta prueba 
     pantalla.clear()
@@ -292,8 +356,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D21.png",0.3,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("Prueba")
+    # Comenzar a capturar datos
+    imagen = 'Prueba5_Domino.png'
+    prueba = 5
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -326,13 +399,20 @@ def prueba_domino():
         else: 
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
-        display.show()
-        # print("Prueba")
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
 
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
+    
     # Mostrar la sexta prueba 
     pantalla.clear()
     colocar_fondo(pantalla)
-    boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Salir", 1)
+    boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
     pantalla.draw_image(image = FONDODIR + "\Domino\Prueba6_Domino.png",
                         scale = IMGSCALE*0.3,
                         pos = (screenwidth*0.35,screenheight*0.5))
@@ -342,8 +422,17 @@ def prueba_domino():
     boton3 = colocarBoton(pantalla, FONDODIR+"\Domino\D16.png",0.3,screenwidth*0.87,screenheight*0.5)
     
     display.fill(pantalla)
-    display.show()
-    # print("Prueba")
+    # Comenzar a capturar datos
+    imagen = 'Prueba6_Domino.png'
+    prueba = 6
+    eyetracker.start_recording()
+    eyetracker.log("TRIALSTART %d" % prueba)
+    eyetracker.log("IMAGENAME %s" % imagen)
+    
+    display.fill(pantalla)
+    t0 = display.show()
+
+    eyetracker.log("image online at %d" % t0)
     
     # Esperar click en el boton para continuar
     x , y = 0,0
@@ -353,42 +442,87 @@ def prueba_domino():
         if clickpos:
             x,y = clickpos
             if boton_presionado(x,y,boton_continuar):
-                display.close()
                 break
             if boton_presionado(x,y,boton1):
-                respuestas["6"] = True
-                display.close()
+                respuestas["6"] = False
                 break
             if boton_presionado(x,y,boton2):
                 respuestas["6"] = False
-                display.close()
                 break
             if boton_presionado(x,y,boton3):
-                respuestas["6"] = False
-                display.close()
+                respuestas["6"] = True
                 break
-            
-        if boton_presionado(mouseX, mouseY,boton_continuar):
+
+        if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
                          2.5, 
                          screenwidth*0.875,
                          screenheight*0.8, 
-                         "Salir", 
+                         "Continuar", 
                          1, 
                          color = (255,255,255))
         else: 
-            colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Salir", 1)
+            colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
+        display.fill(pantalla)
+        t1 = display.show()
+    eyetracker.log("image offline at %d" % t1)
+
+    # stop recording
+    eyetracker.log("TRIALEND %d" % prueba)
+    eyetracker.stop_recording()
+    
+    # TRIAL AFTERMATH
+    log.write([prueba, imagen, t1-t0])
+        
+    # Mostrar pantalla de guardando datos
+    pantalla.clear()
+    colocar_fondo(pantalla)
+    boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
+    pantalla.draw_text(text="Listo, se están guardando los datos", 
+                    fontsize=TEXTSIZE, 
+                    font='Mukta Malar ExtraLight',
+                    pos = (screenwidth*0.35,screenheight*0.5),
+                    colour =(0,0,0))
+
+    display.fill(pantalla)
+    display.show()
+
+    if sys.argv[1]:
+        with open(ruta_archivo, "w") as archivo:
+            print(ruta_archivo)
+            json.dump(respuestas, archivo, indent = 4)
+        pruebas_sql(id_paciente, "domino", ruta_archivo)
+        
+    # Cerramos la conexion con el eyetracker
+    # Esto cerará el archivo de datos
+    eyetracker.close()
+
+    # Cerramos el archivo de log
+    log.close()
+
+    # Colocamos la imagen de fondo y las instrucciones en Pantalla 
+    pantalla.clear()
+    colocar_fondo(pantalla)
+    pantalla.draw_text(text="Listo, haz completado la prueba haz click para salir", 
+                fontsize=TEXTSIZE, 
+                font='Mukta Malar ExtraLight',
+                pos = (screenwidth*0.35,screenheight*0.5),
+                colour =(0,0,0))
+    display.fill(pantalla)
+    display.show()
+
+    # Esperar click en el boton para continuar
+    x , y = 0,0
+    while True:
+        mousebutton, clickpos, clicktime = mouse.get_clicked(mousebuttonlist='default', timeout= 10)
+        if clickpos:
+            break
         display.fill(pantalla)
         display.show()
+
+    # Cerramos la pantalla
+    display.close()
         
-
-        if sys.argv[1]:
-            with open(ruta_archivo, "w") as archivo:
-                json.dump(respuestas, archivo, indent = 4)
-            pruebas_sql(id_paciente, "domino", ruta_archivo)
-            sys.exit()
-
 if __name__ == "__main__":
     prueba_domino()
-    

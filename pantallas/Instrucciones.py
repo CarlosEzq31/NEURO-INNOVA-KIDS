@@ -54,81 +54,124 @@ class instrucciones(tk.Frame):
         controller.animacion_boton(back_button, canvas, 'atras', 'verde')
 
         # Instrucción 1 
-        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.475), 
+        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.375), 
                            text = '1', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size*4.0)), 
                            tags = '1', 
                            anchor = CENTER)
 
-        canvas.create_text(int(screenwidth*0.45), int(screenheight*0.480), 
+        canvas.create_text(int(screenwidth*0.45), int(screenheight*0.39), 
                            text = 'Mantén la vista directamente \n    en el centro de la pantalla', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                            tags = 'vista', 
                            anchor = CENTER)
         
-        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.475), 
-                            image = controller.gifs[0], 
+        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.325), 
+                            image = controller.gif_instruccion1_a[0], 
                             anchor = CENTER, 
-                            tags = 'gif1')
+                            tags = 'gif1_1')
+        canvas.create_image(int(screenwidth*0.85), int(screenheight*0.325), 
+                            image = controller.gif_instruccion1_b[0], 
+                            anchor = CENTER, 
+                            tags = 'gif1_2')
 
 
         # Instrucción 2
-        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.610), 
+        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.550), 
                            text = '2', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size*4.0)), 
                            tags = '2', 
                            anchor = CENTER)
 
-        canvas.create_text(int(screenwidth*0.45), int(screenheight*0.615), 
+        canvas.create_text(int(screenwidth*0.45), int(screenheight*0.555), 
                            text = 'Trata de parpadear \n  lo menos posible ', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                            tags = 'parpadeo', 
                            anchor = CENTER)
 
-        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.6), 
-                            image = controller.gifs[0], 
+        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.555), 
+                            image = controller.gif_instruccion1_a[0], 
                             anchor = CENTER, 
-                            tags = 'gif2')
+                            tags = 'gif2_1')
+        canvas.create_image(int(screenwidth*0.85), int(screenheight*0.555), 
+                            image = controller.gif_instruccion2_b[0], 
+                            anchor = CENTER, 
+                            tags = 'gif1_2')
 
 
         # Instrucción 3
-        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.745), 
+        canvas.create_text(int(screenwidth*0.35), int(screenheight*0.785), 
                            text = '3', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size*4.0)), 
                            tags = '3', 
                            anchor = CENTER)
 
-        canvas.create_text(int(screenwidth*0.46), int(screenheight*0.750), 
+        canvas.create_text(int(screenwidth*0.46), int(screenheight*0.8), 
                            text = 'No hables ni muevas la lengua o\n   movimiento con el rostro', 
                            font = ('Mukta Malar ExtraLight', int(button_font_size)), 
                            tags = 'movimiento', 
                            anchor = CENTER)
         
-        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.725), 
-                            image = controller.gifs[0], 
+        canvas.create_image(int(screenwidth*0.7), int(screenheight*0.8), 
+                            image = controller.gif_instruccion1_a[0], 
                             anchor = CENTER, 
-                            tags = 'gif3')
+                            tags = 'gif3_1')
+        canvas.create_image(int(screenwidth*0.85), int(screenheight*0.8), 
+                            image = controller.gif_instruccion3_b[0], 
+                            anchor = CENTER, 
+                            tags = 'gif3_2')
      
         
         # función para animars gif
         def animacion_gif(e):  
-            self.ind = 0
-            self.after(80, actualizar, 0)
+            self.ind1a = 0
+            self.ind1b = 0
+            self.ind2a = 0
+            self.ind2b = 0
+            self.ind3a = 0
+            self.ind3b = 0
+            self.after(100, actualizar, self.ind1a, self.ind1b, self.ind2a, self.ind2b, self.ind3a, self.ind3a)
             
-        def actualizar(ind):
-            frame = controller.gifs[ind]
-            self.ind += 1
-            if self.ind == len(controller.gifs):
-                self.ind = 0
-            canvas.itemconfig('gif1', image = frame)
-            canvas.itemconfig('gif2', image = frame)
-            canvas.itemconfig('gif3', image = frame)
-            self.after(100, actualizar, self.ind)
+        def actualizar(ind1a, ind1b, ind2a, ind2b, ind3a, ind3b):
+            frame1a = controller.gif_instruccion1_a[ind1a]
+            frame1b = controller.gif_instruccion1_b[ind1b]
+            frame2a = controller.gif_instruccion1_a[ind2a]
+            frame2b = controller.gif_instruccion2_b[ind2b]
+            frame3a = controller.gif_instruccion1_a[ind3a]
+            frame3b = controller.gif_instruccion3_b[ind3b]
+            self.ind1a += 1
+            self.ind1b += 1
+            self.ind2a += 1
+            self.ind2b += 1
+            self.ind3a += 1
+            self.ind3b += 1
+            if self.ind1a == len(controller.gif_instruccion1_a):
+                self.ind1a = 0
+            if self.ind1b == len(controller.gif_instruccion1_b):
+                self.ind1b = 0
+            if self.ind2a == len(controller.gif_instruccion1_a):
+                self.ind2a = 0
+            if self.ind2b == len(controller.gif_instruccion2_b):
+                self.ind2b = 0
+            if self.ind3a == len(controller.gif_instruccion1_a):
+                self.ind3a = 0
+            if self.ind3b == len(controller.gif_instruccion3_b):
+                self.ind3b = 0
+            canvas.itemconfig('gif1_1', image = frame1a)
+            canvas.itemconfig('gif1_2', image = frame1b)
+            canvas.itemconfig('gif2_1', image = frame2a)
+            canvas.itemconfig('gif2_2', image = frame2b)
+            canvas.itemconfig('gif3_1', image = frame3a)
+            canvas.itemconfig('gif3_2', image = frame3b)
+            self.after(100, actualizar, self.ind1a, self.ind1b, self.ind2a, self.ind2b, self.ind3a, self.ind3a)
             
         def detener_gif(e):
-            canvas.itemconfig('gif1', image = controller.gifs[0])
-            canvas.itemconfig('gif2', image = controller.gifs[0])
-            canvas.itemconfig('gif3', image = controller.gifs[0])
+            canvas.itemconfig('gif1_1', image = controller.gif_instruccion1_a[0])
+            canvas.itemconfig('gif1_2', image = controller.gif_instruccion1_b[0])
+            canvas.itemconfig('gif2_1', image = controller.gif_instruccion1_a[0])
+            canvas.itemconfig('gif2_2', image = controller.gif_instruccion2_b[0])
+            canvas.itemconfig('gif3_1', image = controller.gif_instruccion1_a[0])
+            canvas.itemconfig('gif3_2', image = controller.gif_instruccion3_b[0])
             self.ind = 0
             
             

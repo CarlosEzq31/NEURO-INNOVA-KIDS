@@ -1,5 +1,6 @@
 # importamos las librerias necesarias
 import tkinter as tk
+import textwrap
 from tkinter import *
 
 # estableciendo colores
@@ -63,8 +64,12 @@ class seguidor_ocular(tk.Frame):
         controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
         
         # Texto de información
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.480), 
-                           text = 'Para este programa se hará uso de un seguidor ocular, el cual\n', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+        texto_info = "NEURO INNOVA KIDS funciona a través de seguidor ocular, el cual nos brindará información del niño mientras efectúa tareas de carga cognitiva. El seguidor ocular es un dispositivo de luz infrarroja  que procesa el punto donde se fija la mirada (donde estamos mirando), o el movimiento del ojo en relación con la cabeza en la pantalla del servidor.Este método es un proceso no invasivo por lo que  el niño no sufrirá riesgos. Y solo grabará la mirada del niño, por lo que su rostro no será registrado ni aparecerá en la base de datos"
+        canvas.create_text(int(screenwidth*0.65),int(screenheight*0.62), 
+                           text = textwrap.fill(texto_info, width = 50), 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size*1.5)),
                            tags = 'vista',
                            anchor = CENTER)
+        
+        # Imagen del eyetracker
+        canvas.create_image(int(screenwidth*0.3),int(screenheight*0.725), image = controller.eyetracker_img, anchor = CENTER, tags = 'eyetracker')

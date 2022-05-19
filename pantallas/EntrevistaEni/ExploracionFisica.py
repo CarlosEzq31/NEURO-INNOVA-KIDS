@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import *
-from test_sql import *
 from pantallas.EntrevistaEni.HistoriaFamiliar import *
 
 # set colors

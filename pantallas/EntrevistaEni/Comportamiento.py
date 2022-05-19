@@ -1266,7 +1266,10 @@ class comportamiento7(tk.Frame):
             h += 0.075
                 
         def printData():
-            # print(self.data)
+            for form in label:
+                if form == 'Promedio de horas de sueño':
+                    tag = form.replace(' ','_').lower()
+                    self.data[f"{tag}"] = forms.get(f"{form}_formulario").get()
             if controller.comprobar_formularios(self.data, canvas):
                 data.update(self.data)
                 controller.mostrar_pantalla(self, comportamiento8)

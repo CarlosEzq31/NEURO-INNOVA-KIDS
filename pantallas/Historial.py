@@ -1,6 +1,7 @@
+from operator import imod
 import tkinter as tk
 from tkinter import *
-#from test_sql import *
+from functions.sql_metodos import *
 
 class historial(tk.Frame):
     def __init__(self, parent, controller):
@@ -65,3 +66,100 @@ class historial(tk.Frame):
                                 **controller.estilo_verde)
         back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
         controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+        
+        # Datos del paciente
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.475), 
+                           text = 'Datos del paciente', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size*1.5)),
+                           tags = 'datos',
+                           anchor = NW)
+        # id
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.525), 
+                           text = 'id', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'id',
+                           anchor = NW)
+        
+        # Fecha de registro
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.575), 
+                           text = 'Fecha de registro: 1/08/2020', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'fecha',
+                           anchor = NW)
+        
+        # Nombre del aplicador
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.61), 
+                           text = 'Nombre del aplicador: Carmen cabrera', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'aplicador',
+                           anchor = NW)
+        # Sexo
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.645), 
+                           text = 'Sexo: Femenino', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'sexo',
+                           anchor = NW)
+        # Edad
+        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.68), 
+                           text = 'Edad: 11 años', 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+                           tags = 'edad',
+                           anchor = NW)
+        
+        # Obtenemos los datos del usuario mediante el id
+        self.i = True
+        def mostrar_datos(e):
+            while self.i == True and controller.id != 0:
+                datos = obtener_info_por_id(controller.id)
+                print(datos)
+                fecha = datetime.strptime(controller.id[4:], '%d%m%y').strftime('%d/%m/%y')
+                canvas.itemconfig('id', text = datos.get('usuario'))
+                canvas.itemconfig('datos', text = str('Nombre: ' + datos.get('nombre')))
+                canvas.itemconfig('fecha', text = str('Fecha de registro: ' + fecha))
+                canvas.itemconfig('sexo', text = str('Genero: ' + datos.get('genero')))
+                canvas.itemconfig('edad', text = str('Edad: ' + str(datos.get('edad'))) + ' años')
+                self.i = False
+        
+        
+        self.bind('<Enter>', mostrar_datos)
+        
+        def salir():
+            self.i = True
+            controller.previous_frame()
+            
+        # Boton de atras
+        canvas.create_image(int(screenwidth*0.15), int(screenheight*0.9), image = controller.boton_verde, anchor = CENTER, tags = 'atras')
+        back_button = tk.Button(self, 
+                                text = "Atrás", 
+                                command = lambda : salir(),
+                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
+                                **controller.estilo_verde)
+        
+        back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
+        controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+        
+        
+        def abrir_resultados():
+            import subprocess, os
+            import ctypes.wintypes
+            CSIDL_PERSONAL = 5       # My Documents
+            SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+
+            dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+            ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
+
+            docs = str(dir.value)
+            directory = docs + "\\NEURO INNOVA KIDS"
+            ruta = os.path.join(directory, 'DATA')
+            print(ruta)
+            subprocess.Popen(f'explorer "{ruta}\\"')
+        
+        # Boton de siguiente
+        canvas.create_image(int(screenwidth*0.85),int(screenheight*0.9), image = controller.boton_rosa, tags = 'iniciar',anchor = CENTER)
+        siguiente_boton = tk.Button(self, 
+                                text = "Obtener resultado", 
+                                command = abrir_resultados,
+                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
+                                **controller.estilo_rosa)
+        siguiente_boton.place(relx = 0.85, rely = 0.9, anchor = CENTER)
+        controller.animacion_boton(siguiente_boton, canvas, 'iniciar', 'rosa')

@@ -1,4 +1,5 @@
 # importamos las librerias necesarias
+import textwrap
 import tkinter as tk
 from tkinter import *
 
@@ -63,8 +64,9 @@ class que_es(tk.Frame):
         controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
         
         # Texto de información
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.480), 
-                           text = '\n    en el centro de la pantalla', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
+        texto_info = "NEURO INNOVA KIDS es una herramienta de evaluación, que ofrece un método no invasivo, a través de mediciones precisas durante tareas de demanda cognitiva, y que proveen una ventana a los sistemas cerebrales fundamentales para la atención.  El programa va a parametrizar el nivel de atención que tiene un niño. Con la finalidad de ser un apoyo para el especialista durante el diagnóstico y el seguimiento del paciente"
+        canvas.create_text(int(screenwidth*0.6),int(screenheight*0.480), 
+                           text = textwrap.fill(texto_info, width = 50), 
+                           font = ('Mukta Malar ExtraLight', int(button_font_size*1.3)),
                            tags = 'vista',
                            anchor = CENTER)

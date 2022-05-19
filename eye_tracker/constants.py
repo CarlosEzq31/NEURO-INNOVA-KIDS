@@ -1,4 +1,5 @@
-import os, ctypes.wintypes, sys, json
+import os, sys, json
+import ctypes.wintypes
 from pathlib import Path
 from PIL import ImageGrab
 from datetime import datetime
@@ -11,6 +12,14 @@ dir = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
 ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, dir)
 
 docs = str(dir.value)
+directory = docs + "\\NEURO INNOVA KIDS"
+directory_data = directory + "\\DATA"
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+    
+if not os.path.exists(directory_data):
+    os.makedirs(directory_data)
 
 # Obtener resolucion de pantalla
 resolution = ImageGrab.grab()
@@ -23,7 +32,7 @@ screenwidth = int(screenwidth*0.8)
 DIR = os.path.dirname(__file__)
 
 # Directorio donde se almacenaran los datos
-DATADIR = os.path.join(DIR, 'data')
+DATADIR = os.path.join(directory, 'DATA')
 
 # Directorio que contiene las imagenes
 IMGDIR = os.path.join(DIR, 'img')
@@ -42,7 +51,7 @@ FONTDIR = os.path.join(DIR, 'MuktaMalar-ExtraLight.ttf')
 # Preguntar el nombre del participante para usarlo en los archivos de salida
 # ask for the participant name, to use as the name for the logfile...
 #LOGFILENAME = input("Participant name: ")
-LOGFILENAME = "Ejemplo"
+LOGFILENAME = "Sj"
 
 # Directorio de los archivos de datos
 LOGFILE = os.path.join(DATADIR, LOGFILENAME)
@@ -104,7 +113,7 @@ EYETRIBEPRECALIBDUR = 500  #ARMANDOLARA I CHANGED FROM 500 to 750
 #EYELINKCALBEEP = True
 
 # set DUMMYMODE to True if no tracker is attached
-DUMMYMODE = False
+DUMMYMODE = True
 
 from pygaze.libscreen import Display, Screen
 from pygaze.libinput import Keyboard, Mouse
@@ -112,7 +121,6 @@ from pygaze.eyetracker import EyeTracker
 from pygaze.liblog import Logfile
 import pygaze.libtime as timer
 from PIL import Image as PImage
-
 import inspect
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))

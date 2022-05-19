@@ -20,7 +20,7 @@ from pantallas.Iniciar_sesion import *
 from pantallas.Usuario import *
 from pantallas.Historial import *
 from pantallas.Entrevista import *
-from pantallas.Resultados import *
+from pantallas.InformacionBasica.Resultados import *
 from pantallas.EntrevistaEni.AntecedentesPrenatales import *
 from pantallas.EntrevistaEni.AntecedentesNatales import *
 from pantallas.EntrevistaEni.AntecedentesPostnatales import *
@@ -175,14 +175,28 @@ class tkinterApp(tk.Tk):
         self.barra_escribir = self.imagen_redimensionar(f"{path}/src/images/barra_escribir1.png", ratio = 0.000525)
         self.barra_seleccion = self.imagen_redimensionar(f"{path}/src/images/barra_seleccion.png", ratio = 0.000125)
         self.barra_seleccion_rellena = self.imagen_redimensionar(f"{path}/src/images/barra_seleccion_rellena.png", ratio = 0.000125)
-        self.fondo_splash = self.imagen_redimensionar(f"{path}/src/images/background.jpg", ratio = 0.000065)
-        self.gifs = self.gif_imagenes("mygif.gif")
+        self.fondo_splash = self.imagen_redimensionar(f"{path}/src/images/background.jpg", ratio = 0.000125)
+        self.eyetracker_img = self.imagen_redimensionar(f"{path}/src/images/eyetracker.jpg", ratio = 0.00035)
+        self.figuras_img = self.imagen_redimensionar(f"{path}/src/images/figuras_prueba.png", ratio = 0.00035)
+        self.cubos_img = self.imagen_redimensionar(f"{path}/src/images/cubos_prueba.png", ratio = 0.00035)
+        self.domino_img = self.imagen_redimensionar(f"{path}/src/images/domino_prueba.png", ratio = 0.00035)
+        # self.gifs = self.gif_imagenes("mygif.gif",1)
+        self.gif_instruccion1_a = self.gif_imagenes(f"{path}/src/images/instruccion1_a", 0.0002)
+        self.gif_instruccion1_b = self.gif_imagenes(f"{path}/src/images/instruccion1_b", 0.000177)
+        # self.gif_instruccion2_a = self.gif_imagenes(f"{path}/src/images/instruccion2_a", 0.000177)
+        self.gif_instruccion2_b = self.gif_imagenes(f"{path}/src/images/instruccion2_b", 0.0002)
+        # self.gif_instruccion3_a = self.gif_imagenes(f"{path}/src/images/instruccion3_a", 0.0002)
+        self.gif_instruccion3_b = self.gif_imagenes(f"{path}/src/images/instruccion3_b", 0.0002)
 
-    
-    def gif_imagenes(self, path) -> list:
-        imageObject = PImage.open(f"{path}")
-        frameCnt = imageObject.n_frames
-        return [PhotoImage(file = f'{path}',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+    # Funcion para pasar las imagenes de los gifs
+    def gif_imagenes(self, path, ratio) -> list:
+        lista = os.listdir(path)
+        images = []
+        for i in range(len(lista)):
+            if i%2 == 0:
+                imagen = self.imagen_redimensionar(path + '/' + lista[i], ratio)
+                images.append(imagen)
+        return images
         
 
     # función para redimensionar las imagenes
@@ -204,7 +218,7 @@ class tkinterApp(tk.Tk):
             if tamaño == "grande":
                 image_hover = self.boton_rosa__hover_grande
                 image_normal = self.boton_rosa_grande
-            else: 
+            else:
                 image_hover = self.boton_rosa_hover
                 image_normal = self.boton_rosa
         elif color == "verde":
@@ -242,32 +256,17 @@ class tkinterApp(tk.Tk):
         canvas.tag_bind(tag, '<Enter>', on_enter_canvas)
         canvas.tag_bind(tag, "<Leave>", on_leave_canvas)
     
-    
-    def animacion_gif(self, path, canvas, tag, ind = 0):
-        imageObject = PImage.open(f"{path}")
-        print(imageObject.n_frames)
-        frameCnt = imageObject.n_frames
-        frames = [PhotoImage(file = f'{path}',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
-        
-        frame = frames[ind]
-        ind += 1
-        if ind == frameCnt:
-            ind = 0
-        canvas.itemconfig(tag, image = frame)
-        canvas.after(100, self.animacion_gif(path, canvas, tag, ind))
-    
     def comprobar_formularios(self, datos, canvas):
         print(datos)
         for item in datos.values():
             if item == "":
-                texto_error = canvas.create_text(int(screenwidth*0.5),int(screenheight*0.25), 
+                texto_error = canvas.create_text(int(screenwidth*0.65),int(screenheight*0.25), 
                             text = "Por favor, responde cada formulario",
                             font = ('Mukta Malar ExtraLight', int(self.boton_tamanio)),
                             anchor = CENTER)
                 self.after(3000,lambda: canvas.delete(texto_error))
                 return False
-            else: 
-                return True
+        return True
     
     def comprobar_directorio_salida(self, id_paciente = None):
         import os, ctypes.wintypes

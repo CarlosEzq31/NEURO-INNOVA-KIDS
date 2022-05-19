@@ -1,7 +1,7 @@
 # importamos las librerias necesarias
 import tkinter as tk
 from tkinter import *
-from pantallas.Resultados import *
+from pantallas.InformacionBasica.Resultados import *
 from pantallas.InformacionBasica.Que_es import *
 from pantallas.InformacionBasica.Informacion_Pruebas import *
 from pantallas.InformacionBasica.Seguidor_ocular import *

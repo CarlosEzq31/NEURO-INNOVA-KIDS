@@ -1,11 +1,26 @@
 import hashlib
 import mysql.connector
+from datetime import date
 from datetime import datetime
 db = mysql.connector.connect(host = 'localhost',
                              user = 'root', 
-                             passwd = 'contraseña', 
+                             passwd = 'dabely2006', 
                              auth_plugin = 'mysql_native_password',
                              database = 'neuro_innova')
+
+
+# Funcion para calcular la edad
+def calcular_edad(nacimiento: str) -> int:
+    nacimiento = datetime.strptime(nacimiento, '%d/%m/%Y')
+    today = date.today()
+    try: 
+        birthday = nacimiento.replace(year = today.year)
+    except ValueError:
+        birthday = nacimiento.replace(year = today.year, month=nacimiento.month+1, day=1)
+    if not birthday.year > today.year:
+        return today.year - nacimiento.year - 1
+    else:
+        return today.year - nacimiento.year
 
 # Función para crear un nuevo usuario y nuevo paciente que nos devuelve True si todo salió bien y False de lo contrario
 def crear_nuevo_usuario(usuario: str, nombre: str, correo: str, contrasena: str, paciente: dict) -> bool:
@@ -56,14 +71,15 @@ def entrevista_sql(id_paciente):
 def pruebas_sql(id_paciente, prueba, archivo):
     usuario = obtener_info_por_id(id_paciente).get('usuario')
     mycursor = db.cursor()
-    data = {'id_prueba': id_paciente + f"{prueba}_{str(datetime.now().strftime('%d_%m_%y'))}",
+    data = {'id_prueba': id_paciente + f"{prueba}_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}",
             'id_usuario': usuario,
             'id_paciente': id_paciente,
             'pruebas': f"{prueba}",
-            'archivos_prueba': f"{archivo}"}
+            'archivos_prueba': archivo.replace("\\","\\\\")}
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('pruebas', columns, values)
+    print(query)
     mycursor.execute(query)
     db.commit()
 
@@ -98,13 +114,21 @@ def obtener_info_por_id(id_paciente):
     query = f"SELECT * FROM paciente WHERE id_paciente='{id_paciente}'"
     mycursor.execute(query)
     info = mycursor.fetchall()[0]
+    fecha_nac = info[2]
+    data['edad'] = calcular_edad(fecha_nac)
     data['genero'] = 'Masculino' if int(info[3]) == 1 else 'Femenino'
     return data
     
 # Actulizar algunos datos de la pantalla de historial clínica
 def historia_clinica_sql(datos, id_paciente):
     mycursor = db.cursor()
-    query = f"UPDATE `paciente` SET `genero` = '{datos.get('Sexo')}', `fecha_nac` = '{datos.get('Fecha de Nacimiento')}' WHERE (`id_paciente` = '{id_paciente}');"
+    try:
+        fecha_nac = datos.get('Fecha de Nacimiento').replace("-","/")
+    except:
+        fecha_nac = datos.get('Fecha de Nacimiento')
+    query = f"UPDATE `paciente` SET `genero` = '{datos.get('Sexo')}', `fecha_nac` = '{fecha_nac}' WHERE (`id_paciente` = '{id_paciente}');"
+    mycursor.execute(query)
+    query = f"UPDATE `usuario` SET `nombre` = '{datos.get('Nombre')}' WHERE (`id_paciente` = '{id_paciente}');"
     mycursor.execute(query)
     db.commit()
     
@@ -128,7 +152,18 @@ def historia_familiar_sql(datos, id_paciente):
     mycursor = db.cursor()
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in datos.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in datos.values())
-    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('familiar', columns, values)
+    query = f"SELECT id_fam FROM familiar WHERE id_fam = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        datos.pop('id_fam')
+        query = "UPDATE familiar SET {} WHERE id_fam = '{}'".format(', '.join("{}='{}'".format(k, datos[k]) for k in datos), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('familiar', columns, values)
+    # print(query)
     mycursor.execute(query)
     db.commit()
     
@@ -144,7 +179,17 @@ def antecedentes_prenatales_sql(datos, id_paciente):
     mycursor = db.cursor()
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
-    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('prenatal', columns, values)
+    query = f"SELECT id_pren FROM prenatal WHERE id_pren = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_pren')
+        query = "UPDATE prenatal SET {} WHERE id_pren = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('prenatal', columns, values)
     mycursor.execute(query)
     db.commit()
     data = {'id_exp_emb': id_paciente,
@@ -159,7 +204,17 @@ def antecedentes_prenatales_sql(datos, id_paciente):
     mycursor = db.cursor()
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
-    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('expo_embarazo', columns, values)
+    query = f"SELECT id_exp_emb FROM expo_embarazo WHERE id_exp_emb = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_exp_emb')
+        query = "UPDATE expo_embarazo SET {} WHERE id_exp_emb = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('expo_embarazo', columns, values)
     mycursor.execute(query)
     db.commit()
     data = {'id_pad_emb': id_paciente,
@@ -176,12 +231,23 @@ def antecedentes_prenatales_sql(datos, id_paciente):
             'otros': datos.get('otros')}
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
-    query = "INSERT INTO %s (%s ) VALUES (%s );" % ('pade_embarazo', columns, values)
+    query = f"SELECT id_pad_emb FROM pade_embarazo WHERE id_pad_emb = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_pad_emb')
+        query = "UPDATE pade_embarazo SET {} WHERE id_pad_emb = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('pade_embarazo', columns, values)
     mycursor.execute(query)
     db.commit()
-    
+
 # Funcion para informacion de antecedentes natales
 def antecedentes_natales_sql(datos, id_paciente):
+    # print(datos)
     mycursor = db.cursor()
     data = {'id_natal': id_paciente,
             'tipo_parto': datos.get('Tipo de parto'),
@@ -193,6 +259,17 @@ def antecedentes_natales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('natal', columns, values)
+    query = f"SELECT id_natal FROM natal WHERE id_natal = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_natal')
+        query = "UPDATE natal SET {} WHERE id_natal = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('natal', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -207,11 +284,24 @@ def antecedentes_natales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('datos_nacimiento', columns, values)
+    query = f"SELECT id_datos_nac FROM datos_nacimiento WHERE id_datos_nac = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_datos_nac')
+        query = "UPDATE datos_nacimiento SET {} WHERE id_datos_nac = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('datos_nacimiento', columns, values)
     mycursor.execute(query)
     db.commit()
     
+    
 # Funcion para informacion de antecedentes postnatales
 def antecendentes_postnatales_sql(datos, id_paciente):
+    # print(datos)
     mycursor = db.cursor()
     alimentacion  = ''
     if datos.get('alimentación_materna') == 1:
@@ -220,7 +310,7 @@ def antecendentes_postnatales_sql(datos, id_paciente):
             alimentacion = alimentacion + 'artifial,'
     if datos.get('alimentación_mixta') == 1:
             alimentacion = alimentacion + 'mixta'
-    print(alimentacion)
+    # print(alimentacion)
     data = {'id_postnat': id_paciente,
             'tipo_alim': alimentacion,
             'vomito': datos.get('vómitos'),
@@ -231,6 +321,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('postnatal', columns, values)
+    query = f"SELECT id_postnat FROM postnatal WHERE id_postnat = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_postnat')
+        query = "UPDATE postnatal SET {} WHERE id_postnat = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('postnatal', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -241,6 +342,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_motor', columns, values)
+    query = f"SELECT id_motor FROM desarrollo_motor WHERE id_motor = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_motor')
+        query = "UPDATE desarrollo_motor SET {} WHERE id_motor = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_motor', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -253,6 +365,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_leng', columns, values)
+    query = f"SELECT id_leng FROM desarrollo_leng WHERE id_leng = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_leng')
+        query = "UPDATE desarrollo_leng SET {} WHERE id_leng = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_leng', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -266,6 +389,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('des_actual', columns, values)
+    query = f"SELECT id_des_act FROM des_actual WHERE id_des_act = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_des_act')
+        query = "UPDATE des_actual SET {} WHERE id_des_act = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('des_actual', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -280,6 +414,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('motricidad', columns, values)
+    query = f"SELECT id_motriz FROM motricidad WHERE id_motriz = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_motriz')
+        query = "UPDATE motricidad SET {} WHERE id_motriz = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('motricidad', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -293,6 +438,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_leng2', columns, values)
+    query = f"SELECT id_leng2 FROM desarrollo_leng2 WHERE id_leng2 = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_leng2')
+        query = "UPDATE desarrollo_leng2 SET {} WHERE id_leng2 = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('desarrollo_leng2', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -304,6 +460,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('audicion', columns, values)
+    query = f"SELECT id_audicion FROM audicion WHERE id_audicion = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_audicion')
+        query = "UPDATE audicion SET {} WHERE id_audicion = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('audicion', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -316,6 +483,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('vision', columns, values)
+    query = f"SELECT id_vision FROM vision WHERE id_vision = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_vision')
+        query = "UPDATE vision SET {} WHERE id_vision = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('vision', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -328,6 +506,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('ante_patologico', columns, values)
+    query = f"SELECT id_ant_pat FROM ante_patologico WHERE id_ant_pat = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_ant_pat')
+        query = "UPDATE ante_patologico SET {} WHERE id_ant_pat = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('ante_patologico', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -337,6 +526,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('trauma', columns, values)
+    query = f"SELECT id_trauma FROM trauma WHERE id_trauma = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_trauma')
+        query = "UPDATE trauma SET {} WHERE id_trauma = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('trauma', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -346,6 +546,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('hospitalizaciones', columns, values)
+    query = f"SELECT id_hosp FROM hospitalizaciones WHERE id_hosp = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_hosp')
+        query = "UPDATE hospitalizaciones SET {} WHERE id_hosp = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('hospitalizaciones', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -358,6 +569,17 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('convulsiones', columns, values)
+    query = f"SELECT id_convul FROM convulsiones WHERE id_convul = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_convul')
+        query = "UPDATE convulsiones SET {} WHERE id_convul = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('convulsiones', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -370,11 +592,24 @@ def antecendentes_postnatales_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('alergias', columns, values)
+    query = f"SELECT id_alergias FROM alergias WHERE id_alergias = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_alergias')
+        query = "UPDATE alergias SET {} WHERE id_alergias = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('alergias', columns, values)
     mycursor.execute(query)
     db.commit()
     
+    
 # Función para información de comportamiento
 def comportamiento_sql(datos, id_paciente):
+    # print(datos)
     mycursor = db.cursor()
     data = {'id_comp': id_paciente,
             'id_act': id_paciente,
@@ -392,6 +627,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('comportamiento', columns, values)
+    query = f"SELECT id_comp FROM comportamiento WHERE id_comp = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_comp')
+        query = "UPDATE comportamiento SET {} WHERE id_comp = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('comportamiento', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -403,6 +649,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('actividad', columns, values)
+    query = f"SELECT id_act FROM actividad WHERE id_act = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_act')
+        query = "UPDATE actividad SET {} WHERE id_act = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('actividad', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -414,6 +671,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('atencion', columns, values)
+    query = f"SELECT id_aten FROM atencion WHERE id_aten = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_aten')
+        query = "UPDATE atencion SET {} WHERE id_aten = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('atencion', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -425,6 +693,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('crisis', columns, values)
+    query = f"SELECT id_crisis_col FROM crisis WHERE id_crisis_col = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_crisis_col')
+        query = "UPDATE crisis SET {} WHERE id_crisis_col = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('crisis', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -435,6 +714,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('adaptacion', columns, values)
+    query = f"SELECT id_adapt FROM adaptacion WHERE id_adapt = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_adapt')
+        query = "UPDATE adaptacion SET {} WHERE id_adapt = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('adaptacion', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -445,6 +735,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('labilidad_emo', columns, values)
+    query = f"SELECT id_lab_em FROM labilidad_emo WHERE id_lab_em = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_lab_em')
+        query = "UPDATE labilidad_emo SET {} WHERE id_lab_em = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('labilidad_emo', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -455,6 +756,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('rel_fam', columns, values)
+    query = f"SELECT id_rel_fam FROM rel_fam WHERE id_rel_fam = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_rel_fam')
+        query = "UPDATE rel_fam SET {} WHERE id_rel_fam = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('rel_fam', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -469,6 +781,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('suenio', columns, values)
+    query = f"SELECT id_suenio FROM suenio WHERE id_suenio = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_suenio')
+        query = "UPDATE suenio SET {} WHERE id_suenio = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('suenio', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -480,6 +803,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('comp_comer', columns, values)
+    query = f"SELECT id_comp_comer FROM comp_comer WHERE id_comp_comer = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_comp_comer')
+        query = "UPDATE comp_comer SET {} WHERE id_comp_comer = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('comp_comer', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -489,6 +823,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('habit_alim', columns, values)
+    query = f"SELECT id_habit_alim FROM habit_alim WHERE id_habit_alim = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_habit_alim')
+        query = "UPDATE habit_alim SET {} WHERE id_habit_alim = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('habit_alim', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -504,6 +849,17 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('tiempo_libre', columns, values)
+    query = f"SELECT id_tilibre FROM tiempo_libre WHERE id_tilibre = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_tilibre')
+        query = "UPDATE tiempo_libre SET {} WHERE id_tilibre = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('tiempo_libre', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -519,11 +875,23 @@ def comportamiento_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('socializacion', columns, values)
+    query = f"SELECT id_social FROM socializacion WHERE id_social = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_social')
+        query = "UPDATE socializacion SET {} WHERE id_social = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('socializacion', columns, values)
     mycursor.execute(query)
     db.commit()
     
 # Funcion para información de métodos de disciplina
 def metodos_disciplina_sql(datos, id_paciente):
+    # print(datos)
     mycursor = db.cursor()
     data = {'id_metod_dis': id_paciente,
             'reganio': datos.get('regaño'),
@@ -535,11 +903,23 @@ def metodos_disciplina_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('metod_dis', columns, values)
+    query = f"SELECT id_metod_dis FROM metod_dis WHERE id_metod_dis = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_metod_dis')
+        query = "UPDATE metod_dis SET {} WHERE id_metod_dis = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('metod_dis', columns, values)
     mycursor.execute(query)
     db.commit()
     
 # Funcion para información de escolaridad
 def escolaridad_sql(datos, id_paciente):
+    # print(datos)
     problema = ''
     if datos.get('lectura_problemas') == 1:
             problema = 'lectura,'
@@ -569,6 +949,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('escolaridad', columns, values)
+    query = f"SELECT id_escil FROM escolaridad WHERE id_escil = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_escil')
+        query = "UPDATE escolaridad SET {} WHERE id_escil = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('escolaridad', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -579,6 +970,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('bilingue', columns, values)
+    query = f"SELECT id_bilingue FROM bilingue WHERE id_bilingue = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_bilingue')
+        query = "UPDATE bilingue SET {} WHERE id_bilingue = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('bilingue', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -589,6 +991,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('guarderia', columns, values)
+    query = f"SELECT id_guarderia FROM guarderia WHERE id_guarderia = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_guarderia')
+        query = "UPDATE guarderia SET {} WHERE id_guarderia = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('guarderia', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -607,6 +1020,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('jardin', columns, values)
+    query = f"SELECT id_jardin FROM jardin WHERE id_jardin = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_jardin')
+        query = "UPDATE jardin SET {} WHERE id_jardin = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('jardin', columns, values)
     mycursor.execute(query)
     db.commit()
     if datos.get('rendimiento(bueno,_malo,_reg)_primaria').lower() == 'bueno':
@@ -625,6 +1049,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('primaria', columns, values)
+    query = f"SELECT id_primaria FROM primaria WHERE id_primaria = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_primaria')
+        query = "UPDATE primaria SET {} WHERE id_primaria = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('primaria', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -640,6 +1075,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap', columns, values)
+    query = f"SELECT id_pterap_clases FROM clases_terap WHERE id_pterap_clases = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_pterap_clases')
+        query = "UPDATE clases_terap SET {} WHERE id_pterap_clases = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -657,6 +1103,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('secundaria', columns, values)
+    query = f"SELECT id_secundaria FROM secundaria WHERE id_secundaria = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_secundaria')
+        query = "UPDATE secundaria SET {} WHERE id_secundaria = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('secundaria', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -672,6 +1129,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap2', columns, values)
+    query = f"SELECT id_sterap_clases FROM clases_terap2 WHERE id_sterap_clases = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_sterap_clases')
+        query = "UPDATE clases_terap2 SET {} WHERE id_sterap_clases = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap2', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -689,6 +1157,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('preparatoria', columns, values)
+    query = f"SELECT id_prepa FROM preparatoria WHERE id_prepa = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_prepa')
+        query = "UPDATE preparatoria SET {} WHERE id_prepa = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('preparatoria', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -704,6 +1183,17 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap3', columns, values)
+    query = f"SELECT id_preterap_clases FROM clases_terap3 WHERE id_preterap_clases = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_preterap_clases')
+        query = "UPDATE clases_terap3 SET {} WHERE id_preterap_clases = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('clases_terap3', columns, values)
     mycursor.execute(query)
     db.commit()
     mycursor = db.cursor()
@@ -721,5 +1211,16 @@ def escolaridad_sql(datos, id_paciente):
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())
     query = "INSERT INTO %s (%s ) VALUES (%s );" % ('apt_inter', columns, values)
+    query = f"SELECT id_apt_inter FROM apt_inter WHERE id_apt_inter = '{id_paciente}'"
+    mycursor.execute(query)
+    try:
+        info = mycursor.fetchall()[0]
+    except:
+        info = False
+    if info != False:
+        data.pop('id_apt_inter')
+        query = "UPDATE apt_inter SET {} WHERE id_apt_inter = '{}'".format(', '.join("{}='{}'".format(k, data[k]) for k in data), id_paciente)
+    else:
+        query = "INSERT INTO %s (%s ) VALUES (%s );" % ('apt_inter', columns, values)
     mycursor.execute(query)
     db.commit()

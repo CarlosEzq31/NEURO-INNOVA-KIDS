@@ -25,7 +25,7 @@ class historialfamiliar(tk.Frame):
 
         #colocamos el titulo de la pantalla y el icono
         canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Historial Familiar\n Familiares con...",
+                            text = "Historial Familiar (Familiares con...)",
                             font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
                             anchor = NW)
         canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.registro_icono_grande, anchor = CENTER)
