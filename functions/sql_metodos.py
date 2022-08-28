@@ -1,12 +1,12 @@
 import hashlib
-import mysql.connector
+# import mysql.connector
 from datetime import date
 from datetime import datetime
-db = mysql.connector.connect(host = 'localhost',
-                             user = 'root', 
-                             passwd = 'dabely2006', 
-                             auth_plugin = 'mysql_native_password',
-                             database = 'neuro_innova')
+# db = mysql.connector.connect(host = 'localhost',
+#                              user = 'root', 
+#                              passwd = 'dabely2006', 
+#                              auth_plugin = 'mysql_native_password',
+#                              database = 'neuro_innova')
 
 
 # Funcion para calcular la edad
@@ -59,7 +59,7 @@ def entrevista_sql(id_paciente):
     data = {'id_ent': id_paciente + f"_{str(datetime.now().strftime('%d_%m_%y'))}",
             'id_paciente': id_paciente,
             'id_eni': id_paciente,
-            'id_magallanes': id_paciente + f"_{str(datetime.now().strftime('%d_%m_%y'))}",
+            'id_magallanes': id_paciente,
             'id_prueba': id_paciente}
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in data.keys())
     values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in data.values())

@@ -11,6 +11,7 @@ def Figuras_superpuestas():
         id_paciente = sys.argv[1]
         ruta_archivo = docs + "\\NEURO INNOVA KIDS\\"+"DATA"+f"\{id_paciente}_figuras_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}.json"
         LOGFILENAME = f"{id_paciente}_figuras_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}"
+        LOGFILE = os.path.join(DATADIR, LOGFILENAME)
     
     # Creamos los objetos para el eyetracker y la pantalla
     display = Display()
@@ -19,21 +20,16 @@ def Figuras_superpuestas():
     # Creamos los objetos para el mouse, el seguidor ocular y el teclado
     teclado = Keyboard()
     mouse = Mouse()
-    eyetracker = EyeTracker(display, eyedatafile = LOGFILENAME, logfile = LOGFILENAME)
+    eyetracker = EyeTracker(display, eyedatafile = LOGFILENAME, logfile = LOGFILE)
     eyetracker.calibrate()
 
     # Archivos de salida
-    LOGFILE = os.path.join(DATADIR, LOGFILENAME)
     log = Logfile(filename = LOGFILE)
     log.write(["trialnr", "image", "imgtime"])
-    print(log)
 
     # Configuramos la entrada del mouse
     mouse.set_visible(visible = True)
-
-    # Leemos todos los nombres de la imagenes
-    # images = os.listdir(IMGDIR)
-
+    
     # Coloreamos la pantalla
     pantalla.set_background_colour((250, 235, 255))
     display.fill(pantalla)
@@ -77,29 +73,26 @@ def Figuras_superpuestas():
             colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
         display.fill(pantalla)
         display.show()
-
-    # Calibrar eyetracker
-    # eyetracker.calibrate()
     
     # Mostrar la primer prueba 
     pantalla.clear()
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_1.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_1.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
     boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\16.png",0.6,screenwidth*0.50,screenheight*0.5)
     boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\17.png",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     # Comenzar a capturar datos
-    imagen = 'prueba_1.jpg'
+    imagen = 'prueba_1.png'
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % 1)
-    eyetracker.log("IMAGENAME %s" % 'prueba_1.jpg')
+    eyetracker.log("IMAGENAME %s" % 'prueba_1.png')
     
     display.fill(pantalla)
     t0 = display.show()
@@ -128,43 +121,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["1"] = False
                 break
-        
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\16a.png", 
-                         0.4, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\coloreadas\\16.png", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\17a.png", 
-                         0.4, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\coloreadas\\17.png", 0.6, screenwidth*0.62,screenheight*0.5)
-        
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-        
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\13a.png", 
-                         0.65, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -192,18 +148,18 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_2.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_2.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.62,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.50,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.62,screenheight*0.5)
     boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\16.png",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.png",0.6,screenwidth*0.88,screenheight*0.5)
     
     # Comenzar a capturar datos
-    imagen = 'prueba_2.jpg'
+    imagen = 'prueba_2.png'
     prueba = 2
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -235,43 +191,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["2"] = False
                 break
-        
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\16a.png", 
-                         0.4, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\coloreadas\\16.png", 0.6, screenwidth*0.75,screenheight*0.5)
-        
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\13a.png", 
-                         0.65, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg", 0.6, screenwidth*0.88,screenheight*0.5)  
-
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -299,19 +218,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_3.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_3.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.50,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.62,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_3.jpg'
+    imagen = 'prueba_3.png'
     prueba = 3
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -343,43 +262,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["3"] = True
                 break
-
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.5,screenheight*0.5)             
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-        
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\14a.png", 
-                         0.52, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\10a.png", 
-                         0.71, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-        
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -407,19 +289,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_4.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_4.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
     boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\16.png",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.62,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_4.jpg'
+    imagen = 'prueba_4.png'
     prueba = 4
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -451,43 +333,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["4"] = True
                 break
-
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\16a.png", 
-                         0.4, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\coloreadas\\16.png", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)   
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\10a.png", 
-                         0.71, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg", 0.6, screenwidth*0.88,screenheight*0.5)           
-
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -515,19 +360,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_5.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_5.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.jpg",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.png",0.6,screenwidth*0.50,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.62,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_5.jpg'
+    imagen = 'prueba_5.png'
     prueba = 5
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -559,43 +404,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["5"] = False
                 break
-
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\11a.png", 
-                         0.62, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.jpg", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\10a.png", 
-                         0.71, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\4.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -623,19 +431,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_6.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_6.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.jpg",0.6,screenwidth*0.50,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.png",0.6,screenwidth*0.50,screenheight*0.5)
     boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\16.png",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_6.jpg'
+    imagen = 'prueba_6.png'
     prueba = 6
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -667,44 +475,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["6"] = False
                 break
-        
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\12a.png", 
-                         0.6, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.jpg", 0.6, screenwidth*0.5,screenheight*0.5)
-
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\16a.png", 
-                         0.4, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\coloreadas\\16.png", 0.6, screenwidth*0.62,screenheight*0.5)
-        
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-        
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -732,19 +502,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_7.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_7.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.jpg",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.png",0.6,screenwidth*0.50,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.62,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_7.jpg'
+    imagen = 'prueba_7.png'
     prueba = 7
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -776,43 +546,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["7"] = False
                 break
-
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\14a.png", 
-                         0.52, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\9.jpg", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\11a.png", 
-                         0.62, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\5.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 
@@ -840,19 +573,19 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
    
-    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_8.jpg",
+    pantalla.draw_image(image = FONDODIR + "\Figuras_Superpuestas\\prueba_8.png",
                         scale = IMGSCALE*2,
                         pos = (screenwidth*0.25,screenheight*0.5))
 
                            
-    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.jpg",0.6,screenwidth*0.50,screenheight*0.5)
-    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg",0.6,screenwidth*0.62,screenheight*0.5)
-    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg",0.6,screenwidth*0.75,screenheight*0.5)
-    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg",0.6,screenwidth*0.88,screenheight*0.5)
+    boton1 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.png",0.6,screenwidth*0.50,screenheight*0.5)
+    boton2 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.png",0.6,screenwidth*0.62,screenheight*0.5)
+    boton3 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.png",0.6,screenwidth*0.75,screenheight*0.5)
+    boton4 = colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.png",0.6,screenwidth*0.88,screenheight*0.5)
 
     display.fill(pantalla)
     # Comenzar a capturar datos
-    imagen = 'prueba_8.jpg'
+    imagen = 'prueba_8.png'
     prueba = 8
     eyetracker.start_recording()
     eyetracker.log("TRIALSTART %d" % prueba)
@@ -884,43 +617,6 @@ def Figuras_superpuestas():
             if boton_presionado(x,y,boton4):
                 respuestas["8"] = False
                 break
-        
-        if boton_presionado(mouseX, mouseY, boton1):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\12a.png", 
-                         0.6, 
-                         screenwidth*0.5,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\6.jpg", 0.6, screenwidth*0.5,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton2):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\13a.png", 
-                         0.65, 
-                         screenwidth*0.62,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\8.jpg", 0.6, screenwidth*0.62,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton3):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\15a.png", 
-                         0.5, 
-                         screenwidth*0.75,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\10.jpg", 0.6, screenwidth*0.75,screenheight*0.5)
-
-        if boton_presionado(mouseX, mouseY, boton4):
-            colocarBoton(pantalla, 
-                         FONDODIR+"\coloreadas\\9a.png", 
-                         0.52, 
-                         screenwidth*0.88,
-                         screenheight*0.5)
-        else: 
-            colocarBoton(pantalla, FONDODIR+"\Figuras_Superpuestas\\1.jpg", 0.6, screenwidth*0.88,screenheight*0.5)
-        
         if boton_presionado(mouseX, mouseY, boton_continuar):
             colocarBoton(pantalla, 
                          FONDODIR+"verde_hover.png", 

@@ -376,11 +376,11 @@ CREATE TABLE `enfermedades_contag` (
 --
 
 CREATE TABLE `entrevista` (
-  `id_ent` varchar(20) NOT NULL,
-  `id_paciente` varchar(10) NOT NULL,
-  `id_eni` varchar(10) NOT NULL,
-  `id_magallanes` varchar(10) NOT NULL,
-  `id_prueba` varchar(30) NOT NULL
+  `id_ent` varchar(65) NOT NULL,
+  `id_paciente` varchar(65) NOT NULL,
+  `id_eni` varchar(65) NOT NULL,
+  `id_magallanes` varchar(65) NOT NULL,
+  `id_prueba` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -584,16 +584,17 @@ CREATE TABLE `natal` (
 --
 
 CREATE TABLE `paciente` (
-  `id_paciente` varchar(12) NOT NULL,
-  `tratamiento` int(1) NOT NULL,
+  `id_paciente` varchar(65) NOT NULL,
+  `nombre` varchar(55) NOT NULL,
+  `domicilio` varchar(55) NOT NULL,
+  `fecha_reg` varchar(10) NOT NULL,
   `fecha_nac` varchar(10) NOT NULL,
-  `genero` varchar(1) NOT NULL,
-  `contacto` varchar(60) NOT NULL,
+  `sexo` varchar(1) NOT NULL,
+  `contacto_datos` varchar(100) NOT NULL,
   `lentes` int(1) NOT NULL,
-  `lateralidad` varchar(3) NOT NULL,
-  `sueno` int(2) NOT NULL,
-  `ayuno` int(2) NOT NULL,
-  `diagnosticoP` varchar(25) NOT NULL
+  `lateralidad` varchar(1) NOT NULL,
+  `diagnosticoP` varchar(80) NOT NULL,
+  `tratamiento` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -689,7 +690,9 @@ CREATE TABLE `pruebas` (
   `id_usuario` varchar(25) NOT NULL,
   `id_paciente` varchar(10) NOT NULL,
   `pruebas` varchar(10) NOT NULL,
-  `archivos_prueba` varchar(300) NOT NULL
+  `archivos_prueba` varchar(300) NOT NULL,
+  `sueno` int(2) NOT NULL,
+  `ayuno` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -791,11 +794,11 @@ CREATE TABLE `trauma` (
 --
 
 CREATE TABLE `usuario` (
-  `id_usuario` varchar(25) NOT NULL,
+  `id_usuario` varchar(65) NOT NULL,
   `nombre` varchar(55) NOT NULL,
+  `usuario` varchar(55) NOT NULL,
   `correo` varchar(60) NOT NULL,
-  `contrasena` varchar(64) NOT NULL,
-  `id_paciente` varchar(25) NOT NULL
+  `contrasena` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -951,8 +954,6 @@ ALTER TABLE `entrevista`
 --
 ALTER TABLE `escolaridad`
   ADD PRIMARY KEY (`id_escil`);
-
-
 
 --
 -- Indices de la tabla `expo_embarazo`

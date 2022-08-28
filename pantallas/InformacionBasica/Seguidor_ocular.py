@@ -1,75 +1,37 @@
 # importamos las librerias necesarias
-import tkinter as tk
 import textwrap
-from tkinter import *
+from classes.mi_boton import *
+from classes.mi_frame import *
+from classes.mi_texto import *
 
-# estableciendo colores
-bg_primary_buttons = "#f6ddeb"
-bg_secondary_buttons = "#e8eab9"
+class seguidor_ocular(mi_frame):
 
-# pantalla de información básica
-class seguidor_ocular(tk.Frame):
     def __init__(self, parent, controller):
-        screenwidth = controller.size['width']
-        screenheight = controller.size['height']
-
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-
-        tk.Frame.__init__(self, parent)
-
-        # creamos un lienzo
-        canvas = tk.Canvas(self, width = screenwidth, height = screenheight, bg = 'white')
-        canvas.pack(side = "top", fill = "both", expand = True)
-
-        # colocamos el fondo de la pantalla
-        canvas.create_image(0,0, image = controller.background, anchor = NW)
+        mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
-        canvas.create_image(int(screenwidth*0.1),int(screenheight*0.15), image = controller.loguito, anchor = CENTER)
+        self.canvas.create_image(int(self.ancho*0.1),int(self.alto*0.15), image = controller.loguito, anchor = CENTER)
 
         #colocamos el titulo de la pantalla y el icono
-        canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Seguidor ocular",
-                            font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
-                            anchor = NW)
-        canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.signo_iterrogacion_grande, anchor = CENTER)
-        
-        canvas.create_image(int(screenwidth*0.9),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'instrucciones')
-        canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
-        instructions_button = tk.Button(self, 
-                                        text = "Instrucciones", 
-                                        command = lambda : controller.ir_instrucciones(self),
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                        **controller.estilo_verde)
-        instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(instructions_button, canvas, 'instrucciones', 'verde')
+        self.titulo_ventana = mi_texto(self.canvas, 0.15, 0.25, 'Seguidor ocular', 3, ANCHOR = NW)
+        self.canvas.create_image(int(self.ancho*0.21),int(self.alto*0.5), image = controller.signo_iterrogacion_grande, anchor = CENTER)
 
-        canvas.create_image(int(screenwidth*0.15),int(screenheight*0.9), image = controller.boton_verde, anchor = CENTER, tags = 'atras')
-        back_button = tk.Button(self, 
-                                text = "Atrás", 
-                                command = lambda : controller.previous_frame(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+        # boton de instrucciones
+        self.boton_instrucciones = mi_boton(self.canvas, 0.90, 0.15, 'Instrucciones', 'verde',
+                                            lambda x: controller.ir_instrucciones(self),
+                                            icono = controller.signo_iterrogacion_chico,
+                                            icono_dentro = True)
+
+        # boton atras
+        self.boton_atras = boton_atras(self.canvas, 0.15, 0.9)
         
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'menu')
-        menu_button = tk.Button(self,
-                                text = "Menú principal", 
-                                command = lambda : controller.ir_menu_principal(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        menu_button.place(relx = 0.7, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
-        
+        # boton de menu principal
+        self.boton_menu = mi_boton(self.canvas, 0.7, 0.15, 'Menú principal', 'verde',
+                                    lambda x: controller.ir_menu_principal())
+
         # Texto de información
         texto_info = "NEURO INNOVA KIDS funciona a través de seguidor ocular, el cual nos brindará información del niño mientras efectúa tareas de carga cognitiva. El seguidor ocular es un dispositivo de luz infrarroja  que procesa el punto donde se fija la mirada (donde estamos mirando), o el movimiento del ojo en relación con la cabeza en la pantalla del servidor.Este método es un proceso no invasivo por lo que  el niño no sufrirá riesgos. Y solo grabará la mirada del niño, por lo que su rostro no será registrado ni aparecerá en la base de datos"
-        canvas.create_text(int(screenwidth*0.65),int(screenheight*0.62), 
-                           text = textwrap.fill(texto_info, width = 50), 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size*1.5)),
-                           tags = 'vista',
-                           anchor = CENTER)
-        
+        self.texto_info = mi_texto(self.canvas, 0.65, 0.62, textwrap.fill(texto_info, width = 50), 1.25, ANCHOR = CENTER)
+
         # Imagen del eyetracker
-        canvas.create_image(int(screenwidth*0.3),int(screenheight*0.725), image = controller.eyetracker_img, anchor = CENTER, tags = 'eyetracker')
+        self.canvas.create_image(int(self.ancho*0.3),int(self.alto*0.725), image = self.controller.eyetracker_img, anchor = CENTER)

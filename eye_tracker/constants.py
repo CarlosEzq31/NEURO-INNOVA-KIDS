@@ -102,7 +102,7 @@ ITI = 500 # ms
 # the TRACKERTYPE indicates the brand of eye tracker, and should be one of the
 # following: 'eyelink', 'smi', 'tobii' 'dumbdummy', 'dummy'
 # TRACKERTYPE = 'eyetribe'
-TRACKERTYPE = 'opengaze'
+TRACKERTYPE = 'eyetribe'
 
 # EyeTribe only
 EYETRIBECALIBDUR = 1500
@@ -113,7 +113,7 @@ EYETRIBEPRECALIBDUR = 500  #ARMANDOLARA I CHANGED FROM 500 to 750
 #EYELINKCALBEEP = True
 
 # set DUMMYMODE to True if no tracker is attached
-DUMMYMODE = True
+DUMMYMODE = False
 
 from pygaze.libscreen import Display, Screen
 from pygaze.libinput import Keyboard, Mouse

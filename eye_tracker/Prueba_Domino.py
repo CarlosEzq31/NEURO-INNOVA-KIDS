@@ -8,7 +8,8 @@ def prueba_domino():
         id_paciente = sys.argv[1]
         ruta_archivo = docs + "\\NEURO INNOVA KIDS\\"+"DATA"+f"\{id_paciente}_domino_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}.json"
         LOGFILENAME = f"{id_paciente}_domino_{str(datetime.now().strftime('%d_%m_%Y %H_%M_%S'))}"
-
+        LOGFILE = os.path.join(DATADIR, LOGFILENAME)
+    
     # Creamos los objetos para el eyetracker y la pantalla
     display = Display()
     pantalla = Screen()
@@ -16,15 +17,12 @@ def prueba_domino():
     # Creamos los objetos para el mouse, el seguidor ocular y el teclado
     teclado = Keyboard()
     mouse = Mouse()
-    print(LOGFILENAME)
-    eyetracker = EyeTracker(display, eyedatafile = LOGFILENAME, logfile = LOGFILENAME)
+    eyetracker = EyeTracker(display, eyedatafile = LOGFILENAME, logfile = LOGFILE)
     eyetracker.calibrate()
 
     # Archivos de salida
-    LOGFILE = os.path.join(DATADIR, LOGFILENAME)
     log = Logfile(filename = LOGFILE)
     log.write(["trialnr", "image", "imgtime"])
-    print(log)
 
 
     # Configuramos la entrada del mouse

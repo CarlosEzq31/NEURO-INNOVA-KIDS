@@ -1,141 +1,59 @@
-import tkinter as tk
-from tkinter import *
-from functions.sql_metodos import *
-from pantallas.EntrevistaEni.HistoriaFamiliar import *
+from classes.mi_boton import *
+from classes.mi_frame import *
+from classes.mi_texto import *
+from classes.mi_seleccion import *
+from classes.mi_formulario import *
 
+class historiaclinica(mi_frame):
 
-class historiaclinica(tk.Frame):
     def __init__(self, parent, controller):
-
-        screenwidth = controller.size['width']
-        screenheight = controller.size['height']
-
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-
-        tk.Frame.__init__(self, parent)
-        # creamos un lienzo
-        canvas = tk.Canvas(self, width = screenwidth, height = screenheight, bg = 'white')
-        canvas.pack(side = "top", fill = "both", expand = True)
-
-        # colocamos el fondo de la pantalla
-        canvas.create_image(0,0, image = controller.background, anchor = NW)
+        mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
-        canvas.create_image(int(screenwidth*0.1),int(screenheight*0.15), image = controller.loguito, anchor = CENTER)
+        self.canvas.create_image(int(self.ancho*0.1),int(self.alto*0.15), image = controller.loguito, anchor = CENTER)
 
-        #colocamos el titulo de la pantalla y el icono
-        canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Historial Clínica",
-                            font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
-                            anchor = NW)
-        canvas.create_image(int(screenwidth*0.21),int(screenheight*0.5), image = controller.registro_icono_grande, anchor = CENTER)
-        
-        # Boton de instrucciones
-        canvas.create_image(int(screenwidth*0.9),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'instrucciones')
-        canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
-        instructions_button = tk.Button(self, 
-                                        text = "Instrucciones", 
-                                        command = lambda : controller.ir_instrucciones(self),
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                        **controller.estilo_verde)
-        instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(instructions_button, canvas, 'instrucciones', 'verde')
+        # colocamos el titulo de la pantalla y el icono
+        self.titulo_ventana = mi_texto(self.canvas, 0.15, 0.25, 'Paciente', 3, ANCHOR = NW)
+        self.canvas.create_image(int(self.ancho*0.21),int(self.alto*0.5), image = controller.registro_icono_grande, anchor = CENTER)
 
-        # Boton de atras
-        canvas.create_image(int(screenwidth*0.15),int(screenheight*0.9), image = controller.boton_verde, anchor = CENTER, tags = 'atras')
-        back_button = tk.Button(self, 
-                                text = "Atrás", 
-                                command = lambda : controller.previous_frame(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+        # boton de instrucciones
+        self.boton_instrucciones = mi_boton(self.canvas, 0.90, 0.15, 'Instrucciones', 'verde',
+                                            lambda x: controller.ir_instrucciones(self),
+                                            icono = controller.signo_iterrogacion_chico,
+                                            icono_dentro = True)
+
+        # boton atras
+        self.boton_atras = boton_atras(self.canvas, 0.15, 0.9)
         
-        # Boton de menu principal
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'menu')
-        menu_button = tk.Button(self, 
-                                text = "Menú principal", 
-                                command = lambda : controller.ir_menu_principal(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        menu_button.place(relx = 0.7, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
+        # boton de menu principal
+        self.boton_menu = mi_boton(self.canvas, 0.7, 0.15, 'Menú principal', 'verde',
+                                    lambda x: controller.ir_menu_principal())
         
-        # Formularios de la entrevista ENI
-        forms = {}
-        self.data = {}
-        label = ['Nombre', 'Fecha de Nacimiento', 'Sexo', 'Grado Escolar']
-        self.botones = {}
-        h = 0.4
-        
-        def seleccion(boton, valor):
-            if valor == True:
-                self.data[boton] = 1
-                self.botones.get(f'{boton}_si').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion_rellena)
-                self.botones.get(f'{boton}_no').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion)
-            else:
-                self.data[boton] = 0
-                self.botones.get(f'{boton}_si').config(bg = 'white')
-                canvas.itemconfig(f'{boton}_si', image = controller.barra_seleccion)
-                self.botones.get(f'{boton}_no').config(bg = '#f6ddeb')
-                canvas.itemconfig(f'{boton}_no', image = controller.barra_seleccion_rellena)
-                
-        for form in label:
-            canvas.create_image(int(screenwidth*0.55),int(screenheight*h), image = controller.boton_rosa, anchor = CENTER)
-            form_texto = tk.Label(self, 
-                                text = f"{form}", 
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                **controller.estilo_rosa)
-            form_texto.place(relx = 0.55, rely = h, anchor = CENTER)
-            if form == 'Sexo':
-                tag = form
-                self.data[tag] = ''
-                # Boton opción hombre
-                canvas.create_image(int(screenwidth*0.725), int(screenheight*h),
-                                    image = controller.barra_seleccion,
-                                    anchor = CENTER, tags = f"{tag}_si")
-                self.botones[f'{tag}_si'] = Button(self,text = 'Masc', borderwidth = 0, bg = 'white',
-                                                highlightthickness = 0, padx = 0, pady = 0,
-                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                                command = partial(seleccion, tag, True))
-                self.botones.get(f'{tag}_si').place(relx = 0.725, rely = h, anchor = CENTER)
-                # Boton opción mujer
-                canvas.create_image(int(screenwidth*0.8), int(screenheight*h),
-                                    image = controller.barra_seleccion,
-                                    anchor = CENTER, tags = f"{tag}_no")
-                self.botones[f'{tag}_no'] = Button(self,text = 'Fem', borderwidth = 0, bg = 'white',
-                                                highlightthickness = 0, padx = 0, pady = 0,
-                                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)),
-                                                command = partial(seleccion, tag, False))
-                self.botones.get(f'{tag}_no').place(relx = 0.8, rely = h, anchor = CENTER)
-            else:
-                canvas.create_image(int(screenwidth*0.775), int(screenheight*h), image = controller.barra_escribir, anchor = CENTER)
-                forms[f"{form}_formulario"] = tk.Entry(self,
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                        borderwidth = 0, 
-                                        highlightthickness = 0,
-                                        bg = 'white')
-                forms.get(f"{form}_formulario").place(relx = 0.775, rely = h, anchor = CENTER)
-            h += 0.075
-        
-        def printData():
-            for form in label:
-                if form != 'Sexo':
-                    self.data[f"{form}"] = forms.get(f"{form}_formulario").get()
-            # print(self.data)
-            if controller.comprobar_formularios(self.data, canvas):
-                historia_clinica_sql(self.data, controller.id)
-                controller.mostrar_pantalla(self, historialfamiliar)
-            
+        # Formulario de datos
+        # Nombre
+        self.nombre = mi_formulario(self.canvas, 0.775, 0.4, 'Nombre')
+
+        # Fecha de nacimiento
+        self.fecha_nacimiento = mi_formulario(self.canvas, 0.775, 0.5, 'Fecha de nacimiento', fecha = True)
+
+        # Sexo
+        self.sexo = mi_seleccion(self.canvas, self.fecha_nacimiento.obtener_label_x(), 0.6, 'Sexo', ['Mascul.', 'Femen.'])
+
+        # Grado escolar
+        self.grado_escolar = mi_formulario(self.canvas, 0.775, 0.7, 'Grado escolar')
+
         # Boton de siguiente
-        canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'siguiente',anchor = CENTER)
-        siguiente_boton = tk.Button(self, 
-                                text = "Siguiente", 
-                                command = printData,
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)
-        controller.animacion_boton(siguiente_boton, canvas, 'siguiente', 'verde')
+        self.boton_siguiente = mi_boton(self.canvas, 0.825, 0.9, 'Siguiente', 'verde',
+                                        lambda x: self.siguiente())
+        
+        # Colocar valores por defecto al iniciar la pantalla
+        self.bind('<Enter>', lambda x: self.colocar_valores_por_defecto())
+
+    def siguiente(self):
+        if self.validar_formularios():
+            print(self.datos)
+            self.controller.mostrar_pantalla(self, 'historialfamiliar')
+
+    def colocar_valores_por_defecto(self):
+        self.nombre.colocar_por_defecto(self.controller.paciente.nombre)
+        self.fecha_nacimiento.colocar_por_defecto(self.controller.paciente.fecha_nacimiento)

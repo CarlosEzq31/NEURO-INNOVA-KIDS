@@ -1,157 +1,76 @@
-import tkinter as tk
-from tkinter import *
-from pantallas.Pruebas import *
-from functions.sql_metodos import *
+from classes.mi_boton import *
+from classes.mi_formulario import *
+from classes.mi_frame import *
+from classes.mi_texto import *
+from classes.usuario import *
 
-bg_primary_buttons = "#f6ddeb"
-bg_secondary_buttons = "#e8eab9"
-
-
-class iniciar_sesion(tk.Frame):
+class iniciar_sesion(mi_frame):
     def __init__(self, parent, controller):
-
-        screenwidth = controller.size['width']
-        screenheight = controller.size['height']
-
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-
-        
-        tk.Frame.__init__(self, parent)
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-        # creamos un lienzo
-        canvas = tk.Canvas(self, width = screenwidth, height = screenheight, bg = 'white')
-        canvas.pack(side = "top", fill = "both", expand = True)
+        mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocamos el fondo de la pantalla
-        canvas.create_image(0,0, image = controller.background, anchor = NW)
+        self.canvas.create_image(0,0, image = controller.background, anchor = NW)
 
         # colocar el logo
-        canvas.create_image(int(screenwidth*0.1),int(screenheight*0.15), image = controller.loguito, anchor = CENTER)
+        self.canvas.create_image(int(self.ancho*0.1),int(self.alto*0.15), image = controller.loguito, anchor = CENTER)
 
         #colocamos el titulo de la pantalla
-        canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Iniciar sesión",
-                            font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
-                            anchor = NW)
+        self.titulo_ventana = mi_texto(self.canvas, 0.15, 0.25, 'Iniciar sesión', 3, ANCHOR = NW)
         
         # Boton de menu principal
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'menu')
-        menu_button = tk.Button(self, 
-                                text = "Menú principal", 
-                                command = lambda : controller.ir_menu_principal(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        menu_button.place(relx = 0.7, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
+        self.boton_menu = mi_boton(self.canvas, 0.7, 0.15, 'Menú principal', 'verde',
+                                    lambda x: controller.ir_menu_principal())
         
         # Boton de instrucciones
-        canvas.create_image(int(screenwidth*0.9),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'instrucciones')
-        canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
-        instructions_button = tk.Button(self, 
-                                        text = "Instrucciones", 
-                                        command = lambda: controller.ir_instrucciones(self),
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                        **controller.estilo_verde)
-        instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(instructions_button, canvas, 'instrucciones', 'verde')
-        
-        # Campos del formulario
-        canvas.create_image(int(screenwidth*0.55),int(screenheight*0.725), image = controller.boton_rosa, anchor = CENTER)
-        usuario_texto = tk.Label(self, 
-                                text = "Usuario", 
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                borderwidth = 0, 
-                                bg = bg_primary_buttons, 
-                                highlightthickness = 0,
-                                padx=0, 
-                                pady=0)
-        usuario_texto.place(relx = 0.55, rely = 0.725, anchor = CENTER)
-        canvas.create_image(int(screenwidth*0.775), int(screenheight*0.725), image = controller.barra_escribir, anchor = CENTER)
-        usuario_formulario = tk.Entry(self,
-                                    font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                    borderwidth = 0, 
-                                    highlightthickness = 0,
-                                    bg = 'white')
-        usuario_formulario.place(relx = 0.775, rely = 0.725, anchor = CENTER)
-
-
-        canvas.create_image(int(screenwidth*0.55),int(screenheight*0.8), image = controller.boton_rosa, anchor = CENTER)
-        contraseña_texto = tk.Label(self, 
-                                text = "Contraseña", 
-                                font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                borderwidth = 0, 
-                                bg = bg_primary_buttons, 
-                                highlightthickness = 0,
-                                padx=0, 
-                                pady=0)
-        contraseña_texto.place(relx = 0.55, rely = 0.8, anchor = CENTER)
-        canvas.create_image(int(screenwidth*0.775), int(screenheight*0.8), image = controller.barra_escribir, anchor = CENTER)
-        contraseña_formulario = tk.Entry(self,
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size*1)), 
-                                        show = "*",
-                                        borderwidth = 0, 
-                                        highlightthickness = 0,
-                                        bg = 'white')
-        contraseña_formulario.place(relx = 0.775, rely = 0.8, anchor = CENTER)
-        
+        self.boton_instrucciones = mi_boton(self.canvas, 0.90, 0.15, 'Instrucciones', 'verde',
+                                            lambda x: controller.ir_instrucciones(self),
+                                            icono = controller.signo_iterrogacion_chico,
+                                            icono_dentro = True)
         # Boton de atras
-        canvas.create_image(int(screenwidth*0.15),int(screenheight*0.9), image = controller.boton_verde, anchor = CENTER, tags = 'atras')
-        back_button = tk.Button(self, 
-                                text = "Atrás", 
-                                command = lambda : controller.previous_frame(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+        self.boton_atras = boton_atras(self.canvas, 0.15, 0.9)
         
-        # funcion para iniciar sesion
-        def iniciar_sesion_():
-            usuario = usuario_formulario.get()
-            passwd = contraseña_formulario.get()
-            if usuario and passwd:
-                id = iniciar_sesion_sql(usuario, passwd)
-                if id:
-                    controller.id = id
-                    print(controller.id)
-                    controller.comprobar_directorio_salida(controller.id)
-                    controller.mostrar_pantalla(self, pruebas)
-                else:
-                    texto_aviso('Usuario o contraseña incorrectos')
-            else:
-                texto_aviso('Por favor, introduzca sus datos')
-            # controller.mostrar_pantalla(self, pruebas)
-                    
-        def texto_aviso(texto):
-            texto_error = canvas.create_text(int(screenwidth*0.5),int(screenheight*0.25), 
-                            text = texto,
-                            font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                            anchor = CENTER)
-            controller.after(3000,lambda: canvas.delete(texto_error))
+        # Formulario para el usuario
+        self.usuario_form = mi_formulario(self.canvas, 0.775, 0.725, 'Usuario', focus = True,
+                                        command = lambda x: self.iniciar_sesion(), placeholder = 'Alguien')
+
+        # Formulario para la contraseña
+        self.contrasena_form = mi_formulario(self.canvas, 0.775, 0.8,
+                                            'Contraseña', contrasena = True,
+                                            command = lambda x: self.iniciar_sesion())
+        
             
         # Boton actualizar datos
-        canvas.create_image(int(screenwidth*0.15),int(screenheight*0.825), image = controller.boton_verde, tags = 'actualizar',anchor = CENTER)
-        siguiente_boton = tk.Button(self, 
-                                text = "Actualizar datos", 
-                                # command = iniciar_sesion_,
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        siguiente_boton.place(relx = 0.15, rely = 0.825, anchor = CENTER)
-        controller.animacion_boton(siguiente_boton, canvas, 'actualizar', 'verde')
+        self.boton_actulizar_datos = mi_boton(self.canvas, 0.15, 0.825, 'Actulizar datos',
+                                            'verde', lambda x: None)
         
         # Boton de siguiente
-        canvas.create_image(int(screenwidth*0.85),int(screenheight*0.9), image = controller.boton_rosa, tags = 'iniciar',anchor = CENTER)
-        siguiente_boton = tk.Button(self, 
-                                text = "Iniciar sesión", 
-                                command = iniciar_sesion_,
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_rosa)
-        siguiente_boton.place(relx = 0.85, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(siguiente_boton, canvas, 'iniciar', 'rosa')
-        
-        def aux(e):
-            iniciar_sesion_()
-        
-        usuario_formulario.bind('<Return>', aux)
-        contraseña_formulario.bind('<Return>', aux)
+        self.boton_siguiente = mi_boton(self.canvas, 0.85, 0.9, 'Iniciar sesión', 
+                                'rosa', lambda x: self.iniciar_sesion())
+
+
+    def iniciar_sesion(self):
+        if self.validar_formularios():
+            self.controller.usuario = Usuario(self.datos['usuario_form'], self.datos['contrasena_form'])
+            try:
+                self.controller.usuario.iniciar_sesion()
+                self.controller.mostrar_pantalla(self, 'inicio_paciente')
+                self.limpiar_formularios()
+            except Exception as e:
+                print(e)
+                self.texto_aviso(0.5, 0.05, 'Usuario o contraseña incorrectos')
+    
+    def validar_formularios(self):
+        self.datos = {}
+        for key, value in vars(self).items():
+            if 'mi_formulario' in str(value):
+                if value.datos() == '':
+                    self.texto_aviso(0.5, 0.05, 'Todos los campos son obligatorios')
+                    return False
+                else:
+                    self.datos[key] = value.datos()
+        return True
+    
+    def limpiar_formularios(self):
+        for key, value in vars(self).items():
+            if 'mi_formulario' in str(value):
+                value.limpiar()

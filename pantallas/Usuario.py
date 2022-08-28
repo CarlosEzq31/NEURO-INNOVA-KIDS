@@ -1,133 +1,75 @@
-import tkinter as tk
-from tkinter import *
-from functions.sql_metodos import *
+from classes.mi_boton import *
+from classes.mi_frame import *
+from classes.mi_texto import *
+from classes.paciente import *
 
-class usuario_info(tk.Frame):
+class usuario_info(mi_frame):
+
     def __init__(self, parent, controller):
-
-        screenwidth = controller.size['width']
-        screenheight = controller.size['height']
-
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-        
-        tk.Frame.__init__(self, parent)
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-        # creamos un lienzo
-        canvas = tk.Canvas(self, width = screenwidth, height = screenheight, bg = 'white')
-        canvas.pack(side = "top", fill = "both", expand = True)
-
-        # colocamos el fondo de la pantalla
-        canvas.create_image(0,0, image = controller.background, anchor = NW, tags = 'fondo')
+        mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
-        canvas.create_image(int(screenwidth*0.1),int(screenheight*0.15), image = controller.loguito, anchor = CENTER)
+        self.canvas.create_image(int(self.ancho*0.1),int(self.alto*0.15), image = controller.loguito, anchor = CENTER)
 
-        #colocamos el titulo de la pantalla
-        canvas.create_text(int(screenwidth*0.15),int(screenheight*0.25), 
-                            text = "Usuario",
-                            font = ('Mukta Malar ExtraLight', int(button_font_size*3)),
-                            anchor = NW)
+        # colocamos el titulo de la pantalla y el icono
+        self.titulo_ventana = mi_texto(self.canvas, 0.15, 0.25, 'Datos del Paciente', 3, ANCHOR = NW)
+        self.canvas.create_image(int(self.ancho*0.21),int(self.alto*0.5), image = controller.signo_iterrogacion_grande, anchor = CENTER)
+
+        # boton de instrucciones
+        self.boton_instrucciones = mi_boton(self.canvas, 0.90, 0.15, 'Instrucciones', 'verde',
+                                            lambda x: controller.ir_instrucciones(self),
+                                            icono = controller.signo_iterrogacion_chico,
+                                            icono_dentro = True)
+
+        # boton atras
+        self.boton_atras = boton_atras(self.canvas, 0.15, 0.9, command = lambda x: self.atras())
         
-        # Boton de menu principal
-        canvas.create_image(int(screenwidth*0.7),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'menu')
-        menu_button = tk.Button(self, 
-                                text = "Menú principal", 
-                                command = lambda : controller.ir_menu_principal(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        menu_button.place(relx = 0.7, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(menu_button, canvas, 'menu', 'verde')
+        # boton de menu principal
+        self.boton_menu = mi_boton(self.canvas, 0.7, 0.15, 'Menú principal', 'verde',
+                                    lambda x: controller.ir_menu_principal())
         
-        # Boton de instrucciones
-        canvas.create_image(int(screenwidth*0.9),int(screenheight*0.15), image = controller.boton_verde, anchor = CENTER, tags = 'instrucciones')
-        canvas.create_image(int(screenwidth*0.84),int(screenheight*0.15), image = controller.signo_iterrogacion_chico, anchor = CENTER)
-        instructions_button = tk.Button(self, 
-                                        text = "Instrucciones", 
-                                        command = lambda : controller.ir_instrucciones(self),
-                                        font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                        **controller.estilo_verde)
-        instructions_button.place(relx = 0.91, rely = 0.15, anchor = CENTER)
-        controller.animacion_boton(instructions_button, canvas, 'instrucciones', 'verde')
-        
-        
-        # Datos del paciente
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.475), 
-                           text = 'Datos del paciente', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size*1.5)),
-                           tags = 'datos',
-                           anchor = NW)
-        # id
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.525), 
-                           text = 'id', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'id',
-                           anchor = NW)
-        
-        # Fecha de registro
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.575), 
-                           text = 'Fecha de registro: 1/08/2020', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'fecha',
-                           anchor = NW)
-        
-        # Nombre del aplicador
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.61), 
-                           text = 'Nombre del aplicador: Carmen cabrera', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'aplicador',
-                           anchor = NW)
-        # Sexo
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.645), 
-                           text = 'Sexo: Femenino', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'sexo',
-                           anchor = NW)
-        # Edad
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.68), 
-                           text = 'Edad: 11 años', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'edad',
-                           anchor = NW)
-        # Estatura
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.715), 
-                           text = 'Estatura : 1.30 m', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'estatura',
-                           anchor = NW)
-        # Diagnostico
-        canvas.create_text(int(screenwidth*0.45),int(screenheight*0.75), 
-                           text = 'Diagnóstico : TDAH', 
-                           font = ('Mukta Malar ExtraLight', int(button_font_size)),
-                           tags = 'diagnostico',
-                           anchor = NW)
-        
-        # Obtenemos los datos del usuario mediante el id
-        self.i = True
-        def mostrar_datos(e):
-            while self.i == True and controller.id != 0:
-                datos = obtener_info_por_id(controller.id)
-                print(datos)
-                canvas.itemconfig('id', text = datos.get('usuario'))
-                canvas.itemconfig('datos', text = str('Nombre: ' + datos.get('nombre')))
-                canvas.itemconfig('sexo', text = str('Genero: ' + datos.get('genero')))
-                self.i = False
-        
-        
-        self.bind('<Enter>', mostrar_datos)
-        
-        def salir():
-            self.i = True
-            controller.previous_frame()
+        # Mostrar los datos del paciente
+        self.informacion = False
+        self.bind('<Enter>', lambda x: self.mostrar_datos_paciente())
+    
+    def mostrar_datos_paciente(self):
+        if not self.informacion:
+            self.informacion = True
+            self.paciente = self.controller.paciente
             
-        # Boton de atras
-        canvas.create_image(int(screenwidth*0.15), int(screenheight*0.9), image = controller.boton_verde, anchor = CENTER, tags = 'atras')
-        back_button = tk.Button(self, 
-                                text = "Atrás", 
-                                command = lambda : salir(),
-                                font = ('Mukta Malar ExtraLight', int(button_font_size)), 
-                                **controller.estilo_verde)
-        
-        back_button.place(relx = 0.15, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(back_button, canvas, 'atras', 'verde')
+            # Datos del paciente
+            
+            # Nombre del paciente
+            self.texto_nombre = mi_texto(self.canvas, 0.45, 0.52,
+                                        'Nombre: ' + self.paciente.nombre, 1.5, ANCHOR = NW)
+            
+            # Fecha de registro
+            self.texto_registro = mi_texto(self.canvas, 0.45, 0.57,
+                                        'Fecha de registro: ' + self.paciente.fecha_reg, 1.5, ANCHOR = NW)
+            
+            # Sexo
+            sexo = 'Masculino' if self.paciente.sexo == 'M' else 'Femenino' if self.paciente.sexo == 'F' else 'Otro'
+            self.texto_sexo = mi_texto(self.canvas, 0.45, 0.62,
+                                        'Sexo: ' + sexo, 1.5, ANCHOR = NW)
+
+            # Edad
+            self.texto_edad = mi_texto(self.canvas, 0.45, 0.67,
+                                        'Edad: ' + str(self.paciente.edad), 1.5, ANCHOR = NW)
+
+            # Diagnostico
+            self.texto_diagnostico = mi_texto(self.canvas, 0.45, 0.72,
+                                            'Diagnóstico : ' + self.paciente.diagnostico_previo, 1.5, ANCHOR = NW)
+            
+            # Domicilio
+            self.texto_domicilio = mi_texto(self.canvas, 0.45, 0.77,
+                                            'Domicilio: ' + self.paciente.domicilio, 1.5, ANCHOR = NW)
+    
+    def atras(self):
+        self.informacion = False
+        self.texto_nombre.destroy()
+        self.texto_registro.destroy()
+        self.texto_sexo.destroy()
+        self.texto_edad.destroy()
+        self.texto_diagnostico.destroy()
+        self.texto_domicilio.destroy()
+        self.controller.ir_atras()

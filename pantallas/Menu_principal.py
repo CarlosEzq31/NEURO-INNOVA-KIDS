@@ -1,52 +1,29 @@
-import tkinter as tk
-from tkinter import *
-from pantallas.Ingreso import *
-from pantallas.Informacion_basica import *
+# Importar librerias necesarias
+from classes.mi_boton import *
+from classes.mi_frame import *
+from classes.mi_formulario import *
+from classes.mi_seleccion import *
+from classes.mi_lista import *
 
+class menu_principal(mi_frame):
 
-class menu_principal(tk.Frame):
     def __init__(self, parent, controller):
-        ancho_pantalla = controller.size['width']
-        alto_pantalla = controller.size['height']
+        mi_frame.__init__(self, parent, controller, controller.back_ninios)
 
-        # Definimos el tamaño de la fuente
-        button_font_size = controller.boton_tamanio
-
-        tk.Frame.__init__(self, parent)
-        # creamos un lienzo
-        canvas = tk.Canvas(self, width = ancho_pantalla, height = alto_pantalla, bg = 'white')
-        canvas.pack(side = "top", fill = "both", expand = True)
-
-        # colocamos el fondo de la pantalla
-        canvas.create_image(0,0, image = controller.back_ninios, anchor = NW)
         # colocar el logo
-        canvas.create_image(int(ancho_pantalla*0.25),int(alto_pantalla*0.4), image = controller.logo, anchor = CENTER)
-        
-        # crear y colocar el boton de informacion
-        canvas.create_image(int(ancho_pantalla*0.875),int(alto_pantalla*0.7), image = controller.boton_rosa, tags = 'informacion',anchor = CENTER)
-        canvas.create_image(int(ancho_pantalla*0.75),int(alto_pantalla*0.7), image = controller.signo_iterrogacion, anchor = CENTER)
-        about_button = tk.Button(self, text = "Información básica",
-                                command = lambda : controller.mostrar_pantalla(self,informacion_basica), 
-                                font = ('Mukta Malar ExtraLight', button_font_size), 
-                                **controller.estilo_rosa)
-        about_button.place(relx = 0.875, rely = 0.7, anchor = CENTER)
-        controller.animacion_boton(about_button, canvas, 'informacion')
-        
-        # crear y colocar el boton para entrar al programa
-        canvas.create_image(int(ancho_pantalla*0.875),int(alto_pantalla*0.8), image = controller.boton_rosa,tags = 'neuro', anchor = CENTER)
-        canvas.create_image(int(ancho_pantalla*0.75),int(alto_pantalla*0.8), image = controller.logo_bn, anchor = CENTER)
-        neuro_boton = tk.Button(self, text = "NEURO INNOVA KIDS®",
-                                font = ('Mukta Malar ExtraLight', button_font_size), 
-                                command = lambda : controller.mostrar_pantalla(self, ingreso),
-                                **controller.estilo_rosa)
-        neuro_boton.place(relx = 0.875, rely = 0.8, anchor = CENTER)
-        controller.animacion_boton(neuro_boton, canvas, 'neuro')
+        self.canvas.create_image(int(self.ancho * 0.25), int(self.alto * 0.4), image = self.controller.logo, anchor = CENTER)
 
-        # crear y colocar el boton para salir del programa
-        canvas.create_image(int(ancho_pantalla*0.875),int(alto_pantalla*0.9), image = controller.boton_rosa, tags = 'salir',anchor = CENTER)
-        salir_boton = tk.Button(self, text = "Salir",
-                                command = lambda : controller.destroy(),
-                                font = ('Mukta Malar ExtraLight', button_font_size), 
-                                **controller.estilo_rosa)
-        salir_boton.place(relx = 0.875, rely = 0.9, anchor = CENTER)
-        controller.animacion_boton(salir_boton, canvas, 'salir')
+        # boton de informacion
+        self.boton_info = mi_boton(self.canvas, 0.875, 0.7, 'Información básica', 'rosa', 
+                                    lambda x: self.controller.mostrar_pantalla(self, 'informacion_basica'),
+                                    icono = self.controller.signo_iterrogacion,
+                                    icono_x = -0.5)
+
+        # boton de neuro innova kids
+        self.boton_neuro = mi_boton(self.canvas, 0.875, 0.8, 'NEURO INNOVA KIDS®', 'rosa', 
+                                    lambda x: self.controller.mostrar_pantalla(self, 'ingreso'),
+                                    icono = self.controller.logo_bn)
+
+        # Boton para salir del programa
+        self.boton_salir = mi_boton(self.canvas, 0.875, 0.9, 'Salir', 'rosa', 
+                                    lambda x: self.controller.destroy())
