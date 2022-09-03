@@ -15,6 +15,7 @@ class mi_lista(mi_boton):
                         grande = True, **kwargs)
 
     def desplegar_list(self):
+        """Despliega la lista de elementos"""
         self.seleccion = None
         self.lista = Listbox(self.canvas.master, selectmode = 'single', width = len(max(self.elementos, key = len)),
                                 font = ('Mukta Malar ExtraLight', int(self.canvas.master.controller.boton_tamanio * self.tamano_letra)),
@@ -36,27 +37,35 @@ class mi_lista(mi_boton):
         self.canvas.bind('<Button-1>',  lambda x: self.ocultar_lista())
 
     def hover_seleccion(self, event):
+        """Colorea el elemento seleccionado"""
         self.lista.selection_clear(0, END)
         self.lista.selection_set(self.lista.nearest(event.y))
 
     def descolorear(self, event = None):
+        """Descolorea los elementos de la lista"""
         self.lista.selection_clear(0, END)
 
     def seleccionar_elemento(self, event):
+        """Selecciona el elemento de la lista"""
         self.seleccion = str(self.lista.get(self.lista.curselection()))
         self.lista.destroy()
         self.lista = None
         self.canvas.itemconfig(self.texto_id, text = f'{self.texto.split(" ")[1].title()}: ' + self.seleccion.split(' ')[0].title())
     
     def ocultar_lista(self):
+        """Oculta la lista de elementos"""
         if not self.seleccion:
             self.lista.destroy()
             self.lista = None
     
-    def datos(self):
+    def datos(self) -> str:
+        """Devuelve los datos de la lista"""
         return self.seleccion
     
     def destroy(self):
+        """Destruye la lista"""
         super().destroy()
-        if self.lista:
+        try:
             self.lista.destroy()
+        except:
+            pass

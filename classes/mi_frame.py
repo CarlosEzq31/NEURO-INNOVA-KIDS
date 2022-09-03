@@ -23,6 +23,7 @@ class mi_frame(tk.Frame):
 
     
     def texto_aviso(self, x, y, texto, **kwargs):
+        """Muestra un texto en la pantalla"""
         tiempo = kwargs.get('tiempo', 3000)
         tamano = kwargs.get('tamano', 2)
         self.texto_aviso_id = self.canvas.create_text(int(self.ancho * x),int(self.alto * y), 
@@ -32,11 +33,14 @@ class mi_frame(tk.Frame):
         self.controller.after(tiempo, lambda: self.canvas.delete(self.texto_aviso_id))
     
     def focus_(self):
+        """Coloca el foco en el último formulario que se haya seleccionado"""
         if self.frame_focus:
             self.frame_focus.focus_set()
     
 
     def validar_formularios(self):
+        """Valida que los formularios no estén vacíos
+        y crea un atributo con el valor de cada formulario"""
         self.datos = {}
         for key, value in vars(self).items():
             if 'mi_formulario' in str(value) or 'mi_seleccion' in str(value):

@@ -55,6 +55,7 @@ class ventana_emergente(tk.Toplevel):
 
         
     def animacion_entrada(self, t = 0):
+        """Animación de entrada de la ventana"""
         y = self.alto * 2 * math.exp(-0.008*t)
         s = f"{int(self.ancho)}x{int(self.alto)}+{int((self.ancho_pantalla/2) - (self.ancho/2))}+" + str(int(y))
         self.geometry(s)
@@ -67,6 +68,7 @@ class ventana_emergente(tk.Toplevel):
         
             
     def animacion_salida(self, t = 0):
+        """Animación de salida de la ventana"""
         y = (self.alto * 2 - self.alto * 2 * math.exp(-0.008*t)) + self.alto_pantalla/2
         s = f"{int(self.ancho)}x{int(self.alto)}+{int((self.ancho_pantalla/2) - (self.ancho/2))}+" + str(int(y))
         self.geometry(s)

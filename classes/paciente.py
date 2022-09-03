@@ -16,6 +16,8 @@ class Paciente():
         return string
     
     def obtener_informacion(self):
+        """Obtiene la información del paciente
+        agregando los atributos a la instancia"""
         mycursor = db.cursor()
         query = f"""
         SELECT nombre, domicilio, fecha_reg, fecha_nac, sexo, contacto_datos, lentes, lateralidad, diagnosticoP, tratamiento FROM paciente WHERE id_paciente = '{self.id}'
@@ -41,13 +43,16 @@ class Paciente():
         self.tratamiento = x[9]
     
     def datos_nuevos(self, args):
+        """Actualiza los datos del paciente"""
         for key, value in args.items():
             setattr(self, key, value)
 
     def datos(self):
+        """Obtiene los datos del paciente"""
         return vars(self)
     
-    def registrar(self):
+    def registrar(self) -> bool:
+        """Registra el paciente en la base de datos"""
         mycursor = db.cursor()
         self.sexo_ = 'M' if self.sexo == 'Hombre' else 'F'
         self.lateralidad_ = 'I' if self.lateralidad == 'Izquierda' else 'D' if self.lateralidad == 'Derecha' 'D' else 'A'
@@ -66,7 +71,8 @@ class Paciente():
             raise Exception("Error al registrar")
         self.obtener_informacion()
     
-    def calcular_edad(self):
+    def calcular_edad(self) -> int:
+        """Calcula la edad del paciente"""
         fecha_nac = datetime.strptime(self.fecha_nacimiento, "%d/%m/%Y")
         hoy = datetime.strptime(datetime.now().strftime("%d/%m/%Y"), "%d/%m/%Y")
         return math.floor((hoy - fecha_nac).days / 365)

@@ -16,13 +16,16 @@ class mi_gif():
         self.dibujar()
 
     def dibujar(self):
+        """Dibuja el gif en el canvas"""
         self.id_gif = self.canvas.create_image(self.x, self.y, image = self.gif[self.gif_frame], anchor = CENTER)
 
     def animar(self):
+        """Animacion del gif"""
         self.canvas.itemconfig(self.id_gif, image = self.gif[self.gif_frame])
         self.gif_frame += 1
         if self.gif_frame == len(self.gif):
             self.gif_frame = 0
 
     def detener(self):
+        """Detiene la animacion del gif"""
         self.canvas.itemconfig(self.id_gif, image = self.gif[self.gif_frame])

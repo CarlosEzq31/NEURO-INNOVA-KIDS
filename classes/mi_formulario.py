@@ -1,6 +1,5 @@
 import calendar
 from datetime import date
-import tkinter as tk
 from tkinter import *
 
 class mi_formulario():
@@ -24,6 +23,7 @@ class mi_formulario():
         self.dibujar()
 
     def dibujar(self):
+        """Dibuja el formulario"""
         self.id_form = self.canvas.create_image(self.x, self.y, image = self.controller.barra_escribir,
                                                 anchor = CENTER)
         self.entry = Entry(self.canvas, 
@@ -49,6 +49,7 @@ class mi_formulario():
         self.animar()
 
     def animar(self): 
+        """Animación de los formularios"""
         self.canvas.tag_bind(self.id_form, '<Button-1>', lambda x: self.cambiar_focus())
         self.entry.bind('<Button-1>', lambda x: self.cambiar_focus())
         if self.command:
@@ -60,7 +61,8 @@ class mi_formulario():
             self.entry.bind('<FocusIn>', lambda x: self.limpiar())
             self.entry.bind('<FocusOut>', lambda x: self.colocar_placeholder())
 
-    def datos(self):
+    def datos(self) -> str:
+        """Obtiene los datos del formulario"""
         if self.fecha:
             dias, meses, anios = self.entry.get().split('/')
             dias = int(dias)
@@ -97,6 +99,7 @@ class mi_formulario():
         return self.entry.get()
 
     def limpiar(self):
+        """Limpia el formulario"""
         if self.entry.get() == self.placeholder and not self.por_defecto:
             self.entry.delete(0, END)
             self.entry.config(fg = 'black')
@@ -104,11 +107,13 @@ class mi_formulario():
             self.colocar_placeholder()
 
     def cambiar_focus(self):
+        """Cambia el foco del formulario"""
         self.entry.focus_set()
         self.frame.frame_focus = self.entry
         self.limpiar()
     
     def colocar_placeholder(self):
+        """Coloca el placeholder en el formulario"""
         if self.entry.get() == '' or self.frame.controller.frame != self.frame:
             if self.por_defecto:
                 self.entry.config(fg = 'black')
@@ -118,10 +123,12 @@ class mi_formulario():
             if self.placeholder:
                 self.entry.insert(0, self.placeholder)
     
-    def obtener_label_x(self):
+    def obtener_label_x(self) -> float:
+        """Obtiene la posición x del label"""
         return self.label_x / self.ancho
 
     def colocar_por_defecto(self, texto):
+        """Coloca un texto por defecto en el formulario"""
         self.por_defecto = texto
         self.placeholder = texto
         self.colocar_placeholder()

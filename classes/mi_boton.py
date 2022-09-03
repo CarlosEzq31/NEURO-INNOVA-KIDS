@@ -18,6 +18,7 @@ class mi_boton():
         self.dibujar_boton()
 
     def dibujar_boton(self):
+        """Dibuja el boton en el canvas"""
         if self.color_boton == 'rosa':
             if self.grande:
                 self.image_id = self.canvas.create_image(self.x, self.y, image = self.canvas.master.controller.boton_rosa_grande)
@@ -30,7 +31,6 @@ class mi_boton():
         self.texto_id = self.canvas.create_text(self.x, self.y, text = self.texto, 
                                                 font = ('Mukta Malar ExtraLight', int(self.canvas.master.controller.boton_tamanio * self.tamano_letra)), 
                                                 anchor = CENTER)
-
         
         if self.icono:
             if self.icono_dentro == True:
@@ -51,6 +51,7 @@ class mi_boton():
         self.animacion()
     
     def animacion(self):
+        """Agrega las animaciones al boton"""
         self.canvas.tag_bind(self.image_id, '<Enter>', self.hover_img)
         self.canvas.tag_bind(self.image_id, '<Leave>', self.leave_img)
         self.canvas.tag_bind(self.texto_id, '<Enter>', self.hover_texto)
@@ -63,6 +64,7 @@ class mi_boton():
             self.canvas.tag_bind(self.icono_id, '<ButtonRelease-1>', self.command)
 
     def hover_img(self, event):
+        """Cambia la imagen del boton cuando el mouse esta encima"""
         if self.color_boton == 'rosa':
             if self.grande:
                 self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_rosa__hover_grande)
@@ -72,6 +74,7 @@ class mi_boton():
             self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_verde_hover)
     
     def leave_img(self, event):
+        """Cambia la imagen del boton cuando el mouse deja de estar encima"""
         if self.color_boton == 'rosa':
             if self.grande:
                 self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_rosa_grande)
@@ -81,6 +84,7 @@ class mi_boton():
             self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_verde)
         
     def hover_texto(self, event):
+        """Cambia el color del texto cuando el mouse esta encima"""
         self.canvas.itemconfig(self.texto_id, fill = 'white')
         if self.color_boton == 'rosa':
             if self.grande:
@@ -91,6 +95,7 @@ class mi_boton():
             self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_verde_hover)
 
     def leave_texto(self, event):
+        """Cambia el color del texto cuando el mouse deja de estar encima"""
         self.canvas.itemconfig(self.texto_id, fill = 'black')
         if self.color_boton == 'rosa':
             if self.grande:
@@ -101,10 +106,25 @@ class mi_boton():
             self.canvas.itemconfig(self.image_id, image = self.canvas.master.controller.boton_verde)
     
     def destroy(self):
+        """Destruye el boton"""
         self.canvas.delete(self.image_id)
         self.canvas.delete(self.texto_id)
         if self.icono:
             self.canvas.delete(self.icono_id)
+
+    def deshabilitar(self):
+        """Deshabilita el boton"""
+        self.canvas.itemconfig(self.image_id, state = 'disabled')
+        self.canvas.itemconfig(self.texto_id, state = 'disabled')
+        if self.icono:
+            self.canvas.itemconfig(self.icono_id, state = 'disabled')
+
+    def habilitar(self):
+        """Habilita el boton"""
+        self.canvas.itemconfig(self.image_id, state = 'normal')
+        self.canvas.itemconfig(self.texto_id, state = 'normal')
+        if self.icono:
+            self.canvas.itemconfig(self.icono_id, state = 'normal')
 
 
 class boton_atras(mi_boton):

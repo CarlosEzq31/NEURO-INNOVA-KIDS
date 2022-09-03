@@ -22,3 +22,7 @@ class mi_texto():
     
     def destroy(self):
         self.canvas.delete(self.id_texto)
+    
+    def cambiar_texto(self, texto):
+        self.texto = texto
+        self.dibujar()
