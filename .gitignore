@@ -2,3 +2,6 @@ __pycache__
 test.py
 test_sql.py
 desktop.ini
+.vscode
+.vim
+.jedi

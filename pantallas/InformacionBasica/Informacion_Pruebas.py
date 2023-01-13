@@ -1,12 +1,11 @@
 # importamos las librerias necesarias
 import textwrap
-from classes.mi_boton import *
 from classes.mi_frame import *
 from classes.mi_ventanita import *
 
 # pantalla de información básica
 class info_pruebas(mi_frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         self.controller = controller
         self.parent = parent
         self.ancho = self.controller.ancho

@@ -1,0 +1,68 @@
+Set-PSReadLineOption : The predictive suggestion feature cannot be enabled because the console output doesn't support virtual terminal processing or it's redirected.
+En D:\Abel Santillan Rodriguez\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1: 20 Carácter: 1
++ Set-PSReadLineOption -PredictionSource History
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Set-PSReadLineOption], ArgumentException
+    + FullyQualifiedErrorId : System.ArgumentException,Microsoft.PowerShell.SetPSReadLineOption
+ 
+pygame 1.9.6
+Hello from the pygame community. https://www.pygame.org/contribute.html
+Calibration would now take place
+Recording would have started at: 7885.246337890625
+7885	The following message would have been logged to the EDF: TRIALSTART 1
+7885	The following message would have been logged to the EDF: IMAGENAME prueba_1.png
+7890	The following message would have been logged to the EDF: image online at 7890
+8678	The following message would have been logged to the EDF: image offline at 8677
+8678	The following message would have been logged to the EDF: TRIALEND 1
+Recording would have stopped at: 8678.362548828125
+Recording would have started at: 9090.04052734375
+9090	The following message would have been logged to the EDF: TRIALSTART 2
+9090	The following message would have been logged to the EDF: IMAGENAME prueba_2.png
+9094	The following message would have been logged to the EDF: image online at 9094
+9724	The following message would have been logged to the EDF: image offline at 9722
+9724	The following message would have been logged to the EDF: TRIALEND 2
+Recording would have stopped at: 9726.240234375
+Recording would have started at: 10185.4169921875
+10185	The following message would have been logged to the EDF: TRIALSTART 3
+10185	The following message would have been logged to the EDF: IMAGENAME prueba_3.png
+10189	The following message would have been logged to the EDF: image online at 10189
+10630	The following message would have been logged to the EDF: image offline at 10621
+10630	The following message would have been logged to the EDF: TRIALEND 3
+Recording would have stopped at: 10630.40771484375
+Recording would have started at: 11042.313232421875
+11042	The following message would have been logged to the EDF: TRIALSTART 4
+11042	The following message would have been logged to the EDF: IMAGENAME prueba_4.png
+11046	The following message would have been logged to the EDF: image online at 11046
+11750	The following message would have been logged to the EDF: image offline at 11750
+11750	The following message would have been logged to the EDF: TRIALEND 4
+Recording would have stopped at: 11751.099609375
+Recording would have started at: 12110.4072265625
+12110	The following message would have been logged to the EDF: TRIALSTART 5
+12110	The following message would have been logged to the EDF: IMAGENAME prueba_5.png
+12113	The following message would have been logged to the EDF: image online at 12113
+12573	The following message would have been logged to the EDF: image offline at 12567
+12573	The following message would have been logged to the EDF: TRIALEND 5
+Recording would have stopped at: 12573.552490234375
+Recording would have started at: 13097.67138671875
+13097	The following message would have been logged to the EDF: TRIALSTART 6
+13097	The following message would have been logged to the EDF: IMAGENAME prueba_6.png
+13106	The following message would have been logged to the EDF: image online at 13106
+13646	The following message would have been logged to the EDF: image offline at 13645
+13646	The following message would have been logged to the EDF: TRIALEND 6
+Recording would have stopped at: 13647.348388671875
+Recording would have started at: 14003.253173828125
+14004	The following message would have been logged to the EDF: TRIALSTART 7
+14004	The following message would have been logged to the EDF: IMAGENAME prueba_7.png
+14008	The following message would have been logged to the EDF: image online at 14008
+14600	The following message would have been logged to the EDF: image offline at 14600
+14600	The following message would have been logged to the EDF: TRIALEND 7
+Recording would have stopped at: 14600.375244140625
+Recording would have started at: 15061.325439453125
+15061	The following message would have been logged to the EDF: TRIALSTART 8
+15062	The following message would have been logged to the EDF: IMAGENAME prueba_8.png
+15071	The following message would have been logged to the EDF: image online at 15071
+16134	The following message would have been logged to the EDF: image offline at 16129
+16134	The following message would have been logged to the EDF: TRIALEND 8
+Recording would have stopped at: 16134.180419921875
+D:\Abel Santillan Rodriguez\Documents\NEURO INNOVA KIDS\DATA\879ef499647db9166fe71c000c3e358bb3b00a0361f3b55bd47719b02de70ad1_figuras_10_10_2022 20_18_02.json
+eyetracker connection would have closed at: 16463.631103515625

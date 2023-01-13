@@ -686,13 +686,13 @@ CREATE TABLE `primaria` (
 --
 
 CREATE TABLE `pruebas` (
-  `id_prueba` varchar(50) NOT NULL,
-  `id_usuario` varchar(25) NOT NULL,
-  `id_paciente` varchar(10) NOT NULL,
-  `pruebas` varchar(10) NOT NULL,
-  `archivos_prueba` varchar(300) NOT NULL,
-  `sueno` int(2) NOT NULL,
-  `ayuno` int(2) NOT NULL
+  `id_prueba` varchar(70) NOT NULL,
+  `id_usuario` varchar(70) NOT NULL,
+  `id_paciente` varchar(70) NOT NULL,
+  `pruebas` varchar(100) NOT NULL,
+  `archivos_prueba` varchar(1000) NOT NULL,
+  `sueno` int(1) NOT NULL,
+  `ayuno` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

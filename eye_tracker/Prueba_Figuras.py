@@ -1,8 +1,4 @@
 # Importamos todo desde el archivo constants.py
-from pickle import FALSE
-import turtle
-
-from numpy import true_divide
 from constants import *
 
 def Figuras_superpuestas():
@@ -41,10 +37,10 @@ def Figuras_superpuestas():
     colocar_fondo(pantalla)
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
     pantalla.draw_text(text="Prueba de las figuras\nsuperpuestas\nObserva las figuras a la izquierda\ny selecciona la figura que NO se encuentre", 
-                fontsize=TEXTSIZE, 
-                font='Mukta Malar ExtraLight',
-                pos = (screenwidth*0.35,screenheight*0.5),
-                colour =(0,0,0))
+                        fontsize=TEXTSIZE, 
+                        font = font,
+                        pos = (screenwidth*0.35,screenheight*0.5),
+                        colour =(0,0,0))
 
     # Mostrar pantalla
     display.fill(pantalla)
@@ -645,7 +641,7 @@ def Figuras_superpuestas():
     boton_continuar = colocarBoton(pantalla, FONDODIR+"boton_verde.png", 2.5, screenwidth*0.875,screenheight*0.8, "Continuar", 1)
     pantalla.draw_text(text="Listo, se están guardando los datos", 
                     fontsize=TEXTSIZE, 
-                    font='Mukta Malar ExtraLight',
+                    font = font,
                     pos = (screenwidth*0.35,screenheight*0.5),
                     colour =(0,0,0))
 
@@ -656,7 +652,7 @@ def Figuras_superpuestas():
         with open(ruta_archivo, "w") as archivo:
             print(ruta_archivo)
             json.dump(respuestas, archivo, indent = 4)
-        pruebas_sql(id_paciente, "figuras", ruta_archivo)
+        # pruebas_sql(id_paciente, "figuras", ruta_archivo)
         
     # Cerramos la conexion con el eyetracker
     # Esto cerará el archivo de datos
@@ -668,10 +664,10 @@ def Figuras_superpuestas():
     # Colocamos la imagen de fondo y las instrucciones en Pantalla 
     pantalla.clear()
     colocar_fondo(pantalla)
-    pantalla.draw_text(text="Listo, haz completado la prueba haz click para salir", 
+    pantalla.draw_text(text="Listo, haz completado la prueba haz click o presionado una tecla para salir", 
                 fontsize=TEXTSIZE, 
-                font='Mukta Malar ExtraLight',
-                pos = (screenwidth*0.35,screenheight*0.5),
+                font = font,
+                pos = (screenwidth*0.35, screenheight*0.5),
                 colour =(0,0,0))
     display.fill(pantalla)
     display.show()
@@ -680,7 +676,8 @@ def Figuras_superpuestas():
     x , y = 0,0
     while True:
         mousebutton, clickpos, clicktime = mouse.get_clicked(mousebuttonlist='default', timeout= 10)
-        if clickpos:
+        key = teclado.get_key()
+        if clickpos or key:
             break
         display.fill(pantalla)
         display.show()

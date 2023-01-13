@@ -1,13 +1,9 @@
 # Importar librerias necesarias
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_formulario import *
-from classes.mi_seleccion import *
-from classes.mi_lista import *
 
 class menu_principal(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.back_ninios)
 
         # colocar el logo

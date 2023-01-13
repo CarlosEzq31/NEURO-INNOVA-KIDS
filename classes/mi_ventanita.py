@@ -24,7 +24,7 @@ class ventana_emergente(tk.Toplevel):
         self.canvas.pack(side = 'top', fill = 'both', expand = True)
 
         # Colocamos el fondo de la pantalla
-        self.canvas.create_image(self.ancho / 2, self.alto / 2, image = controller.fondo_splash, anchor = CENTER)
+        self.canvas.create_image(self.ancho / 2, self.alto / 2, image = controller.fondo_pantalla_carga, anchor = CENTER)
 
         # Titulo de la pantalla
         self.title(self.titulo)

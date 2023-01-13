@@ -21,8 +21,18 @@ class mi_texto():
                                                 anchor = self.anchor)
     
     def destroy(self):
+        """
+        Destruye el texto
+        """
         self.canvas.delete(self.id_texto)
     
     def cambiar_texto(self, texto):
+        """
+        Cambia el texto del texto
+        
+        Parámetros
+        ----------
+        texto : str
+            Texto a mostrar"""
         self.texto = texto
         self.dibujar()

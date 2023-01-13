@@ -1,14 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.paciente import *
-from classes.mi_prueba import *
-from classes.mi_seleccion import *
-
 
 class entrevista(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -33,11 +27,26 @@ class entrevista(mi_frame):
         
         # Formularios para la nueva entrevista
         # Ayuno
-        self.ayuno = mi_seleccion(self.canvas, 0.5, 0.4, '¿Ayuno? (Horas)', ['4 o menos', '4 - 6', '6 - 8', '8 o más'])
+        self.ayuno = mi_seleccion(self.canvas, 0.5, 0.325, '¿Ayuno? (Horas)', ['4 o menos', '4 - 6', '6 - 8', '8 o más'])
 
         # Sueño
         # self.sueno = mi_formulario(self.canvas, 0.7, 0.5, 'Horas de sueño')
-        self.sueno = mi_seleccion(self.canvas, 0.5, 0.5, '¿Sueño? (Horas)', ['4 o menos', '4 - 6', '6 - 8', '8 o más'])
+        self.sueno = mi_seleccion(self.canvas, 0.5, 0.4, '¿Sueño? (Horas)', ['4 o menos', '4 - 6', '6 - 8', '8 o más'])
+
+        # Salon tradicional
+        self.salon = mi_seleccion(self.canvas, 0.5, 0.475, '¿Salón tradicional?', ['Si', 'No'])
+
+        # Luz natural
+        self.luz = mi_seleccion(self.canvas, 0.5, 0.55, '¿Luz natural?', ['Si', 'No'])
+
+        # Añadir campos de ambiente, luz natural, artificiales, numero de ventanas, etc
+        self.ambiente = mi_seleccion(self.canvas, 0.5, 0.625, 'Ambiente', ["Si", "No"])
+
+        # Luz natural
+        self.luz_natural = mi_seleccion(self.canvas, 0.5, 0.7, 'Luz natural', ["Si", "No"])
+
+        # Luz artificial
+        self.luz_artificial = mi_seleccion(self.canvas, 0.5, 0.775, 'Luz artificial', ["Si", "No"])
 
 
         # Boton de siguiente
@@ -51,3 +60,4 @@ class entrevista(mi_frame):
             self.controller.entrevista.agregar_prueba(self.controller.prueba)
             print(self.controller.prueba)
             print(self.controller.entrevista)
+            self.controller.mostrar_pantalla(self, 'lista_pruebas')

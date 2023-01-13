@@ -1,12 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 class disciplina(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -55,5 +51,6 @@ class disciplina(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'escolaridad')

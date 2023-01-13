@@ -1,12 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 class historiaclinica(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -50,8 +46,9 @@ class historiaclinica(mi_frame):
         self.bind('<Enter>', lambda x: self.colocar_valores_por_defecto())
 
     def siguiente(self):
+        self.controller.entrevista_eni = EntrevistaEni(self.controller.paciente)
         if self.validar_formularios():
-            print(self.datos)
+            self.controller.entrevista_eni.agregar_datos('historia_clinica', self.datos)
             self.controller.mostrar_pantalla(self, 'historialfamiliar')
 
     def colocar_valores_por_defecto(self):

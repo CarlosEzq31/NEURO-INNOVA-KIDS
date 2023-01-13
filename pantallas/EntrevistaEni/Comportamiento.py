@@ -1,12 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 class comportamiento(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -49,12 +45,13 @@ class comportamiento(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento2')
 
 class comportamiento2(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -97,12 +94,13 @@ class comportamiento2(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento3')
 
 class comportamiento3(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -145,12 +143,13 @@ class comportamiento3(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento4')
 
 class comportamiento4(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -190,12 +189,13 @@ class comportamiento4(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento5')
 
 class comportamiento5(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -235,12 +235,13 @@ class comportamiento5(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento6')
 
 class comportamiento6(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -281,12 +282,13 @@ class comportamiento6(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento7')
 
 class comportamiento7(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -338,12 +340,13 @@ class comportamiento7(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento8')
 
 class comportamiento8(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -386,12 +389,13 @@ class comportamiento8(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento9')
 
 class comportamiento9(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -428,12 +432,13 @@ class comportamiento9(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento10')
 
 class comportamiento10(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -488,12 +493,13 @@ class comportamiento10(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento11')
 
 class comportamiento11(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -548,12 +554,13 @@ class comportamiento11(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento12')
 
 class comportamiento12(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -587,5 +594,6 @@ class comportamiento12(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos(self.datos)
             self.controller.mostrar_pantalla(self, 'disciplina')

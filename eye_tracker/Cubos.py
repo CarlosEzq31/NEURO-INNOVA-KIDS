@@ -1402,7 +1402,6 @@ def cubos_khos():
         with open(ruta_archivo, "w") as archivo:
             print(ruta_archivo)
             json.dump(respuestas, archivo, indent = 4)
-        pruebas_sql(id_paciente, "cubos", ruta_archivo)
         
     # Cerramos la conexion con el eyetracker
     # Esto cerará el archivo de datos
@@ -1412,6 +1411,7 @@ def cubos_khos():
     log.close()
 
     # Colocamos la imagen de fondo y las instrucciones en Pantalla 
+    time.sleep(2)
     pantalla.clear()
     colocar_fondo(pantalla)
     pantalla.draw_text(text="Listo, haz completado la prueba haz click para salir", 

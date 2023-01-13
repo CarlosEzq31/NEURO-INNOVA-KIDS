@@ -3,8 +3,39 @@ from datetime import date
 from tkinter import *
 
 class mi_formulario():
-
     def __init__(self, canvas, x, y, texto, **kwargs):
+        """Formulario de entrada de texto
+        
+        Parámetros:
+        ----------
+        canvas: tkinter.Canvas
+            Canvas donde se dibujará el formulario
+        x: float
+            Posición x del formulario
+        y: float
+            Posición y del formulario
+        texto: str
+            Texto del label
+
+        Parámetros opcionales:
+        ---------------------
+        placeholder: str
+            Texto que aparecerá en el formulario cuando no tenga ningún valor
+        contrasena: bool
+            Si el formulario es de contraseña
+        fecha: bool
+            Si el formulario es de fecha
+        focus: bool
+            Si el formulario tendrá el foco al iniciar la aplicación
+        por_defecto: bool
+            Si el formulario tendrá un valor por defecto
+        command: function
+            Función que se ejecutará al presionar enter
+        focus: bool
+            Si el formulario tendrá el foco al mostrar el frame
+        vacio: bool
+            Si el formulario puede estar vacío
+        """
         self.canvas = canvas
         self.frame = self.canvas.master
         self.controller = self.frame.controller
@@ -103,8 +134,14 @@ class mi_formulario():
         if self.entry.get() == self.placeholder and not self.por_defecto:
             self.entry.delete(0, END)
             self.entry.config(fg = 'black')
+            return
         if self.frame.controller.frame != self.frame:
             self.colocar_placeholder()
+            return
+        if not self.placeholder:
+            self.entry.delete(0, END)
+            self.entry.config(fg = 'black')
+        
 
     def cambiar_focus(self):
         """Cambia el foco del formulario"""

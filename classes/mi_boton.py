@@ -1,8 +1,36 @@
 from tkinter import *
+from main import *
 
 class mi_boton():
     
     def __init__(self, canvas, x, y, texto, color_boton, command, **kwargs):
+        """Botón
+        
+        Parametros:
+        -----------
+        canvas: Canvas
+            Canvas donde se dibujará el botón
+        x: int
+            Posición x del botón
+        y: int
+            Posición y del botón
+        texto: str
+            Texto que tendrá el botón
+        color_boton: str
+            Color del botón (rosa o verde)
+        command: function
+            Función que se ejecutará al presionar el botón
+            
+        Parámetros opcionales:
+        ---------
+        icono: PhotoImage
+            Icono que tendrá el botón
+        icono_dentro: bool
+            Si el icono estará dentro del botón o fuera
+        grande: bool
+            Si el botón será grande o no
+        tamano_letra: float
+            Tamaño de la letra del botón"""
         self.canvas = canvas
         self.alto = self.canvas.master.alto
         self.ancho = self.canvas.master.ancho

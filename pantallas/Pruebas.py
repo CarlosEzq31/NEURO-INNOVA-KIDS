@@ -1,11 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.entrevista import *
 
 class pruebas(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo

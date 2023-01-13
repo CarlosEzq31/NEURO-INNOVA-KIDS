@@ -1,5 +1,4 @@
 import hashlib
-from re import S
 from classes.env import *
 from datetime import datetime
 
@@ -67,5 +66,48 @@ class Usuario():
             a = 0
             pacientes.append({'id': x[0], 'nombre': x[1]})
         return pacientes
+    
+    def actualizar_datos(self, usuario, contrasena):
+        """
+        Actualiza los datos del usuario en la base de datos
 
+        Parametros:
+        -----------
+        usuario: str
+            Nombre nuevo de usuario
+        contrasena: str
+            Contraseña nueva del usuario
+        """
+        # if not self.revisar_usuario_disponible(usuario):
+        #     return False
+        self.usuario = usuario
+        self.contrasena = hashlib.new("sha256", f"{contrasena}".encode()).hexdigest()
+        mycursor = db.cursor()
+        query = f"""
+        UPDATE `neuro_innova`.`usuario` SET `usuario` = '{self.usuario}', `contrasena` = '{self.contrasena}' WHERE (`id_usuario` = '{self.id}');
+        """
+        mycursor.execute(query)
+        db.commit()
+    
+    def revisar_usuario_disponible(self, usuario) -> bool:
+        """Revisa si el usuario esta disponible
+        y retorna verdadero si esta disponible
         
+        Parametros:
+        -----------
+        usuario: str
+            Nombre de usuario a revisar"""
+        mycursor = db.cursor()
+        query = f"""
+        SELECT usuario FROM usuario WHERE usuario = '{usuario}'
+        ;
+        """
+        # hacer peticion de la base de datos
+        mycursor.execute(query)
+        for x in mycursor:
+            a = 0
+        try:
+            x[0]
+            return False
+        except:
+            return True

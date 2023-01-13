@@ -1,5 +1,5 @@
-import os, sys, json
-import ctypes.wintypes
+import turtle, os, sys, json, time, ctypes.wintypes, numpy as np
+from numpy import true_divide
 from pathlib import Path
 from PIL import ImageGrab
 from datetime import datetime
@@ -24,9 +24,9 @@ if not os.path.exists(directory_data):
 # Obtener resolucion de pantalla
 resolution = ImageGrab.grab()
 screenwidth, screenheight = resolution.size
-del resolution
-screenheight = int(screenheight*0.8)
-screenwidth = int(screenwidth*0.8)
+# del resolution
+# screenheight = int(screenheight*0.8)
+# screenwidth = int(screenwidth*0.8)
 
 # Directorio del fichero actual
 DIR = os.path.dirname(__file__)
@@ -47,7 +47,6 @@ IMGSCALE = (0.25/1080)*screenheight
 
 # Directiorio del archivo de instrucciones
 INSTFILE = os.path.join(DIR, 'instructions.txt')
-FONTDIR = os.path.join(DIR, 'MuktaMalar-ExtraLight.ttf')
 # Preguntar el nombre del participante para usarlo en los archivos de salida
 # ask for the participant name, to use as the name for the logfile...
 #LOGFILENAME = input("Participant name: ")
@@ -63,6 +62,10 @@ SCREENNR = 1 # 1 Para monitores externos
 # 'psychopy' si necesitas un tiempo de actualización de pantalla preciso en milisegundos
 # 'pygame' si tiene problemas para usar PsychoPy
 DISPTYPE = 'pygame'
+font = "Mukta Malar ExtraLight"
+if DISPTYPE == 'pygame':
+    font = "..\\src\\fonts\\Mukta_Malar\\MuktaMalar-ExtraLight"
+    
 
 # DISPSIZE es la resolución de la pantalla
 DISPSIZE = (screenwidth, screenheight) # DELL laptop
@@ -113,7 +116,7 @@ EYETRIBEPRECALIBDUR = 500  #ARMANDOLARA I CHANGED FROM 500 to 750
 #EYELINKCALBEEP = True
 
 # set DUMMYMODE to True if no tracker is attached
-DUMMYMODE = False
+DUMMYMODE = True
 
 from pygaze.libscreen import Display, Screen
 from pygaze.libinput import Keyboard, Mouse
@@ -122,6 +125,8 @@ from pygaze.liblog import Logfile
 import pygaze.libtime as timer
 from PIL import Image as PImage
 import inspect
+from ctypes import windll
+windll.shcore.SetProcessDpiAwareness(2)
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -130,7 +135,7 @@ sys.path.insert(0, parentdir)
 from functions.sql_metodos import *
 
 
-def tamanno_imagen(path: str, scale: float):
+def tamanno_imagen(path: str, scale: float) -> tuple:
     imagen = PImage.open(path)
     x, y = imagen.size
     return x*IMGSCALE*scale,y*IMGSCALE*scale
@@ -143,12 +148,12 @@ def boton_presionado(x: float, y: float, boton: dict) -> bool:
 def colocar_fondo(pantalla: Screen) -> None:
     pantalla.draw_image(image = FONDODIR + "background.jpg", scale = IMGSCALE)
     
-def click_imagen(x,y, imagen):
+def click_imagen(x,y, imagen) -> bool:
     boton_x, boton_y = imagen.get("x"), imagen.get("y")
     boton_ancho, boton_alto = imagen.get("ancho"), imagen.get("alto")
     return (x > boton_x - (boton_ancho/2) and  x < boton_x + (boton_ancho/2)) and (y > boton_y - (boton_alto/2) and  y < boton_y + (boton_alto/2))
 
-def colocarBoton(pantalla: Screen, imagen: str, ratio: float, x, y, text: str = None, ratioTexto: float = 1, color = (0,0,0)) : 
+def colocarBoton(pantalla: Screen, imagen: str, ratio: float, x, y, text: str = None, ratioTexto: float = 1, color = (0,0,0)) -> dict: 
     pantalla.draw_image(image = imagen,
                         scale = IMGSCALE*ratio,
                         pos = (x,y))
@@ -156,8 +161,8 @@ def colocarBoton(pantalla: Screen, imagen: str, ratio: float, x, y, text: str = 
     boton = {"x": x, "y": y, "ancho": boton_ancho, "alto": boton_alto}
     if text:
         pantalla.draw_text(text= text, 
-                        fontsize=TEXTSIZE*ratioTexto, 
-                        font='Mukta Malar ExtraLight',
-                        colour = color,
-                        pos = (x,y))
+                            fontsize=TEXTSIZE*ratioTexto, 
+                            font = font,
+                            colour = color,
+                            pos = (x,y))
     return boton

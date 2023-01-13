@@ -1,13 +1,9 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 # Alimentación
 class antecedentes_postnatales(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -48,18 +44,19 @@ class antecedentes_postnatales(mi_frame):
         self.vomitos = mi_seleccion(self.canvas, 0.548, 0.525, 'Vómitos', ["Si", "No"], vacio = True)
 
         # Succión
-        self.succion = mi_seleccion(self.canvas, 0.548, 0.6, 'Succión', ["Si", "No"], vacio = True)
+        self.succion = mi_seleccion(self.canvas, 0.548, 0.6, 'Succión pobre', ["Si", "No"], vacio = True)
 
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales2')
 
 # Condiciones durante el primer año
 class antecedentes_postnatales2(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -108,13 +105,14 @@ class antecedentes_postnatales2(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales3')
 
 # Condiciones
 class antecedentes_postnatales3(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -154,13 +152,14 @@ class antecedentes_postnatales3(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales4')
 
 
 class antecedentes_postnatales4(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -188,8 +187,8 @@ class antecedentes_postnatales4(mi_frame):
                                         lambda x: self.siguiente())
         
         # Formulario de datos
-        # Autosificiente en
-        self.autosificiente_en = mi_formulario(self.canvas, 0.775, 0.3, 'Autosificiente en', vacio = True)
+        # Autosuficiente en
+        self.autosuficiente_en = mi_formulario(self.canvas, 0.775, 0.3, 'Autosuficiente en', vacio = True)
 
         # Deficiente en
         self.deficiente_en = mi_formulario(self.canvas, 0.775, 0.375, 'Deficiente en', vacio = True)
@@ -215,13 +214,14 @@ class antecedentes_postnatales4(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales5')
 
 # Desarrollo actual
 class antecedentes_postnatales5(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -274,13 +274,14 @@ class antecedentes_postnatales5(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales6')
 
 # Antecedentes patológicos
 class antecedentes_postnatales6(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -332,13 +333,14 @@ class antecedentes_postnatales6(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales7')
 
 
 class antecedentes_postnatales7(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -367,10 +369,10 @@ class antecedentes_postnatales7(mi_frame):
         
         # Formulario de datos
         # Tipo de traumatismos
-        self.tipo_traumatismos = mi_formulario(self.canvas, 0.775, 0.3, 'Tipo de traumatismos', vacio = True)
+        self.tipo_convulsiones = mi_formulario(self.canvas, 0.775, 0.3, 'Tipo de convulsiones', vacio = True)
 
         # Frecuencia (traumatismos)
-        self.frecuencia_tramatismos = mi_formulario(self.canvas, 0.775, 0.375, 'Frecuencia', vacio = True)
+        self.frecuencia_convulsiones = mi_formulario(self.canvas, 0.775, 0.375, 'Frecuencia', vacio = True)
 
         # Con Fiebre
         self.con_fiebre = mi_seleccion(self.canvas, 0.548, 0.45, 'Con fiebre', ["Si", "No"], vacio = True)
@@ -393,13 +395,14 @@ class antecedentes_postnatales7(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales8')
 
 
 class antecedentes_postnatales8(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -445,13 +448,14 @@ class antecedentes_postnatales8(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales9')
 
 
 class antecedentes_postnatales9(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -494,13 +498,14 @@ class antecedentes_postnatales9(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_postnatales10')
 
 
 class antecedentes_postnatales10(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -546,5 +551,6 @@ class antecedentes_postnatales10(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            self.controller.entrevista_eni.agregar_datos('antecedentes_postnatales', self.datos)
             self.controller.mostrar_pantalla(self, 'comportamiento')
+            print(self.controller.entrevista_eni.datos['antecedentes_postnatales'])

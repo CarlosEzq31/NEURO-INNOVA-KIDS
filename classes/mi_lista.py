@@ -3,6 +3,21 @@ from classes.mi_boton import *
 
 class mi_lista(mi_boton):
     def __init__(self, canvas, x, y, texto, elementos,**kwargs):
+        """Lista de opciones desplegable
+        
+        Parámetros:
+        -----------
+        canvas : tkinter.Canvas
+            Canvas donde se dibujará la lista
+        x : int
+            Posición x del elemento
+        y : int
+            Posición y del elemento
+        texto : str
+            Texto que se mostrará el boton para despelgar la lista
+        elementos : list
+            Lista de elementos que se mostrarán
+        """
         self.x = x
         self.y = y
         self.canvas = canvas

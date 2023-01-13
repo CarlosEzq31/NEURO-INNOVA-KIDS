@@ -23,10 +23,23 @@ class Prueba():
         return string
     
     def agregar_prueba(self, prueba, archivo):
+        """
+        Agrega una prueba a la lista de pruebas
+        
+        Parámetros
+        ----------
+        prueba : str
+            id de la prueba
+        archivo : str
+            ruta del archivo de la prueba
+        """
         self.pruebas.append(prueba)
         self.archivos.append(archivo)
     
     def registrar_prueba(self):
+        """
+        Registra la prueba en la base de datos
+        """
         opciones = ['4 o menos', '4 - 6', '6 - 8', '8 o más']
         for i in range(len(opciones)):
             if self.sueno == opciones[i]:

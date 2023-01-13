@@ -1,12 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 class historialfamiliar(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -56,16 +52,15 @@ class historialfamiliar(mi_frame):
         self.drogadiccion = mi_formulario(self.canvas, 0.775, 0.8, 'Drogadicción', vacio = True)
 
 
-
     def siguiente(self):
-        if self.validar_formularios():
-            print(self.datos)
+        if self.validar_formularios():    
+            self.controller.entrevista_eni.agregar_datos('historia_familiar', self.datos)
             self.controller.mostrar_pantalla(self, 'historialfamiliar2')
 
 
 class historialfamiliar2(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -117,5 +112,5 @@ class historialfamiliar2(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            self.controller.entrevista_eni.agregar_datos('historia_familiar', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_prenatales')

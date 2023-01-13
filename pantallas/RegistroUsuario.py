@@ -1,13 +1,8 @@
-from classes.usuario import *
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_boton import *
-from classes.mi_texto import *
-from classes.mi_formulario import *
 
 class registro_usuario(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         # inicializamos el frame
         mi_frame.__init__(self, parent, controller, controller.background)
 

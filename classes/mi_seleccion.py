@@ -5,6 +5,28 @@ from functools import partial
 class mi_seleccion():
 
     def __init__(self, canvas, x, y, texto, opciones,**kwargs):
+        """Botones de seleccion
+        
+        Parametros:
+        ----------
+        canvas : tkinter.Canvas
+            Canvas donde se dibujara la barra de seleccion
+        x : int
+            Posicion x del centro de la barra de seleccion
+        y : int
+            Posicion y del centro de la barra de seleccion
+        texto : str
+            Texto que se mostrara en la barra de seleccion
+        opciones : list
+            Lista de opciones que se mostraran en la barra de seleccion
+
+        Parámetros opcionales:
+        ---------------------
+        focus : bool
+            Si se puede seleccionar la opcion con el teclado
+        vacio : bool
+            Si la barra de seleccion se puede dejar vacia
+        """
         self.canvas = canvas
         self.frame = self.canvas.master
         self.controller = self.frame.controller

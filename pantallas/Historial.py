@@ -1,11 +1,9 @@
 import subprocess, os, ctypes.wintypes
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
 
 class historial(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -33,6 +31,9 @@ class historial(mi_frame):
                                         lambda x: self.abrir_resultados())
         
     def abrir_resultados(self):
+        """
+        Abre el archivo de resultados en el explorador de archivos
+        """
         CSIDL_PERSONAL = 5       # My Documents
         SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 

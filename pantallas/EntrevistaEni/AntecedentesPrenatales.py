@@ -1,12 +1,8 @@
-from classes.mi_boton import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.mi_seleccion import *
-from classes.mi_formulario import *
 
 class antecedentes_prenatales(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -55,12 +51,12 @@ class antecedentes_prenatales(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            self.controller.entrevista_eni.agregar_datos('antecedentes_prenatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_prenatales2')
 
 class antecedentes_prenatales2(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -112,12 +108,13 @@ class antecedentes_prenatales2(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_prenatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_prenatales3')
 
 class antecedentes_prenatales3(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -161,12 +158,13 @@ class antecedentes_prenatales3(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            
+            self.controller.entrevista_eni.agregar_datos('antecedentes_prenatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_prenatales4')
 
 class antecedentes_prenatales4(mi_frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocar el logo
@@ -213,7 +211,7 @@ class antecedentes_prenatales4(mi_frame):
         self.en_que_mes_medicamentos = mi_formulario(self.canvas, 0.775, 0.675, '¿En qué mes?', vacio = True)
 
         # Otros
-        self.otros = mi_formulario(self.canvas, 0.775, 0.75, 'Otros', vacio = True)
+        self.otros_expo = mi_formulario(self.canvas, 0.775, 0.75, 'Otros', vacio = True)
 
         # ¿En que mes? (otros)
         self.en_que_mes_otros = mi_formulario(self.canvas, 0.775, 0.825, '¿En qué mes?', vacio = True)
@@ -221,5 +219,5 @@ class antecedentes_prenatales4(mi_frame):
 
     def siguiente(self):
         if self.validar_formularios():
-            print(self.datos)
+            self.controller.entrevista_eni.agregar_datos('antecedentes_prenatales', self.datos)
             self.controller.mostrar_pantalla(self, 'antecedentes_natales')

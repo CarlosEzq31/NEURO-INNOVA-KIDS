@@ -1,11 +1,8 @@
-from classes.mi_boton import *
-from classes.mi_formulario import *
 from classes.mi_frame import *
-from classes.mi_texto import *
-from classes.usuario import *
+
 
 class iniciar_sesion(mi_frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent: Frame, controller: neuro_innova_app):
         mi_frame.__init__(self, parent, controller, controller.background)
 
         # colocamos el fondo de la pantalla
@@ -41,7 +38,7 @@ class iniciar_sesion(mi_frame):
             
         # Boton actualizar datos
         self.boton_actulizar_datos = mi_boton(self.canvas, 0.15, 0.825, 'Actulizar datos',
-                                            'verde', lambda x: None)
+                                            'verde', lambda x: controller.mostrar_pantalla(self, 'actualizar_datos'))
         
         # Boton de siguiente
         self.boton_siguiente = mi_boton(self.canvas, 0.85, 0.9, 'Iniciar sesión', 
@@ -69,8 +66,3 @@ class iniciar_sesion(mi_frame):
                 else:
                     self.datos[key] = value.datos()
         return True
-    
-    def limpiar_formularios(self):
-        for key, value in vars(self).items():
-            if 'mi_formulario' in str(value):
-                value.limpiar()
